@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, BackgroundTasks
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, BackgroundTasks, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
@@ -18,7 +18,14 @@ from .schemas import (
     BatchProcessRequest, BatchProcessResponse,
     ImageFilter, PaginationParams, PaginatedResponse,
     PaginatedImagesResponse, PaginatedEvaluationsResponse,
-    EvaluationProgress, EvaluationHistory, PromptVersionStats
+    EvaluationProgress, EvaluationHistory, PromptVersionStats,
+    Dataset, DatasetCreate, DatasetUpdate, DatasetWithImages,
+    PromptFamily, PromptFamilyCreate, PromptFamilyWithVersions,
+    PromptVersion, PromptVersionCreate, PromptVersionUpdate,
+    EvaluationRun, EvaluationRunCreate, EvaluationRunUpdate, EvaluationRunWithDetails,
+    ComparisonResults, LiveProgressUpdate, PerformanceTrend,
+    APIKey, APIKeyCreate, APIUsageStats,
+    ProcessingStatus, DatasetStatus, PromptStatus
 )
 from . import crud
 from .orchestrator import OcrOrchestrator
@@ -648,6 +655,234 @@ async def process_evaluation_background(evaluation_id: int):
                     error_message=str(e)
                 )
             )
+
+# Dataset endpoints
+@app.get("/api/datasets", response_model=List[Dataset])
+async def get_datasets(db: AsyncSession = Depends(get_db)):
+    """Get all evaluation datasets"""
+    return await crud.get_datasets(db)
+
+@app.get("/api/datasets/{dataset_id}", response_model=DatasetWithImages)
+async def get_dataset(dataset_id: int, db: AsyncSession = Depends(get_db)):
+    """Get a specific dataset with its images"""
+    dataset = await crud.get_dataset(db, dataset_id)
+    if not dataset:
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    return dataset
+
+@app.post("/api/datasets", response_model=Dataset)
+async def create_dataset(dataset: DatasetCreate, db: AsyncSession = Depends(get_db)):
+    """Create a new dataset"""
+    return await crud.create_dataset(db, dataset)
+
+@app.put("/api/datasets/{dataset_id}", response_model=Dataset)
+async def update_dataset(
+    dataset_id: int,
+    dataset_update: DatasetUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update a dataset"""
+    dataset = await crud.update_dataset(db, dataset_id, dataset_update)
+    if not dataset:
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    return dataset
+
+@app.post("/api/datasets/{dataset_id}/upload", response_model=Dataset)
+async def upload_dataset_files(
+    dataset_id: int,
+    images_zip: UploadFile = File(...),
+    reference_csv: UploadFile = File(...),
+    db: AsyncSession = Depends(get_db)
+):
+    """Upload images and reference CSV for a dataset"""
+    dataset = await crud.get_dataset(db, dataset_id)
+    if not dataset:
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    
+    # Validate files
+    if not images_zip.filename.endswith('.zip'):
+        raise HTTPException(status_code=400, detail="Images file must be a ZIP archive")
+    if not reference_csv.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="Reference file must be CSV")
+    
+    # Process the uploaded files
+    result = await crud.process_dataset_upload(db, dataset_id, images_zip, reference_csv)
+    return result
+
+# Prompt Family endpoints
+@app.get("/api/prompt-families", response_model=List[PromptFamily])
+async def get_prompt_families(db: AsyncSession = Depends(get_db)):
+    """Get all prompt families"""
+    return await crud.get_prompt_families(db)
+
+@app.get("/api/prompt-families/{family_id}", response_model=PromptFamilyWithVersions)
+async def get_prompt_family(family_id: int, db: AsyncSession = Depends(get_db)):
+    """Get a specific prompt family with its versions"""
+    family = await crud.get_prompt_family(db, family_id)
+    if not family:
+        raise HTTPException(status_code=404, detail="Prompt family not found")
+    return family
+
+@app.post("/api/prompt-families", response_model=PromptFamily)
+async def create_prompt_family(family: PromptFamilyCreate, db: AsyncSession = Depends(get_db)):
+    """Create a new prompt family"""
+    return await crud.create_prompt_family(db, family)
+
+# Prompt Version endpoints
+@app.get("/api/prompt-families/{family_id}/versions", response_model=List[PromptVersion])
+async def get_prompt_versions(family_id: int, db: AsyncSession = Depends(get_db)):
+    """Get all versions for a prompt family"""
+    return await crud.get_prompt_versions(db, family_id)
+
+@app.post("/api/prompt-families/{family_id}/versions", response_model=PromptVersion)
+async def create_prompt_version(
+    family_id: int,
+    version: PromptVersionCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Create a new version of a prompt"""
+    # Validate family exists
+    family = await crud.get_prompt_family(db, family_id)
+    if not family:
+        raise HTTPException(status_code=404, detail="Prompt family not found")
+    
+    # Generate version number based on type
+    next_version = await crud.generate_next_version(db, family_id, version.version_type)
+    version.version = next_version
+    
+    return await crud.create_prompt_version(db, version)
+
+@app.put("/api/prompt-versions/{version_id}", response_model=PromptVersion)
+async def update_prompt_version(
+    version_id: int,
+    version_update: PromptVersionUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update a prompt version"""
+    version = await crud.update_prompt_version(db, version_id, version_update)
+    if not version:
+        raise HTTPException(status_code=404, detail="Prompt version not found")
+    return version
+
+@app.post("/api/prompt-versions/{version_id}/promote")
+async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get_db)):
+    """Promote a prompt version to production"""
+    result = await crud.promote_prompt_version(db, version_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Prompt version not found")
+    return {"message": "Prompt version promoted to production"}
+
+# Evaluation Run endpoints
+@app.get("/api/evaluation-runs", response_model=List[EvaluationRun])
+async def get_evaluation_runs(db: AsyncSession = Depends(get_db)):
+    """Get all evaluation runs"""
+    return await crud.get_evaluation_runs(db)
+
+@app.get("/api/evaluation-runs/{run_id}", response_model=EvaluationRunWithDetails)
+async def get_evaluation_run(run_id: int, db: AsyncSession = Depends(get_db)):
+    """Get a specific evaluation run with full details"""
+    run = await crud.get_evaluation_run(db, run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Evaluation run not found")
+    return run
+
+@app.post("/api/evaluation-runs", response_model=EvaluationRun)
+async def create_evaluation_run(
+    run: EvaluationRunCreate,
+    background_tasks: BackgroundTasks,
+    db: AsyncSession = Depends(get_db)
+):
+    """Create and start a new evaluation run (A/B test)"""
+    # Validate datasets exist
+    for dataset_id in run.dataset_ids:
+        dataset = await crud.get_dataset(db, dataset_id)
+        if not dataset:
+            raise HTTPException(status_code=404, detail=f"Dataset {dataset_id} not found")
+        if dataset.status != DatasetStatus.VALIDATED:
+            raise HTTPException(status_code=400, detail=f"Dataset {dataset.name} is not validated")
+    
+    # Create the evaluation run
+    db_run = await crud.create_evaluation_run(db, run)
+    
+    # Queue background processing
+    background_tasks.add_task(process_evaluation_run_background, db_run.id)
+    
+    return db_run
+
+@app.get("/api/evaluation-runs/{run_id}/comparison", response_model=ComparisonResults)
+async def get_evaluation_comparison(run_id: int, db: AsyncSession = Depends(get_db)):
+    """Get detailed comparison results for an evaluation run"""
+    comparison = await crud.get_evaluation_comparison(db, run_id)
+    if not comparison:
+        raise HTTPException(status_code=404, detail="Evaluation run not found or not completed")
+    return comparison
+
+# Real-time WebSocket endpoint for live progress
+@app.websocket("/ws/evaluation-runs/{run_id}/progress")
+async def websocket_evaluation_progress(websocket: WebSocket, run_id: int):
+    """WebSocket endpoint for real-time evaluation progress"""
+    await websocket.accept()
+    
+    try:
+        while True:
+            # Get current progress
+            async with async_session() as db:
+                progress = await crud.get_evaluation_run_progress(db, run_id)
+                if progress:
+                    await websocket.send_json(progress.dict())
+                
+                # If completed, send final update and close
+                if progress and progress.status in [ProcessingStatus.SUCCESS, ProcessingStatus.FAILED]:
+                    break
+            
+            # Wait before next update
+            await asyncio.sleep(2)
+            
+    except WebSocketDisconnect:
+        pass
+
+# Historical Analysis endpoints
+@app.get("/api/analysis/performance-trends", response_model=List[PerformanceTrend])
+async def get_performance_trends(
+    prompt_family_id: Optional[int] = Query(None),
+    dataset_id: Optional[int] = Query(None),
+    days_back: int = Query(30),
+    db: AsyncSession = Depends(get_db)
+):
+    """Get performance trends over time"""
+    return await crud.get_performance_trends(db, prompt_family_id, dataset_id, days_back)
+
+@app.get("/api/analysis/regression-alerts")
+async def get_regression_alerts(db: AsyncSession = Depends(get_db)):
+    """Get active regression alerts"""
+    return await crud.get_regression_alerts(db)
+
+# API Key Management endpoints
+@app.get("/api/api-keys", response_model=List[APIKey])
+async def get_api_keys(db: AsyncSession = Depends(get_db)):
+    """Get all API keys for the current user"""
+    return await crud.get_api_keys(db)
+
+@app.post("/api/api-keys", response_model=APIKey)
+async def create_api_key(key_data: APIKeyCreate, db: AsyncSession = Depends(get_db)):
+    """Create a new API key"""
+    return await crud.create_api_key(db, key_data)
+
+@app.delete("/api/api-keys/{key_id}")
+async def revoke_api_key(key_id: int, db: AsyncSession = Depends(get_db)):
+    """Revoke an API key"""
+    success = await crud.revoke_api_key(db, key_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="API key not found")
+    return {"message": "API key revoked"}
+
+@app.get("/api/api-keys/{key_id}/usage", response_model=APIUsageStats)
+async def get_api_key_usage(key_id: int, db: AsyncSession = Depends(get_db)):
+    """Get usage statistics for an API key"""
+    stats = await crud.get_api_key_usage(db, key_id)
+    if not stats:
+        raise HTTPException(status_code=404, detail="API key not found")
+    return stats
 
 if __name__ == "__main__":
     import uvicorn
