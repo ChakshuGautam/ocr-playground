@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Text, Boolean, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Text, Boolean, ForeignKey, Table, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
@@ -11,6 +11,110 @@ engine = create_async_engine(DATABASE_URL, echo=True)
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 Base = declarative_base()
+
+# Association tables for many-to-many relationships
+evaluation_run_datasets = Table(
+    'evaluation_run_datasets',
+    Base.metadata,
+    Column('evaluation_run_id', Integer, ForeignKey('evaluation_runs.id')),
+    Column('dataset_id', Integer, ForeignKey('datasets.id'))
+)
+
+dataset_images = Table(
+    'dataset_images',
+    Base.metadata,
+    Column('dataset_id', Integer, ForeignKey('datasets.id')),
+    Column('image_id', Integer, ForeignKey('images.id'))
+)
+
+class Dataset(Base):
+    __tablename__ = "datasets"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
+    description = Column(Text)
+    status = Column(String, default="draft")  # draft, validated, archived
+    image_count = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_used = Column(DateTime, nullable=True)
+    
+    # Relationships
+    images = relationship("Image", secondary=dataset_images, back_populates="datasets")
+    evaluation_runs = relationship("EvaluationRun", secondary=evaluation_run_datasets, back_populates="datasets")
+
+class PromptFamily(Base):
+    __tablename__ = "prompt_families"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
+    description = Column(Text)
+    tags = Column(JSON)  # Store as JSON array
+    production_version = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    versions = relationship("PromptVersion", back_populates="family")
+
+class PromptVersion(Base):
+    __tablename__ = "prompt_versions"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    family_id = Column(Integer, ForeignKey("prompt_families.id"))
+    version = Column(String, index=True)  # e.g., "1.2.1"
+    prompt_text = Column(Text)
+    changelog_message = Column(Text)
+    status = Column(String, default="draft")  # draft, staging, production, archived
+    author = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_evaluation_accuracy = Column(Float, nullable=True)
+    
+    # Relationships
+    family = relationship("PromptFamily", back_populates="versions")
+    evaluation_runs = relationship("EvaluationRunPrompt", back_populates="prompt_version")
+
+class EvaluationRun(Base):
+    __tablename__ = "evaluation_runs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    description = Column(Text)
+    hypothesis = Column(Text)
+    status = Column(String, default="pending")  # pending, processing, success, failed
+    progress_percentage = Column(Integer, default=0)
+    current_step = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
+    
+    # Relationships
+    datasets = relationship("Dataset", secondary=evaluation_run_datasets, back_populates="evaluation_runs")
+    prompt_configurations = relationship("EvaluationRunPrompt", back_populates="evaluation_run")
+    evaluations = relationship("Evaluation", back_populates="evaluation_run")
+
+class EvaluationRunPrompt(Base):
+    __tablename__ = "evaluation_run_prompts"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    evaluation_run_id = Column(Integer, ForeignKey("evaluation_runs.id"))
+    prompt_version_id = Column(Integer, ForeignKey("prompt_versions.id"))
+    label = Column(String)  # e.g., "Control (A)", "Variation (B)"
+    
+    # Relationships
+    evaluation_run = relationship("EvaluationRun", back_populates="prompt_configurations")
+    prompt_version = relationship("PromptVersion", back_populates="evaluation_runs")
+
+class APIKey(Base):
+    __tablename__ = "api_keys"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    key_name = Column(String, index=True)
+    key_hash = Column(String, unique=True)  # Store hashed key
+    key_preview = Column(String)  # Last 4 characters for display
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_used = Column(DateTime, nullable=True)
+    usage_count = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
 
 class Image(Base):
     __tablename__ = "images"
@@ -25,12 +129,14 @@ class Image(Base):
     
     # Relationships
     evaluations = relationship("Evaluation", back_populates="image")
+    datasets = relationship("Dataset", secondary=dataset_images, back_populates="images")
 
 class Evaluation(Base):
     __tablename__ = "evaluations"
     
     id = Column(Integer, primary_key=True, index=True)
     image_id = Column(Integer, ForeignKey("images.id"))
+    evaluation_run_id = Column(Integer, ForeignKey("evaluation_runs.id"), nullable=True)
     prompt_version = Column(String, default="v1")  # Track different prompt versions
     ocr_output = Column(Text)
     accuracy = Column(Float)
@@ -46,11 +152,16 @@ class Evaluation(Base):
     current_step = Column(String, nullable=True)  # Current processing step
     estimated_completion = Column(DateTime, nullable=True)
     
+    # Performance metrics
+    latency_ms = Column(Integer, nullable=True)
+    cost_estimate = Column(Float, nullable=True)
+    
     # Store word evaluations as JSON
     word_evaluations_json = Column(Text)  # JSON string of word evaluations
     
     # Relationships
     image = relationship("Image", back_populates="evaluations")
+    evaluation_run = relationship("EvaluationRun", back_populates="evaluations")
     word_evaluations = relationship("WordEvaluation", back_populates="evaluation")
 
 class WordEvaluation(Base):

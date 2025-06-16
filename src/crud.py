@@ -6,13 +6,22 @@ from typing import List, Optional, Dict, Any
 import json
 import csv
 import os
-from datetime import datetime
+import zipfile
+import tempfile
+from datetime import datetime, timedelta
 
-from .database import Image, Evaluation, WordEvaluation, PromptTemplate
+from .database import (
+    Image, Evaluation, WordEvaluation, PromptTemplate,
+    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey
+)
 from .schemas import (
     ImageCreate, ImageUpdate, EvaluationCreate, EvaluationUpdate,
     PromptTemplateCreate, PromptTemplateUpdate, WordEvaluationCreate,
-    ImageFilter, PaginationParams
+    ImageFilter, PaginationParams,
+    DatasetCreate, DatasetUpdate, PromptFamilyCreate,
+    PromptVersionCreate, PromptVersionUpdate, EvaluationRunCreate,
+    VersionType, ProcessingStatus, DatasetStatus, PromptStatus,
+    APIKeyCreate
 )
 
 # Image CRUD operations
@@ -425,4 +434,404 @@ async def import_csv_data(db: AsyncSession, csv_file_path: str, overwrite_existi
             "updated_count": 0,
             "errors": [f"Import error: {str(e)}"],
             "message": "Import failed"
-        } 
+        }
+
+# New Dataset CRUD operations
+async def create_dataset(db: AsyncSession, dataset: DatasetCreate) -> Dataset:
+    db_dataset = Dataset(**dataset.dict())
+    db.add(db_dataset)
+    await db.commit()
+    await db.refresh(db_dataset)
+    return db_dataset
+
+async def get_dataset(db: AsyncSession, dataset_id: int) -> Optional[Dataset]:
+    result = await db.execute(
+        select(Dataset).options(selectinload(Dataset.images)).where(Dataset.id == dataset_id)
+    )
+    return result.scalar_one_or_none()
+
+async def get_datasets(db: AsyncSession) -> List[Dataset]:
+    result = await db.execute(select(Dataset).order_by(Dataset.created_at.desc()))
+    return result.scalars().all()
+
+async def update_dataset(db: AsyncSession, dataset_id: int, dataset_update: DatasetUpdate) -> Optional[Dataset]:
+    result = await db.execute(select(Dataset).where(Dataset.id == dataset_id))
+    db_dataset = result.scalar_one_or_none()
+    
+    if db_dataset:
+        update_data = dataset_update.dict(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(db_dataset, field, value)
+        
+        db_dataset.updated_at = datetime.utcnow()
+        await db.commit()
+        await db.refresh(db_dataset)
+    
+    return db_dataset
+
+async def process_dataset_upload(db: AsyncSession, dataset_id: int, images_zip, reference_csv) -> Dataset:
+    """Process uploaded ZIP of images and CSV with reference texts"""
+    dataset = await get_dataset(db, dataset_id)
+    if not dataset:
+        raise ValueError("Dataset not found")
+    
+    # Create temporary directory for processing
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Extract ZIP file
+        zip_path = os.path.join(temp_dir, "images.zip")
+        with open(zip_path, "wb") as f:
+            f.write(await images_zip.read())
+        
+        # Save CSV file
+        csv_path = os.path.join(temp_dir, "reference.csv")
+        with open(csv_path, "wb") as f:
+            f.write(await reference_csv.read())
+        
+        # Extract images
+        images_dir = os.path.join(temp_dir, "images")
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(images_dir)
+        
+        # Read CSV and validate
+        image_refs = {}
+        with open(csv_path, 'r', encoding='utf-8') as f:
+            csv_reader = csv.DictReader(f)
+            for row in csv_reader:
+                filename = row.get('image_filename', '').strip()
+                reference_text = row.get('reference_text', '').strip()
+                if filename and reference_text:
+                    image_refs[filename] = reference_text
+        
+        # Get list of extracted image files
+        image_files = []
+        for root, dirs, files in os.walk(images_dir):
+            for file in files:
+                if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+                    image_files.append(file)
+        
+        # Validate that all images have reference text and vice versa
+        missing_refs = [img for img in image_files if img not in image_refs]
+        missing_images = [ref for ref in image_refs.keys() if ref not in image_files]
+        
+        if missing_refs or missing_images:
+            raise ValueError(f"Validation failed. Missing references: {missing_refs}, Missing images: {missing_images}")
+        
+        # Create Image records and associate with dataset
+        created_images = []
+        for filename, reference_text in image_refs.items():
+            # Create a unique number for the image
+            image_number = f"{dataset.name}_{filename}"
+            
+            # Check if image already exists
+            existing = await get_image_by_number(db, image_number)
+            if not existing:
+                image_data = ImageCreate(
+                    number=image_number,
+                    url=f"/datasets/{dataset_id}/images/{filename}",
+                    reference_text=reference_text,
+                    local_path=os.path.join(images_dir, filename)
+                )
+                db_image = await create_image(db, image_data)
+                created_images.append(db_image)
+        
+        # Associate images with dataset
+        for image in created_images:
+            dataset.images.append(image)
+        
+        # Update dataset metadata
+        dataset.image_count = len(created_images)
+        dataset.status = DatasetStatus.VALIDATED
+        dataset.updated_at = datetime.utcnow()
+        
+        await db.commit()
+        await db.refresh(dataset)
+        
+        return dataset
+
+# Prompt Family CRUD operations
+async def create_prompt_family(db: AsyncSession, family: PromptFamilyCreate) -> PromptFamily:
+    db_family = PromptFamily(**family.dict())
+    db.add(db_family)
+    await db.commit()
+    await db.refresh(db_family)
+    return db_family
+
+async def get_prompt_family(db: AsyncSession, family_id: int) -> Optional[PromptFamily]:
+    result = await db.execute(
+        select(PromptFamily).options(selectinload(PromptFamily.versions)).where(PromptFamily.id == family_id)
+    )
+    return result.scalar_one_or_none()
+
+async def get_prompt_families(db: AsyncSession) -> List[PromptFamily]:
+    result = await db.execute(select(PromptFamily).order_by(PromptFamily.created_at.desc()))
+    return result.scalars().all()
+
+# Prompt Version CRUD operations
+async def get_prompt_versions(db: AsyncSession, family_id: int) -> List[PromptVersion]:
+    result = await db.execute(
+        select(PromptVersion).where(PromptVersion.family_id == family_id).order_by(PromptVersion.created_at.desc())
+    )
+    return result.scalars().all()
+
+async def generate_next_version(db: AsyncSession, family_id: int, version_type: VersionType) -> str:
+    """Generate the next semantic version number"""
+    # Get latest version for this family
+    result = await db.execute(
+        select(PromptVersion.version)
+        .where(PromptVersion.family_id == family_id)
+        .order_by(PromptVersion.created_at.desc())
+        .limit(1)
+    )
+    latest_version = result.scalar_one_or_none()
+    
+    if not latest_version:
+        return "1.0.0"
+    
+    # Parse version (assume format: major.minor.patch)
+    try:
+        major, minor, patch = map(int, latest_version.split('.'))
+    except ValueError:
+        return "1.0.0"
+    
+    # Increment based on type
+    if version_type == VersionType.MAJOR:
+        major += 1
+        minor = 0
+        patch = 0
+    elif version_type == VersionType.MINOR:
+        minor += 1
+        patch = 0
+    elif version_type == VersionType.PATCH:
+        patch += 1
+    
+    return f"{major}.{minor}.{patch}"
+
+async def create_prompt_version(db: AsyncSession, version: PromptVersionCreate) -> PromptVersion:
+    db_version = PromptVersion(**version.dict())
+    db.add(db_version)
+    await db.commit()
+    await db.refresh(db_version)
+    return db_version
+
+async def update_prompt_version(db: AsyncSession, version_id: int, version_update: PromptVersionUpdate) -> Optional[PromptVersion]:
+    result = await db.execute(select(PromptVersion).where(PromptVersion.id == version_id))
+    db_version = result.scalar_one_or_none()
+    
+    if db_version:
+        update_data = version_update.dict(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(db_version, field, value)
+        
+        await db.commit()
+        await db.refresh(db_version)
+    
+    return db_version
+
+async def promote_prompt_version(db: AsyncSession, version_id: int) -> bool:
+    """Promote a prompt version to production"""
+    result = await db.execute(select(PromptVersion).where(PromptVersion.id == version_id))
+    db_version = result.scalar_one_or_none()
+    
+    if not db_version:
+        return False
+    
+    # Set all other versions in this family to archived/staging
+    await db.execute(
+        select(PromptVersion).where(
+            and_(
+                PromptVersion.family_id == db_version.family_id,
+                PromptVersion.status == PromptStatus.PRODUCTION
+            )
+        )
+    )
+    
+    # Update existing production versions to archived
+    existing_production = await db.execute(
+        select(PromptVersion).where(
+            and_(
+                PromptVersion.family_id == db_version.family_id,
+                PromptVersion.status == PromptStatus.PRODUCTION
+            )
+        )
+    )
+    
+    for prod_version in existing_production.scalars():
+        prod_version.status = PromptStatus.ARCHIVED
+    
+    # Promote this version
+    db_version.status = PromptStatus.PRODUCTION
+    
+    # Update family's production version reference
+    family_result = await db.execute(select(PromptFamily).where(PromptFamily.id == db_version.family_id))
+    family = family_result.scalar_one_or_none()
+    if family:
+        family.production_version = db_version.version
+    
+    await db.commit()
+    return True
+
+# Evaluation Run CRUD operations
+async def create_evaluation_run(db: AsyncSession, run: EvaluationRunCreate) -> EvaluationRun:
+    db_run = EvaluationRun(
+        name=run.name,
+        description=run.description,
+        hypothesis=run.hypothesis
+    )
+    db.add(db_run)
+    await db.flush()  # Get the ID
+    
+    # Add datasets
+    for dataset_id in run.dataset_ids:
+        dataset = await get_dataset(db, dataset_id)
+        if dataset:
+            db_run.datasets.append(dataset)
+    
+    # Add prompt configurations
+    for config in run.prompt_configurations:
+        # Find the prompt version
+        version_result = await db.execute(
+            select(PromptVersion).where(
+                and_(
+                    PromptVersion.family_id == config.family_id,
+                    PromptVersion.version == config.version
+                )
+            )
+        )
+        version = version_result.scalar_one_or_none()
+        
+        if version:
+            run_prompt = EvaluationRunPrompt(
+                evaluation_run_id=db_run.id,
+                prompt_version_id=version.id,
+                label=config.label
+            )
+            db.add(run_prompt)
+    
+    await db.commit()
+    await db.refresh(db_run)
+    return db_run
+
+async def get_evaluation_runs(db: AsyncSession) -> List[EvaluationRun]:
+    result = await db.execute(
+        select(EvaluationRun)
+        .options(
+            selectinload(EvaluationRun.datasets),
+            selectinload(EvaluationRun.prompt_configurations)
+        )
+        .order_by(EvaluationRun.created_at.desc())
+    )
+    return result.scalars().all()
+
+async def get_evaluation_run(db: AsyncSession, run_id: int) -> Optional[EvaluationRun]:
+    result = await db.execute(
+        select(EvaluationRun)
+        .options(
+            selectinload(EvaluationRun.datasets),
+            selectinload(EvaluationRun.prompt_configurations),
+            selectinload(EvaluationRun.evaluations)
+        )
+        .where(EvaluationRun.id == run_id)
+    )
+    return result.scalar_one_or_none()
+
+async def get_evaluation_comparison(db: AsyncSession, run_id: int) -> Optional[Dict[str, Any]]:
+    """Generate comparison results for an evaluation run"""
+    run = await get_evaluation_run(db, run_id)
+    if not run or run.status != ProcessingStatus.SUCCESS:
+        return None
+    
+    # This would be implemented to analyze the evaluations and generate comparison data
+    # For now, return a placeholder structure
+    return {
+        "evaluation_run_id": run_id,
+        "summary_metrics": [],
+        "word_comparisons": [],
+        "winner": None,
+        "confidence_level": None
+    }
+
+# API Key CRUD operations
+async def create_api_key(db: AsyncSession, key_data: APIKeyCreate) -> APIKey:
+    import secrets
+    import hashlib
+    
+    # Generate a secure API key
+    key = secrets.token_urlsafe(32)
+    key_hash = hashlib.sha256(key.encode()).hexdigest()
+    
+    db_key = APIKey(
+        key_name=key_data.key_name,
+        key_hash=key_hash,
+        key_preview=key[-4:]  # Last 4 characters for display
+    )
+    
+    db.add(db_key)
+    await db.commit()
+    await db.refresh(db_key)
+    
+    # Return the key with the actual key value (only time we show it)
+    db_key.actual_key = key
+    return db_key
+
+async def get_api_keys(db: AsyncSession) -> List[APIKey]:
+    result = await db.execute(select(APIKey).where(APIKey.is_active == True).order_by(APIKey.created_at.desc()))
+    return result.scalars().all()
+
+async def revoke_api_key(db: AsyncSession, key_id: int) -> bool:
+    result = await db.execute(select(APIKey).where(APIKey.id == key_id))
+    db_key = result.scalar_one_or_none()
+    
+    if db_key:
+        db_key.is_active = False
+        await db.commit()
+        return True
+    return False
+
+async def get_api_key_usage(db: AsyncSession, key_id: int) -> Optional[Dict[str, Any]]:
+    """Get usage statistics for an API key"""
+    # This would be implemented with actual usage tracking
+    # For now, return placeholder data
+    return {
+        "api_key_id": key_id,
+        "total_calls": 0,
+        "calls_today": 0,
+        "calls_this_month": 0,
+        "error_rate": 0.0,
+        "avg_response_time_ms": 0
+    }
+
+# Historical Analysis functions
+async def get_performance_trends(
+    db: AsyncSession, 
+    prompt_family_id: Optional[int] = None,
+    dataset_id: Optional[int] = None,
+    days_back: int = 30
+) -> List[Dict[str, Any]]:
+    """Get performance trends over time"""
+    since_date = datetime.utcnow() - timedelta(days=days_back)
+    
+    # This would be implemented to analyze historical performance
+    # For now, return placeholder data
+    return []
+
+async def get_regression_alerts(db: AsyncSession) -> List[Dict[str, Any]]:
+    """Get active regression alerts"""
+    # This would check for performance regressions
+    # For now, return empty list
+    return []
+
+async def get_evaluation_run_progress(db: AsyncSession, run_id: int) -> Optional[Dict[str, Any]]:
+    """Get real-time progress for an evaluation run"""
+    result = await db.execute(select(EvaluationRun).where(EvaluationRun.id == run_id))
+    run = result.scalar_one_or_none()
+    
+    if not run:
+        return None
+    
+    return {
+        "evaluation_run_id": run_id,
+        "overall_progress": run.progress_percentage,
+        "prompt_progress": {},  # Would track progress per prompt
+        "current_image": run.current_step,
+        "log_entries": []
+    } 

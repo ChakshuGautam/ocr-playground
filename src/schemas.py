@@ -1,6 +1,30 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
+from enum import Enum
+
+# Enums for better type safety
+class ProcessingStatus(str, Enum):
+    PENDING = "pending"
+    PROCESSING = "processing"
+    SUCCESS = "success"
+    FAILED = "failed"
+
+class DatasetStatus(str, Enum):
+    DRAFT = "draft"
+    VALIDATED = "validated"
+    ARCHIVED = "archived"
+
+class PromptStatus(str, Enum):
+    DRAFT = "draft"
+    STAGING = "staging"
+    PRODUCTION = "production"
+    ARCHIVED = "archived"
+
+class VersionType(str, Enum):
+    MAJOR = "major"
+    MINOR = "minor"
+    PATCH = "patch"
 
 # Base schemas
 class WordEvaluationBase(BaseModel):
@@ -208,4 +232,192 @@ class PromptVersionStats(BaseModel):
     successful_evaluations: int
     avg_accuracy: Optional[float] = None
     created_at: datetime
-    latest_evaluation: Optional[datetime] = None 
+    latest_evaluation: Optional[datetime] = None
+
+# Dataset schemas
+class DatasetBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    status: DatasetStatus = DatasetStatus.DRAFT
+
+class DatasetCreate(DatasetBase):
+    pass
+
+class DatasetUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[DatasetStatus] = None
+
+class Dataset(DatasetBase):
+    id: int
+    image_count: int = 0
+    created_at: datetime
+    updated_at: datetime
+    last_used: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+class DatasetWithImages(Dataset):
+    images: List['Image'] = []
+
+# Enhanced Prompt Template schemas
+class PromptFamilyBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    tags: List[str] = []
+
+class PromptFamilyCreate(PromptFamilyBase):
+    pass
+
+class PromptFamily(PromptFamilyBase):
+    id: int
+    created_at: datetime
+    production_version: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
+
+class PromptVersionBase(BaseModel):
+    family_id: int
+    version: str
+    prompt_text: str
+    changelog_message: str
+    status: PromptStatus = PromptStatus.DRAFT
+
+class PromptVersionCreate(BaseModel):
+    family_id: int
+    prompt_text: str
+    changelog_message: str
+    version_type: VersionType
+    status: PromptStatus = PromptStatus.DRAFT
+
+class PromptVersionUpdate(BaseModel):
+    prompt_text: Optional[str] = None
+    changelog_message: Optional[str] = None
+    status: Optional[PromptStatus] = None
+
+class PromptVersion(PromptVersionBase):
+    id: int
+    author: Optional[str] = None
+    created_at: datetime
+    last_evaluation_accuracy: Optional[float] = None
+    
+    class Config:
+        from_attributes = True
+
+class PromptFamilyWithVersions(PromptFamily):
+    versions: List[PromptVersion] = []
+
+# Enhanced Evaluation Run schemas
+class EvaluationRunBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    hypothesis: str
+    dataset_ids: List[int]
+
+class EvaluationRunCreate(EvaluationRunBase):
+    prompt_configurations: List['PromptConfiguration']
+
+class PromptConfiguration(BaseModel):
+    label: str  # e.g., "Control (A)", "Variation (B)"
+    family_id: int
+    version: str
+
+class EvaluationRunUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[ProcessingStatus] = None
+
+class EvaluationRun(EvaluationRunBase):
+    id: int
+    status: ProcessingStatus = ProcessingStatus.PENDING
+    progress_percentage: int = 0
+    current_step: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+    completed_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+class EvaluationRunWithDetails(EvaluationRun):
+    datasets: List[Dataset] = []
+    prompt_configurations: List[PromptConfiguration] = []
+    evaluations: List['Evaluation'] = []
+    comparison_results: Optional['ComparisonResults'] = None
+
+# Comparison and Analysis schemas
+class WordLevelComparison(BaseModel):
+    image_filename: str
+    word_index: int
+    reference_word: str
+    control_output: Optional[str] = None
+    variation_output: Optional[str] = None
+    status: str  # "improved", "regression", "match", "mismatch"
+    error_type: Optional[str] = None
+
+class ComparisonSummary(BaseModel):
+    prompt_version: str
+    label: str  # "Control (A)", "Variation (B)"
+    overall_accuracy: float
+    character_error_rate: float
+    avg_latency_ms: int
+    estimated_cost_per_1k: float
+    error_breakdown: Dict[str, int]
+
+class ComparisonResults(BaseModel):
+    evaluation_run_id: int
+    summary_metrics: List[ComparisonSummary]
+    word_comparisons: List[WordLevelComparison]
+    winner: Optional[str] = None  # Which prompt performed better
+    confidence_level: Optional[float] = None
+
+# Real-time Progress schemas
+class LiveProgressUpdate(BaseModel):
+    evaluation_run_id: int
+    overall_progress: int
+    prompt_progress: Dict[str, int]  # progress per prompt version
+    current_image: Optional[str] = None
+    log_entries: List[str] = []
+
+# Historical Analysis schemas
+class PerformanceTrend(BaseModel):
+    prompt_version: str
+    data_points: List['TrendDataPoint']
+    moving_average: List[float]
+    regression_alerts: List['RegressionAlert']
+
+class TrendDataPoint(BaseModel):
+    evaluation_run_id: int
+    timestamp: datetime
+    accuracy: float
+    dataset_name: str
+
+class RegressionAlert(BaseModel):
+    detected_at: datetime
+    threshold_crossed: float
+    previous_average: float
+    current_average: float
+    severity: str  # "warning", "critical"
+
+# API Integration schemas
+class APIKey(BaseModel):
+    id: int
+    key_name: str
+    key_preview: str  # Only show last 4 characters
+    created_at: datetime
+    last_used: Optional[datetime] = None
+    usage_count: int = 0
+    is_active: bool = True
+
+class APIKeyCreate(BaseModel):
+    key_name: str
+
+class APIUsageStats(BaseModel):
+    api_key_id: int
+    total_calls: int
+    calls_today: int
+    calls_this_month: int
+    error_rate: float
+    avg_response_time_ms: int 
