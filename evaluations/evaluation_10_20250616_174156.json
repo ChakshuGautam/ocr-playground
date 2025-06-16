@@ -1,0 +1,78 @@
+{
+  "image_info": {
+    "number": "10",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_723644_11_42154243_20250221044039.jpg",
+    "reference_text": "जय अब धन दान कर\nराजा दस बार पाठ पढ़ा",
+    "timestamp": "20250616_174156"
+  },
+  "evaluation": {
+    "transcribed_text": "जय अब धन दान कर राजा दस बार पाठ पढ़ा",
+    "word_evaluations": [
+      {
+        "reference_word": "जय",
+        "transcribed_word": "जय",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "अब",
+        "transcribed_word": "अब",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "धन",
+        "transcribed_word": "धन",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "दान",
+        "transcribed_word": "दान",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "राजा",
+        "transcribed_word": "राजा",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "दस",
+        "transcribed_word": "दस",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "बार",
+        "transcribed_word": "बार",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पाठ",
+        "transcribed_word": "पाठ",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पढ़ा",
+        "transcribed_word": "पढ़ा",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'पढ़ा' vs reference 'पढ़ा' (incorrect matra)."
+      }
+    ],
+    "metrics": {
+      "total_words": 10,
+      "correct_words": 9,
+      "accuracy": "90.00%"
+    }
+  }
+}

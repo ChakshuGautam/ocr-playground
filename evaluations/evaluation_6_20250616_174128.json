@@ -1,0 +1,132 @@
+{
+  "image_info": {
+    "number": "6",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_955101_11_38461332_20250219091939.jpg",
+    "reference_text": "कल हम सब हार गए\nघर चल कर बात कर\nमाता के लिए खाना लगा\nयश रोज़ गाता है",
+    "timestamp": "20250616_174128"
+  },
+  "evaluation": {
+    "transcribed_text": "कल नेहम सब हार गए। घर चल कर बात करा। माता के लिए खाना लगा यश रोज गीता है",
+    "word_evaluations": [
+      {
+        "reference_word": "कल",
+        "transcribed_word": "कल",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "हम",
+        "transcribed_word": "नेहम",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'नेहम' vs reference 'हम' (incorrect character)."
+      },
+      {
+        "reference_word": "सब",
+        "transcribed_word": "सब",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "हार",
+        "transcribed_word": "हार",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "गए",
+        "transcribed_word": "गए।",
+        "match": false,
+        "reason_diff": "Extra character: Transcribed 'गए।' has an extra '।' at the end."
+      },
+      {
+        "reference_word": "घर",
+        "transcribed_word": "घर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "चल",
+        "transcribed_word": "चल",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "बात",
+        "transcribed_word": "बात",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "करा।",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'करा।' vs reference 'कर' (incorrect matra)."
+      },
+      {
+        "reference_word": "माता",
+        "transcribed_word": "माता",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "के",
+        "transcribed_word": "के",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "लिए",
+        "transcribed_word": "लिए",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "खाना",
+        "transcribed_word": "खाना",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "लगा",
+        "transcribed_word": "लगा",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "यश",
+        "transcribed_word": "यश",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "रोज़",
+        "transcribed_word": "रोज",
+        "match": false,
+        "reason_diff": "Missing matra: e.g., '़' missing in '[transcribed]'."
+      },
+      {
+        "reference_word": "गाता",
+        "transcribed_word": "गीता",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'गीता' vs reference 'गाता' (incorrect character)."
+      },
+      {
+        "reference_word": "है",
+        "transcribed_word": "है",
+        "match": true,
+        "reason_diff": "Exact match."
+      }
+    ],
+    "metrics": {
+      "total_words": 19,
+      "correct_words": 14,
+      "accuracy": "73.68%"
+    }
+  }
+}

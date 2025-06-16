@@ -1,0 +1,78 @@
+{
+  "image_info": {
+    "number": "8",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_1032124_11_41577773_20250221045534.jpg",
+    "reference_text": "छत पर बात मत कर\nजय एक लाल माला रख",
+    "timestamp": "20250616_174143"
+  },
+  "evaluation": {
+    "transcribed_text": "छत पर बात मत कर जय एक लाल माला रख",
+    "word_evaluations": [
+      {
+        "reference_word": "छत",
+        "transcribed_word": "छत",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पर",
+        "transcribed_word": "पर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "बात",
+        "transcribed_word": "बात",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "मत",
+        "transcribed_word": "मत",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "जय",
+        "transcribed_word": "जय",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "एक",
+        "transcribed_word": "एक",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "लाल",
+        "transcribed_word": "लाल",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "माला",
+        "transcribed_word": "माला",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "रख",
+        "transcribed_word": "रख",
+        "match": true,
+        "reason_diff": "Exact match."
+      }
+    ],
+    "metrics": {
+      "total_words": 10,
+      "correct_words": 10,
+      "accuracy": "100.00%"
+    }
+  }
+}

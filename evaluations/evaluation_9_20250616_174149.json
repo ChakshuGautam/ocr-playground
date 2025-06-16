@@ -1,0 +1,48 @@
+{
+  "image_info": {
+    "number": "9",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_733764_11_39311111_20250221085713.jpg",
+    "reference_text": "इस घास पर मत चल\nकल वह यात्रा पर गया",
+    "timestamp": "20250616_174149"
+  },
+  "evaluation": {
+    "transcribed_text": "का निशा अब गीत गान",
+    "word_evaluations": [
+      {
+        "reference_word": "इस",
+        "transcribed_word": "का",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'का' vs reference 'इस' (different character)."
+      },
+      {
+        "reference_word": "घास",
+        "transcribed_word": "निशा",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'निशा' vs reference 'घास' (different character)."
+      },
+      {
+        "reference_word": "पर",
+        "transcribed_word": "अब",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'अब' vs reference 'पर' (different character)."
+      },
+      {
+        "reference_word": "मत",
+        "transcribed_word": "गीत",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'गीत' vs reference 'मत' (different character)."
+      },
+      {
+        "reference_word": "चल",
+        "transcribed_word": "गान",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'गान' vs reference 'चल' (different character)."
+      }
+    ],
+    "metrics": {
+      "total_words": 5,
+      "correct_words": 0,
+      "accuracy": "0.00%"
+    }
+  }
+}

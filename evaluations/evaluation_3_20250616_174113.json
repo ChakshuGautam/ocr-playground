@@ -1,0 +1,138 @@
+{
+  "image_info": {
+    "number": "3",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_15269_11_40446725_20250220073646.jpg",
+    "reference_text": "डर कर मत रहा कर\nयह सब कब घटा था\nछाया दिन भर गाना गाती\nचाकू को सिल पर घिस",
+    "timestamp": "20250616_174113"
+  },
+  "evaluation": {
+    "transcribed_text": "डर कर मत रहा कर यह सब कब घटा था छाया दिन भर गाना गाती चाकू को सिल पर घिस",
+    "word_evaluations": [
+      {
+        "reference_word": "डर",
+        "transcribed_word": "डर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "मत",
+        "transcribed_word": "मत",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "रहा",
+        "transcribed_word": "रहा",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "यह",
+        "transcribed_word": "यह",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "सब",
+        "transcribed_word": "सब",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कब",
+        "transcribed_word": "कब",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "घटा",
+        "transcribed_word": "घटा",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "था",
+        "transcribed_word": "था",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "छाया",
+        "transcribed_word": "छाया",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "दिन",
+        "transcribed_word": "दिन",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "भर",
+        "transcribed_word": "भर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "गाना",
+        "transcribed_word": "गाना",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "गाती",
+        "transcribed_word": "गाती",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "चाकू",
+        "transcribed_word": "चाकू",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "को",
+        "transcribed_word": "को",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "सिल",
+        "transcribed_word": "सिल",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पर",
+        "transcribed_word": "पर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "घिस",
+        "transcribed_word": "घिस",
+        "match": true,
+        "reason_diff": "Exact match."
+      }
+    ],
+    "metrics": {
+      "total_words": 20,
+      "correct_words": 20,
+      "accuracy": "100.00%"
+    }
+  }
+}

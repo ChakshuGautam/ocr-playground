@@ -1,0 +1,138 @@
+{
+  "image_info": {
+    "number": "7",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_723431_11_37564848_20250219085434.jpg",
+    "reference_text": "हर पल लड़ाई मत कर\nउस तट पर नाव लाना\nमेज़ पर खत रख दो\nराजू मीठा पान ले आना",
+    "timestamp": "20250616_174137"
+  },
+  "evaluation": {
+    "transcribed_text": "हर पल लड़ा मत कर उस तट पर नाव लाना मेज पर सत रख दो राजू मीठा पान ले आया",
+    "word_evaluations": [
+      {
+        "reference_word": "हर",
+        "transcribed_word": "हर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पल",
+        "transcribed_word": "पल",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "लड़ाई",
+        "transcribed_word": "लड़ा",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'लड़ा' vs reference 'लड़ाई' (incorrect matra)."
+      },
+      {
+        "reference_word": "मत",
+        "transcribed_word": "मत",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "उस",
+        "transcribed_word": "उस",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "तट",
+        "transcribed_word": "तट",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पर",
+        "transcribed_word": "पर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "नाव",
+        "transcribed_word": "नाव",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "लाना",
+        "transcribed_word": "लाना",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "मेज़",
+        "transcribed_word": "मेज",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'मेज' vs reference 'मेज़' (missing '़')."
+      },
+      {
+        "reference_word": "पर",
+        "transcribed_word": "पर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "खत",
+        "transcribed_word": "सत",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'सत' vs reference 'खत' (different character)."
+      },
+      {
+        "reference_word": "रख",
+        "transcribed_word": "रख",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "दो",
+        "transcribed_word": "दो",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "राजू",
+        "transcribed_word": "राजू",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "मीठा",
+        "transcribed_word": "मीठा",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "पान",
+        "transcribed_word": "पान",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "ले",
+        "transcribed_word": "ले",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "आना",
+        "transcribed_word": "आया",
+        "match": false,
+        "reason_diff": "Spelling error: Transcribed 'आया' vs reference 'आना' (different matra)."
+      }
+    ],
+    "metrics": {
+      "total_words": 20,
+      "correct_words": 16,
+      "accuracy": "80.00%"
+    }
+  }
+}

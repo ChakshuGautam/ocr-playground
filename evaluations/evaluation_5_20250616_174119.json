@@ -1,0 +1,78 @@
+{
+  "image_info": {
+    "number": "5",
+    "url": "https://minio.nl.samagra.io/assessment-images/ap_994993_11_42645755_20250227050142.jpg",
+    "reference_text": "कल तक यह काम कर\nअब जय का कहा मान",
+    "timestamp": "20250616_174119"
+  },
+  "evaluation": {
+    "transcribed_text": "कल तक यह काम कर अब जय का कहा मान",
+    "word_evaluations": [
+      {
+        "reference_word": "कल",
+        "transcribed_word": "कल",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "तक",
+        "transcribed_word": "तक",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "यह",
+        "transcribed_word": "यह",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "काम",
+        "transcribed_word": "काम",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कर",
+        "transcribed_word": "कर",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "अब",
+        "transcribed_word": "अब",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "जय",
+        "transcribed_word": "जय",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "का",
+        "transcribed_word": "का",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "कहा",
+        "transcribed_word": "कहा",
+        "match": true,
+        "reason_diff": "Exact match."
+      },
+      {
+        "reference_word": "मान",
+        "transcribed_word": "मान",
+        "match": true,
+        "reason_diff": "Exact match."
+      }
+    ],
+    "metrics": {
+      "total_words": 10,
+      "correct_words": 10,
+      "accuracy": "100.00%"
+    }
+  }
+}

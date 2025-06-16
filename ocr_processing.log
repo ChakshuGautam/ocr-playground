@@ -1,0 +1,877 @@
+2025-06-16 18:09:39,717 - INFO - Initialized ImageProcessor with CSV: images.csv
+2025-06-16 18:09:39,717 - INFO - Output directory: /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images
+2025-06-16 18:09:39,717 - INFO - Max retries: 3
+2025-06-16 18:09:39,717 - INFO - Starting CSV processing
+2025-06-16 18:09:39,717 - INFO - Found 10 images to process
+2025-06-16 18:09:39,717 - INFO - Processing image 1 (attempt 1/3)
+2025-06-16 18:09:40,196 - INFO - Successfully downloaded image 1 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_1_20250616_180940.jpg
+2025-06-16 18:09:42,577 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:09:47,251 - INFO - AFC remote call 1 is done.
+2025-06-16 18:09:47,252 - ERROR - Error processing image 1: 'full_text'
+2025-06-16 18:09:47,252 - INFO - Retrying image 1 (attempt 2)
+2025-06-16 18:09:47,252 - INFO - Processing image 1 (attempt 2/3)
+2025-06-16 18:09:47,565 - INFO - Successfully downloaded image 1 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_1_20250616_180947.jpg
+2025-06-16 18:09:49,563 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:09:53,554 - INFO - AFC remote call 1 is done.
+2025-06-16 18:09:53,554 - ERROR - Error processing image 1: 'full_text'
+2025-06-16 18:09:53,555 - INFO - Retrying image 1 (attempt 3)
+2025-06-16 18:09:53,555 - INFO - Processing image 1 (attempt 3/3)
+2025-06-16 18:09:53,877 - INFO - Successfully downloaded image 1 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_1_20250616_180953.jpg
+2025-06-16 18:09:56,410 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:10:00,424 - INFO - AFC remote call 1 is done.
+2025-06-16 18:10:00,424 - ERROR - Error processing image 1: 'full_text'
+2025-06-16 18:10:00,425 - INFO - Processing image 2 (attempt 1/3)
+2025-06-16 18:10:00,763 - INFO - Successfully downloaded image 2 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_2_20250616_181000.jpg
+2025-06-16 18:10:03,701 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:10:10,026 - INFO - AFC remote call 1 is done.
+2025-06-16 18:10:10,027 - ERROR - Error processing image 2: 'full_text'
+2025-06-16 18:10:10,027 - INFO - Retrying image 2 (attempt 2)
+2025-06-16 18:10:10,027 - INFO - Processing image 2 (attempt 2/3)
+2025-06-16 18:10:10,345 - INFO - Successfully downloaded image 2 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_2_20250616_181010.jpg
+2025-06-16 18:10:12,979 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:10:18,941 - INFO - AFC remote call 1 is done.
+2025-06-16 18:10:18,942 - ERROR - Error processing image 2: 'full_text'
+2025-06-16 18:10:18,942 - INFO - Retrying image 2 (attempt 3)
+2025-06-16 18:10:18,942 - INFO - Processing image 2 (attempt 3/3)
+2025-06-16 18:10:19,262 - INFO - Successfully downloaded image 2 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_2_20250616_181019.jpg
+2025-06-16 18:10:21,399 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:10:28,653 - INFO - AFC remote call 1 is done.
+2025-06-16 18:10:28,654 - ERROR - Error processing image 2: 'full_text'
+2025-06-16 18:10:28,654 - INFO - Processing image 3 (attempt 1/3)
+2025-06-16 18:10:29,026 - INFO - Successfully downloaded image 3 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_3_20250616_181028.jpg
+2025-06-16 18:10:31,186 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:10:37,228 - INFO - AFC remote call 1 is done.
+2025-06-16 18:10:37,228 - ERROR - Error processing image 3: 'full_text'
+2025-06-16 18:10:37,228 - INFO - Retrying image 3 (attempt 2)
+2025-06-16 18:10:37,228 - INFO - Processing image 3 (attempt 2/3)
+2025-06-16 18:10:37,600 - INFO - Successfully downloaded image 3 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_3_20250616_181037.jpg
+2025-06-16 18:10:39,732 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:02,754 - INFO - Initialized ImageProcessor with CSV: images.csv
+2025-06-16 18:12:02,754 - INFO - Output directory: /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images
+2025-06-16 18:12:02,754 - INFO - Max retries: 3
+2025-06-16 18:12:02,755 - INFO - Starting CSV processing
+2025-06-16 18:12:02,755 - INFO - Found 10 images to process
+2025-06-16 18:12:02,755 - INFO - Processing image 1 (attempt 1/3)
+2025-06-16 18:12:03,061 - INFO - Successfully downloaded image 1 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_1_20250616_181202.jpg
+2025-06-16 18:12:04,900 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:09,043 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:09,046 - INFO - Saved evaluation for image 1 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_1_20250616_181209.json
+2025-06-16 18:12:09,046 - INFO - Successfully processed image 1
+2025-06-16 18:12:09,046 - INFO - Processing image 2 (attempt 1/3)
+2025-06-16 18:12:09,370 - INFO - Successfully downloaded image 2 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_2_20250616_181209.jpg
+2025-06-16 18:12:11,444 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:17,619 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:17,621 - INFO - Saved evaluation for image 2 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_2_20250616_181217.json
+2025-06-16 18:12:17,621 - INFO - Successfully processed image 2
+2025-06-16 18:12:17,621 - INFO - Processing image 3 (attempt 1/3)
+2025-06-16 18:12:17,966 - INFO - Successfully downloaded image 3 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_3_20250616_181217.jpg
+2025-06-16 18:12:20,086 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:25,988 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:25,990 - INFO - Saved evaluation for image 3 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_3_20250616_181225.json
+2025-06-16 18:12:25,990 - INFO - Successfully processed image 3
+2025-06-16 18:12:25,991 - INFO - Processing image 4 (attempt 1/3)
+2025-06-16 18:12:26,341 - INFO - Successfully downloaded image 4 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_4_20250616_181226.jpg
+2025-06-16 18:12:28,333 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:32,519 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:32,519 - INFO - Saved evaluation for image 4 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_4_20250616_181232.json
+2025-06-16 18:12:32,520 - INFO - Successfully processed image 4
+2025-06-16 18:12:32,520 - INFO - Processing image 5 (attempt 1/3)
+2025-06-16 18:12:32,830 - INFO - Successfully downloaded image 5 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_5_20250616_181232.jpg
+2025-06-16 18:12:35,242 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:38,602 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:38,604 - INFO - Saved evaluation for image 5 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_5_20250616_181238.json
+2025-06-16 18:12:38,605 - INFO - Successfully processed image 5
+2025-06-16 18:12:38,605 - INFO - Processing image 6 (attempt 1/3)
+2025-06-16 18:12:38,924 - INFO - Successfully downloaded image 6 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_6_20250616_181238.jpg
+2025-06-16 18:12:41,082 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:47,013 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:47,017 - INFO - Saved evaluation for image 6 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_6_20250616_181247.json
+2025-06-16 18:12:47,017 - INFO - Successfully processed image 6
+2025-06-16 18:12:47,017 - INFO - Processing image 7 (attempt 1/3)
+2025-06-16 18:12:47,329 - INFO - Successfully downloaded image 7 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_7_20250616_181247.jpg
+2025-06-16 18:12:49,262 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:12:55,404 - INFO - AFC remote call 1 is done.
+2025-06-16 18:12:55,407 - INFO - Saved evaluation for image 7 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_7_20250616_181255.json
+2025-06-16 18:12:55,407 - INFO - Successfully processed image 7
+2025-06-16 18:12:55,407 - INFO - Processing image 8 (attempt 1/3)
+2025-06-16 18:12:55,775 - INFO - Successfully downloaded image 8 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_8_20250616_181255.jpg
+2025-06-16 18:12:58,326 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:13:01,854 - INFO - AFC remote call 1 is done.
+2025-06-16 18:13:01,856 - INFO - Saved evaluation for image 8 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_8_20250616_181301.json
+2025-06-16 18:13:01,856 - INFO - Successfully processed image 8
+2025-06-16 18:13:01,856 - INFO - Processing image 9 (attempt 1/3)
+2025-06-16 18:13:02,268 - INFO - Successfully downloaded image 9 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_9_20250616_181301.jpg
+2025-06-16 18:13:04,497 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:13:07,195 - INFO - AFC remote call 1 is done.
+2025-06-16 18:13:07,196 - INFO - Saved evaluation for image 9 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_9_20250616_181307.json
+2025-06-16 18:13:07,196 - INFO - Successfully processed image 9
+2025-06-16 18:13:07,196 - INFO - Processing image 10 (attempt 1/3)
+2025-06-16 18:13:07,511 - INFO - Successfully downloaded image 10 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images/image_10_20250616_181307.jpg
+2025-06-16 18:13:09,569 - INFO - AFC is enabled with max remote calls: 10.
+2025-06-16 18:13:13,096 - INFO - AFC remote call 1 is done.
+2025-06-16 18:13:13,096 - INFO - Saved evaluation for image 10 to /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations/evaluation_10_20250616_181313.json
+2025-06-16 18:13:13,097 - INFO - Successfully processed image 10
+2025-06-16 18:13:13,099 - INFO - 
+Processing Summary:
+2025-06-16 18:13:13,099 - INFO - Total images: 10
+2025-06-16 18:13:13,099 - INFO - Successfully processed: 10
+2025-06-16 18:13:13,099 - INFO - Failed: 0
+2025-06-16 18:13:13,099 - INFO - Total retries: 0
+2025-06-16 18:13:13,099 - INFO - 
+Updated CSV saved to: images_updated.csv
+2025-06-16 18:13:13,099 - INFO - Evaluations saved to: /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/evaluations
+2025-06-16 18:13:13,099 - INFO - Images saved to: /var/folders/2d/86fpl9q90w5_hmcljnymk_rw0000gn/T/gemini_ocr_images/images
+2025-06-16 18:39:13,897 - INFO - BEGIN (implicit)
+2025-06-16 18:39:13,898 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:39:13,898 - INFO - [raw sql] ()
+2025-06-16 18:39:13,898 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:39:13,898 - INFO - [raw sql] ()
+2025-06-16 18:39:13,898 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:39:13,898 - INFO - [raw sql] ()
+2025-06-16 18:39:13,899 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:39:13,899 - INFO - [raw sql] ()
+2025-06-16 18:39:13,899 - INFO - COMMIT
+2025-06-16 18:39:26,651 - INFO - BEGIN (implicit)
+2025-06-16 18:39:26,653 - INFO - SELECT count(*) AS count_1 
+FROM (SELECT images.id AS id, images.number AS number, images.url AS url, images.local_path AS local_path, images.reference_text AS reference_text, images.created_at AS created_at, images.updated_at AS updated_at 
+FROM images) AS anon_1
+2025-06-16 18:39:26,653 - INFO - [generated in 0.00013s] ()
+2025-06-16 18:39:26,654 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 18:39:26,654 - INFO - [generated in 0.00016s] (100, 0)
+2025-06-16 18:39:26,656 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 18:39:26,656 - INFO - [generated in 0.00015s] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 18:39:26,657 - INFO - ROLLBACK
+2025-06-16 18:39:30,400 - INFO - BEGIN (implicit)
+2025-06-16 18:39:30,400 - INFO - SELECT count(*) AS count_1 
+FROM (SELECT images.id AS id, images.number AS number, images.url AS url, images.local_path AS local_path, images.reference_text AS reference_text, images.created_at AS created_at, images.updated_at AS updated_at 
+FROM images) AS anon_1
+2025-06-16 18:39:30,400 - INFO - [cached since 3.747s ago] ()
+2025-06-16 18:39:30,401 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 18:39:30,401 - INFO - [generated in 0.00012s] (100, 0)
+2025-06-16 18:39:30,402 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 18:39:30,402 - INFO - [cached since 3.746s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 18:39:30,403 - INFO - ROLLBACK
+2025-06-16 18:40:13,601 - INFO - BEGIN (implicit)
+2025-06-16 18:40:13,602 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:40:13,602 - INFO - [raw sql] ()
+2025-06-16 18:40:13,602 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:40:13,602 - INFO - [raw sql] ()
+2025-06-16 18:40:13,603 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:40:13,603 - INFO - [raw sql] ()
+2025-06-16 18:40:13,603 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:40:13,603 - INFO - [raw sql] ()
+2025-06-16 18:40:13,604 - INFO - COMMIT
+2025-06-16 18:40:21,697 - INFO - BEGIN (implicit)
+2025-06-16 18:40:21,698 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:40:21,698 - INFO - [raw sql] ()
+2025-06-16 18:40:21,698 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:40:21,698 - INFO - [raw sql] ()
+2025-06-16 18:40:21,699 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:40:21,699 - INFO - [raw sql] ()
+2025-06-16 18:40:21,699 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:40:21,699 - INFO - [raw sql] ()
+2025-06-16 18:40:21,699 - INFO - COMMIT
+2025-06-16 18:40:26,470 - INFO - BEGIN (implicit)
+2025-06-16 18:40:26,472 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 18:40:26,472 - INFO - [generated in 0.00011s] ()
+2025-06-16 18:40:26,473 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 18:40:26,473 - INFO - [generated in 0.00012s] (100, 0)
+2025-06-16 18:40:26,475 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 18:40:26,475 - INFO - [generated in 0.00020s] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 18:40:26,476 - INFO - ROLLBACK
+2025-06-16 18:40:43,160 - INFO - BEGIN (implicit)
+2025-06-16 18:40:43,160 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:40:43,161 - INFO - [raw sql] ()
+2025-06-16 18:40:43,161 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:40:43,161 - INFO - [raw sql] ()
+2025-06-16 18:40:43,161 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:40:43,161 - INFO - [raw sql] ()
+2025-06-16 18:40:43,162 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:40:43,162 - INFO - [raw sql] ()
+2025-06-16 18:40:43,162 - INFO - COMMIT
+2025-06-16 18:40:58,800 - INFO - BEGIN (implicit)
+2025-06-16 18:40:58,801 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:40:58,801 - INFO - [raw sql] ()
+2025-06-16 18:40:58,801 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:40:58,801 - INFO - [raw sql] ()
+2025-06-16 18:40:58,802 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:40:58,802 - INFO - [raw sql] ()
+2025-06-16 18:40:58,802 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:40:58,802 - INFO - [raw sql] ()
+2025-06-16 18:40:58,802 - INFO - COMMIT
+2025-06-16 18:41:07,443 - INFO - BEGIN (implicit)
+2025-06-16 18:41:07,443 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:41:07,443 - INFO - [raw sql] ()
+2025-06-16 18:41:07,443 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:41:07,443 - INFO - [raw sql] ()
+2025-06-16 18:41:07,444 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:41:07,444 - INFO - [raw sql] ()
+2025-06-16 18:41:07,444 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:41:07,444 - INFO - [raw sql] ()
+2025-06-16 18:41:07,444 - INFO - COMMIT
+2025-06-16 18:41:17,298 - INFO - BEGIN (implicit)
+2025-06-16 18:41:17,298 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:41:17,298 - INFO - [raw sql] ()
+2025-06-16 18:41:17,298 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:41:17,299 - INFO - [raw sql] ()
+2025-06-16 18:41:17,299 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:41:17,299 - INFO - [raw sql] ()
+2025-06-16 18:41:17,299 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:41:17,299 - INFO - [raw sql] ()
+2025-06-16 18:41:17,300 - INFO - COMMIT
+2025-06-16 18:41:24,647 - INFO - BEGIN (implicit)
+2025-06-16 18:41:24,647 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:41:24,647 - INFO - [raw sql] ()
+2025-06-16 18:41:24,648 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:41:24,648 - INFO - [raw sql] ()
+2025-06-16 18:41:24,648 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:41:24,648 - INFO - [raw sql] ()
+2025-06-16 18:41:24,648 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:41:24,648 - INFO - [raw sql] ()
+2025-06-16 18:41:24,649 - INFO - COMMIT
+2025-06-16 18:41:32,239 - INFO - BEGIN (implicit)
+2025-06-16 18:41:32,239 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:41:32,239 - INFO - [raw sql] ()
+2025-06-16 18:41:32,240 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:41:32,240 - INFO - [raw sql] ()
+2025-06-16 18:41:32,240 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:41:32,240 - INFO - [raw sql] ()
+2025-06-16 18:41:32,241 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:41:32,241 - INFO - [raw sql] ()
+2025-06-16 18:41:32,241 - INFO - COMMIT
+2025-06-16 18:41:38,617 - INFO - BEGIN (implicit)
+2025-06-16 18:41:38,617 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:41:38,617 - INFO - [raw sql] ()
+2025-06-16 18:41:38,618 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:41:38,618 - INFO - [raw sql] ()
+2025-06-16 18:41:38,618 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:41:38,618 - INFO - [raw sql] ()
+2025-06-16 18:41:38,618 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:41:38,618 - INFO - [raw sql] ()
+2025-06-16 18:41:38,619 - INFO - COMMIT
+2025-06-16 18:41:45,014 - INFO - BEGIN (implicit)
+2025-06-16 18:41:45,015 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:41:45,015 - INFO - [raw sql] ()
+2025-06-16 18:41:45,016 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:41:45,016 - INFO - [raw sql] ()
+2025-06-16 18:41:45,016 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:41:45,016 - INFO - [raw sql] ()
+2025-06-16 18:41:45,016 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:41:45,016 - INFO - [raw sql] ()
+2025-06-16 18:41:45,018 - INFO - COMMIT
+2025-06-16 18:41:50,463 - INFO - BEGIN (implicit)
+2025-06-16 18:41:50,464 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 18:41:50,464 - INFO - [generated in 0.00013s] ()
+2025-06-16 18:41:50,466 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 18:41:50,466 - INFO - [generated in 0.00012s] (100, 0)
+2025-06-16 18:41:50,468 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 18:41:50,468 - INFO - [generated in 0.00015s] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 18:41:50,471 - INFO - ROLLBACK
+2025-06-16 18:41:55,535 - INFO - BEGIN (implicit)
+2025-06-16 18:41:55,535 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 18:41:55,535 - INFO - [cached since 5.071s ago] ()
+2025-06-16 18:41:55,536 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations
+2025-06-16 18:41:55,536 - INFO - [generated in 0.00011s] ()
+2025-06-16 18:41:55,537 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations 
+WHERE evaluations.processing_status = ?
+2025-06-16 18:41:55,537 - INFO - [generated in 0.00009s] ('pending',)
+2025-06-16 18:41:55,537 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations 
+WHERE evaluations.processing_status = ?
+2025-06-16 18:41:55,537 - INFO - [cached since 0.000551s ago] ('success',)
+2025-06-16 18:41:55,538 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations 
+WHERE evaluations.processing_status = ?
+2025-06-16 18:41:55,538 - INFO - [cached since 0.001003s ago] ('failed',)
+2025-06-16 18:41:55,538 - INFO - SELECT avg(evaluations.accuracy) AS avg_1 
+FROM evaluations 
+WHERE evaluations.processing_status = ? AND evaluations.accuracy IS NOT NULL
+2025-06-16 18:41:55,539 - INFO - [generated in 0.00008s] ('success',)
+2025-06-16 18:41:55,539 - INFO - SELECT evaluations.prompt_version, avg(evaluations.accuracy) AS avg_1 
+FROM evaluations 
+WHERE evaluations.processing_status = ? AND evaluations.accuracy IS NOT NULL GROUP BY evaluations.prompt_version
+2025-06-16 18:41:55,539 - INFO - [generated in 0.00007s] ('success',)
+2025-06-16 18:41:55,540 - INFO - ROLLBACK
+2025-06-16 18:42:00,161 - INFO - BEGIN (implicit)
+2025-06-16 18:42:00,163 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-16 18:42:00,163 - INFO - [generated in 0.00098s] ()
+2025-06-16 18:42:00,166 - INFO - ROLLBACK
+2025-06-16 18:42:05,461 - INFO - BEGIN (implicit)
+2025-06-16 18:42:05,462 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 18:42:05,463 - INFO - [generated in 0.00017s] (1,)
+2025-06-16 18:42:05,464 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?)
+2025-06-16 18:42:05,464 - INFO - [cached since 15s ago] (1,)
+2025-06-16 18:42:05,466 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id = ? AND evaluations.prompt_version = ?
+2025-06-16 18:42:05,466 - INFO - [generated in 0.00012s] (1, 'v1')
+2025-06-16 18:42:05,467 - INFO - INSERT INTO evaluations (image_id, prompt_version, ocr_output, accuracy, correct_words, total_words, processing_status, error_message, created_at, word_evaluations_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 18:42:05,468 - INFO - [generated in 0.00015s] (1, 'v1', None, None, None, None, 'pending', None, '2025-06-16 13:12:05.467951', None)
+2025-06-16 18:42:05,468 - INFO - COMMIT
+2025-06-16 18:42:05,469 - INFO - BEGIN (implicit)
+2025-06-16 18:42:05,470 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.id = ?
+2025-06-16 18:42:05,470 - INFO - [generated in 0.00008s] (1,)
+2025-06-16 18:42:05,471 - INFO - ROLLBACK
+2025-06-16 18:42:10,494 - INFO - BEGIN (implicit)
+2025-06-16 18:42:10,495 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations
+2025-06-16 18:42:10,495 - INFO - [cached since 14.96s ago] ()
+2025-06-16 18:42:10,496 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.word_evaluations_json 
+FROM evaluations
+ LIMIT ? OFFSET ?
+2025-06-16 18:42:10,496 - INFO - [generated in 0.00012s] (100, 0)
+2025-06-16 18:42:10,497 - INFO - SELECT images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM images 
+WHERE images.id IN (?)
+2025-06-16 18:42:10,497 - INFO - [generated in 0.00011s] (1,)
+2025-06-16 18:42:10,499 - INFO - SELECT word_evaluations.evaluation_id AS word_evaluations_evaluation_id, word_evaluations.id AS word_evaluations_id, word_evaluations.reference_word AS word_evaluations_reference_word, word_evaluations.transcribed_word AS word_evaluations_transcribed_word, word_evaluations."match" AS word_evaluations_match, word_evaluations.reason_diff AS word_evaluations_reason_diff, word_evaluations.word_position AS word_evaluations_word_position 
+FROM word_evaluations 
+WHERE word_evaluations.evaluation_id IN (?)
+2025-06-16 18:42:10,499 - INFO - [generated in 0.00013s] (1,)
+2025-06-16 18:42:10,499 - INFO - ROLLBACK
+2025-06-16 18:44:12,228 - INFO - BEGIN (implicit)
+2025-06-16 18:44:12,228 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:44:12,228 - INFO - [raw sql] ()
+2025-06-16 18:44:12,229 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:44:12,229 - INFO - [raw sql] ()
+2025-06-16 18:44:12,229 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:44:12,229 - INFO - [raw sql] ()
+2025-06-16 18:44:12,229 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:44:12,229 - INFO - [raw sql] ()
+2025-06-16 18:44:12,230 - INFO - COMMIT
+2025-06-16 18:45:29,088 - INFO - BEGIN (implicit)
+2025-06-16 18:45:29,088 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:45:29,088 - INFO - [raw sql] ()
+2025-06-16 18:45:29,089 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:45:29,089 - INFO - [raw sql] ()
+2025-06-16 18:45:29,089 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:45:29,089 - INFO - [raw sql] ()
+2025-06-16 18:45:29,089 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:45:29,089 - INFO - [raw sql] ()
+2025-06-16 18:45:29,090 - INFO - COMMIT
+2025-06-16 18:46:54,438 - INFO - BEGIN (implicit)
+2025-06-16 18:46:54,438 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:46:54,438 - INFO - [raw sql] ()
+2025-06-16 18:46:54,439 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:46:54,439 - INFO - [raw sql] ()
+2025-06-16 18:46:54,439 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:46:54,439 - INFO - [raw sql] ()
+2025-06-16 18:46:54,439 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:46:54,440 - INFO - [raw sql] ()
+2025-06-16 18:46:54,440 - INFO - COMMIT
+2025-06-16 18:47:03,754 - INFO - BEGIN (implicit)
+2025-06-16 18:47:03,754 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:47:03,754 - INFO - [raw sql] ()
+2025-06-16 18:47:03,754 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:47:03,754 - INFO - [raw sql] ()
+2025-06-16 18:47:03,755 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:47:03,755 - INFO - [raw sql] ()
+2025-06-16 18:47:03,755 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:47:03,755 - INFO - [raw sql] ()
+2025-06-16 18:47:03,755 - INFO - COMMIT
+2025-06-16 18:47:16,389 - INFO - BEGIN (implicit)
+2025-06-16 18:47:16,390 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:47:16,390 - INFO - [raw sql] ()
+2025-06-16 18:47:16,390 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:47:16,390 - INFO - [raw sql] ()
+2025-06-16 18:47:16,391 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:47:16,391 - INFO - [raw sql] ()
+2025-06-16 18:47:16,391 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:47:16,391 - INFO - [raw sql] ()
+2025-06-16 18:47:16,391 - INFO - COMMIT
+2025-06-16 18:47:24,272 - INFO - BEGIN (implicit)
+2025-06-16 18:47:24,272 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:47:24,272 - INFO - [raw sql] ()
+2025-06-16 18:47:24,273 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:47:24,273 - INFO - [raw sql] ()
+2025-06-16 18:47:24,273 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:47:24,273 - INFO - [raw sql] ()
+2025-06-16 18:47:24,273 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:47:24,274 - INFO - [raw sql] ()
+2025-06-16 18:47:24,274 - INFO - COMMIT
+2025-06-16 18:47:31,306 - INFO - BEGIN (implicit)
+2025-06-16 18:47:31,307 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:47:31,307 - INFO - [raw sql] ()
+2025-06-16 18:47:31,307 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:47:31,307 - INFO - [raw sql] ()
+2025-06-16 18:47:31,307 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:47:31,308 - INFO - [raw sql] ()
+2025-06-16 18:47:31,308 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:47:31,308 - INFO - [raw sql] ()
+2025-06-16 18:47:31,308 - INFO - COMMIT
+2025-06-16 18:47:41,642 - INFO - BEGIN (implicit)
+2025-06-16 18:47:41,642 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:47:41,642 - INFO - [raw sql] ()
+2025-06-16 18:47:41,643 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:47:41,643 - INFO - [raw sql] ()
+2025-06-16 18:47:41,643 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:47:41,643 - INFO - [raw sql] ()
+2025-06-16 18:47:41,643 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:47:41,643 - INFO - [raw sql] ()
+2025-06-16 18:47:41,644 - INFO - COMMIT
+2025-06-16 18:47:52,376 - INFO - BEGIN (implicit)
+2025-06-16 18:47:52,376 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:47:52,376 - INFO - [raw sql] ()
+2025-06-16 18:47:52,376 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:47:52,376 - INFO - [raw sql] ()
+2025-06-16 18:47:52,377 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:47:52,377 - INFO - [raw sql] ()
+2025-06-16 18:47:52,377 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:47:52,377 - INFO - [raw sql] ()
+2025-06-16 18:47:52,377 - INFO - COMMIT
+2025-06-16 18:48:15,697 - INFO - BEGIN (implicit)
+2025-06-16 18:48:15,697 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:48:15,697 - INFO - [raw sql] ()
+2025-06-16 18:48:15,698 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:48:15,698 - INFO - [raw sql] ()
+2025-06-16 18:48:15,698 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:48:15,698 - INFO - [raw sql] ()
+2025-06-16 18:48:15,698 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:48:15,699 - INFO - [raw sql] ()
+2025-06-16 18:48:15,699 - INFO - COMMIT
+2025-06-16 18:48:31,333 - INFO - BEGIN (implicit)
+2025-06-16 18:48:31,333 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:48:31,333 - INFO - [raw sql] ()
+2025-06-16 18:48:31,333 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:48:31,333 - INFO - [raw sql] ()
+2025-06-16 18:48:31,334 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:48:31,334 - INFO - [raw sql] ()
+2025-06-16 18:48:31,334 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:48:31,334 - INFO - [raw sql] ()
+2025-06-16 18:48:31,335 - INFO - COMMIT
+2025-06-16 18:48:40,667 - INFO - BEGIN (implicit)
+2025-06-16 18:48:40,667 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:48:40,667 - INFO - [raw sql] ()
+2025-06-16 18:48:40,667 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:48:40,668 - INFO - [raw sql] ()
+2025-06-16 18:48:40,668 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:48:40,668 - INFO - [raw sql] ()
+2025-06-16 18:48:40,668 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:48:40,668 - INFO - [raw sql] ()
+2025-06-16 18:48:40,668 - INFO - COMMIT
+2025-06-16 18:48:48,288 - INFO - BEGIN (implicit)
+2025-06-16 18:48:48,289 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:48:48,289 - INFO - [raw sql] ()
+2025-06-16 18:48:48,289 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:48:48,289 - INFO - [raw sql] ()
+2025-06-16 18:48:48,289 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:48:48,290 - INFO - [raw sql] ()
+2025-06-16 18:48:48,290 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:48:48,290 - INFO - [raw sql] ()
+2025-06-16 18:48:48,290 - INFO - COMMIT
+2025-06-16 18:48:55,646 - INFO - BEGIN (implicit)
+2025-06-16 18:48:55,646 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:48:55,646 - INFO - [raw sql] ()
+2025-06-16 18:48:55,647 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:48:55,647 - INFO - [raw sql] ()
+2025-06-16 18:48:55,647 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:48:55,647 - INFO - [raw sql] ()
+2025-06-16 18:48:55,647 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:48:55,647 - INFO - [raw sql] ()
+2025-06-16 18:48:55,648 - INFO - COMMIT
+2025-06-16 18:49:17,848 - INFO - BEGIN (implicit)
+2025-06-16 18:49:17,848 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:49:17,849 - INFO - [raw sql] ()
+2025-06-16 18:49:17,849 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:49:17,849 - INFO - [raw sql] ()
+2025-06-16 18:49:17,849 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:49:17,849 - INFO - [raw sql] ()
+2025-06-16 18:49:17,850 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:49:17,850 - INFO - [raw sql] ()
+2025-06-16 18:49:17,850 - INFO - COMMIT
+2025-06-16 18:49:27,582 - INFO - BEGIN (implicit)
+2025-06-16 18:49:27,582 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:49:27,583 - INFO - [raw sql] ()
+2025-06-16 18:49:27,583 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:49:27,583 - INFO - [raw sql] ()
+2025-06-16 18:49:27,583 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:49:27,583 - INFO - [raw sql] ()
+2025-06-16 18:49:27,584 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:49:27,584 - INFO - [raw sql] ()
+2025-06-16 18:49:27,584 - INFO - COMMIT
+2025-06-16 18:49:57,100 - INFO - BEGIN (implicit)
+2025-06-16 18:49:57,100 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:49:57,100 - INFO - [raw sql] ()
+2025-06-16 18:49:57,101 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:49:57,101 - INFO - [raw sql] ()
+2025-06-16 18:49:57,101 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:49:57,101 - INFO - [raw sql] ()
+2025-06-16 18:49:57,101 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:49:57,101 - INFO - [raw sql] ()
+2025-06-16 18:49:57,101 - INFO - COMMIT
+2025-06-16 18:50:06,678 - INFO - BEGIN (implicit)
+2025-06-16 18:50:06,679 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:50:06,679 - INFO - [raw sql] ()
+2025-06-16 18:50:06,679 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:50:06,679 - INFO - [raw sql] ()
+2025-06-16 18:50:06,679 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:50:06,680 - INFO - [raw sql] ()
+2025-06-16 18:50:06,680 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:50:06,680 - INFO - [raw sql] ()
+2025-06-16 18:50:06,680 - INFO - COMMIT
+2025-06-16 18:50:20,321 - INFO - BEGIN (implicit)
+2025-06-16 18:50:20,321 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:50:20,321 - INFO - [raw sql] ()
+2025-06-16 18:50:20,321 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:50:20,321 - INFO - [raw sql] ()
+2025-06-16 18:50:20,322 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:50:20,322 - INFO - [raw sql] ()
+2025-06-16 18:50:20,322 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:50:20,322 - INFO - [raw sql] ()
+2025-06-16 18:50:20,322 - INFO - COMMIT
+2025-06-16 18:50:25,627 - INFO - BEGIN (implicit)
+2025-06-16 18:50:25,633 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.processing_status = ? OR evaluations.processing_status = ?
+2025-06-16 18:50:25,633 - INFO - [generated in 0.00021s] ('pending', 'processing')
+2025-06-16 18:50:25,634 - INFO - ROLLBACK
+2025-06-16 18:50:42,295 - INFO - BEGIN (implicit)
+2025-06-16 18:50:42,295 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:50:42,295 - INFO - [raw sql] ()
+2025-06-16 18:50:42,296 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:50:42,296 - INFO - [raw sql] ()
+2025-06-16 18:50:42,296 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:50:42,296 - INFO - [raw sql] ()
+2025-06-16 18:50:42,297 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:50:42,297 - INFO - [raw sql] ()
+2025-06-16 18:50:42,297 - INFO - COMMIT
+2025-06-16 18:53:48,278 - INFO - BEGIN (implicit)
+2025-06-16 18:53:48,284 - INFO - SELECT DISTINCT evaluations.prompt_version 
+FROM evaluations
+2025-06-16 18:53:48,284 - INFO - [generated in 0.00015s] ()
+2025-06-16 18:53:48,286 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations 
+WHERE evaluations.prompt_version = ?
+2025-06-16 18:53:48,286 - INFO - [generated in 0.00011s] ('v1',)
+2025-06-16 18:53:48,288 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.prompt_version = ?
+ LIMIT ? OFFSET ?
+2025-06-16 18:53:48,288 - INFO - [generated in 0.00010s] ('v1', 1000, 0)
+2025-06-16 18:53:48,289 - INFO - ROLLBACK
+2025-06-16 18:53:54,229 - INFO - BEGIN (implicit)
+2025-06-16 18:53:54,232 - INFO - SELECT evaluations.prompt_version, count(evaluations.id) AS total, count(evaluations.id) FILTER (WHERE evaluations.processing_status = ?) AS successful, avg(evaluations.accuracy) FILTER (WHERE evaluations.processing_status = ?) AS avg_accuracy, min(evaluations.created_at) AS created_at, max(evaluations.created_at) AS latest_evaluation 
+FROM evaluations GROUP BY evaluations.prompt_version
+2025-06-16 18:53:54,232 - INFO - [generated in 0.00022s] ('success', 'success')
+2025-06-16 18:53:54,243 - INFO - ROLLBACK
+2025-06-16 18:54:00,882 - INFO - BEGIN (implicit)
+2025-06-16 18:54:00,883 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.id = ?
+2025-06-16 18:54:00,883 - INFO - [generated in 0.00013s] (1,)
+2025-06-16 18:54:00,883 - INFO - ROLLBACK
+2025-06-16 18:58:42,217 - INFO - BEGIN (implicit)
+2025-06-16 18:58:42,217 - INFO - PRAGMA main.table_info("images")
+2025-06-16 18:58:42,217 - INFO - [raw sql] ()
+2025-06-16 18:58:42,218 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 18:58:42,218 - INFO - [raw sql] ()
+2025-06-16 18:58:42,218 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 18:58:42,218 - INFO - [raw sql] ()
+2025-06-16 18:58:42,218 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 18:58:42,218 - INFO - [raw sql] ()
+2025-06-16 18:58:42,219 - INFO - COMMIT
+2025-06-16 19:10:44,310 - INFO - BEGIN (implicit)
+2025-06-16 19:10:44,310 - INFO - PRAGMA main.table_info("images")
+2025-06-16 19:10:44,310 - INFO - [raw sql] ()
+2025-06-16 19:10:44,311 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 19:10:44,311 - INFO - [raw sql] ()
+2025-06-16 19:10:44,311 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 19:10:44,311 - INFO - [raw sql] ()
+2025-06-16 19:10:44,311 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 19:10:44,311 - INFO - [raw sql] ()
+2025-06-16 19:10:44,312 - INFO - COMMIT
+2025-06-16 19:25:45,022 - INFO - BEGIN (implicit)
+2025-06-16 19:25:45,023 - INFO - PRAGMA main.table_info("images")
+2025-06-16 19:25:45,023 - INFO - [raw sql] ()
+2025-06-16 19:25:45,023 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 19:25:45,023 - INFO - [raw sql] ()
+2025-06-16 19:25:45,024 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 19:25:45,024 - INFO - [raw sql] ()
+2025-06-16 19:25:45,024 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 19:25:45,025 - INFO - [raw sql] ()
+2025-06-16 19:25:45,026 - INFO - COMMIT
+2025-06-16 19:26:06,056 - INFO - BEGIN (implicit)
+2025-06-16 19:26:06,057 - INFO - PRAGMA main.table_info("images")
+2025-06-16 19:26:06,057 - INFO - [raw sql] ()
+2025-06-16 19:26:06,058 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 19:26:06,058 - INFO - [raw sql] ()
+2025-06-16 19:26:06,058 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 19:26:06,058 - INFO - [raw sql] ()
+2025-06-16 19:26:06,058 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 19:26:06,058 - INFO - [raw sql] ()
+2025-06-16 19:26:06,059 - INFO - COMMIT
+2025-06-16 19:26:25,395 - INFO - BEGIN (implicit)
+2025-06-16 19:26:25,396 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 19:26:25,397 - INFO - [generated in 0.00027s] ()
+2025-06-16 19:26:25,399 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 19:26:25,399 - INFO - [generated in 0.00021s] (100, 0)
+2025-06-16 19:26:25,404 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 19:26:25,404 - INFO - [generated in 0.00030s] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 19:26:25,405 - INFO - ROLLBACK
+2025-06-16 19:26:30,152 - INFO - BEGIN (implicit)
+2025-06-16 19:26:30,153 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 19:26:30,153 - INFO - [cached since 4.757s ago] ()
+2025-06-16 19:26:30,154 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 19:26:30,154 - INFO - [cached since 4.756s ago] (100, 0)
+2025-06-16 19:26:30,157 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 19:26:30,157 - INFO - [cached since 4.754s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 19:26:30,158 - INFO - ROLLBACK
+2025-06-16 19:26:54,112 - INFO - BEGIN (implicit)
+2025-06-16 19:26:54,114 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 19:26:54,115 - INFO - [cached since 28.72s ago] ()
+2025-06-16 19:26:54,124 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 19:26:54,124 - INFO - [cached since 28.73s ago] (100, 0)
+2025-06-16 19:26:54,137 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 19:26:54,137 - INFO - [cached since 28.74s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 19:26:54,141 - INFO - ROLLBACK
+2025-06-16 19:26:58,881 - INFO - BEGIN (implicit)
+2025-06-16 19:26:58,881 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 19:26:58,881 - INFO - [cached since 33.49s ago] ()
+2025-06-16 19:26:58,881 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 19:26:58,882 - INFO - [cached since 33.49s ago] (100, 0)
+2025-06-16 19:26:58,882 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 19:26:58,882 - INFO - [cached since 33.48s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 19:26:58,883 - INFO - ROLLBACK
+2025-06-16 19:27:05,354 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,355 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,355 - INFO - [generated in 0.00014s] ('1',)
+2025-06-16 19:27:05,356 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,356 - INFO - [generated in 0.00010s] (1,)
+2025-06-16 19:27:05,358 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,358 - INFO - [generated in 0.00013s] ('2025-06-16 13:57:05.357070', 1)
+2025-06-16 19:27:05,358 - INFO - COMMIT
+2025-06-16 19:27:05,360 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,361 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,361 - INFO - [generated in 0.00009s] (1,)
+2025-06-16 19:27:05,362 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,362 - INFO - [cached since 0.006883s ago] ('2',)
+2025-06-16 19:27:05,362 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,362 - INFO - [cached since 0.00633s ago] (2,)
+2025-06-16 19:27:05,363 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,363 - INFO - [cached since 0.005178s ago] ('2025-06-16 13:57:05.363116', 2)
+2025-06-16 19:27:05,363 - INFO - COMMIT
+2025-06-16 19:27:05,364 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,364 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,364 - INFO - [cached since 0.003519s ago] (2,)
+2025-06-16 19:27:05,365 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,365 - INFO - [cached since 0.01s ago] ('3',)
+2025-06-16 19:27:05,365 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,365 - INFO - [cached since 0.009529s ago] (3,)
+2025-06-16 19:27:05,366 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,366 - INFO - [cached since 0.008251s ago] ('2025-06-16 13:57:05.366246', 3)
+2025-06-16 19:27:05,366 - INFO - COMMIT
+2025-06-16 19:27:05,367 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,367 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,367 - INFO - [cached since 0.006588s ago] (3,)
+2025-06-16 19:27:05,368 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,368 - INFO - [cached since 0.01305s ago] ('4',)
+2025-06-16 19:27:05,368 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,368 - INFO - [cached since 0.0124s ago] (4,)
+2025-06-16 19:27:05,369 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,369 - INFO - [cached since 0.01111s ago] ('2025-06-16 13:57:05.369119', 4)
+2025-06-16 19:27:05,369 - INFO - COMMIT
+2025-06-16 19:27:05,370 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,370 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,371 - INFO - [cached since 0.009809s ago] (4,)
+2025-06-16 19:27:05,371 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,371 - INFO - [cached since 0.01635s ago] ('5',)
+2025-06-16 19:27:05,372 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,372 - INFO - [cached since 0.01574s ago] (5,)
+2025-06-16 19:27:05,372 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,372 - INFO - [cached since 0.01452s ago] ('2025-06-16 13:57:05.372489', 5)
+2025-06-16 19:27:05,373 - INFO - COMMIT
+2025-06-16 19:27:05,374 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,374 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,374 - INFO - [cached since 0.01316s ago] (5,)
+2025-06-16 19:27:05,375 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,375 - INFO - [cached since 0.01973s ago] ('6',)
+2025-06-16 19:27:05,375 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,375 - INFO - [cached since 0.01916s ago] (6,)
+2025-06-16 19:27:05,376 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,376 - INFO - [cached since 0.01871s ago] ('2025-06-16 13:57:05.376663', 6)
+2025-06-16 19:27:05,377 - INFO - COMMIT
+2025-06-16 19:27:05,378 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,378 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,378 - INFO - [cached since 0.01746s ago] (6,)
+2025-06-16 19:27:05,379 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,379 - INFO - [cached since 0.02402s ago] ('7',)
+2025-06-16 19:27:05,380 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,380 - INFO - [cached since 0.02365s ago] (7,)
+2025-06-16 19:27:05,380 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,380 - INFO - [cached since 0.02272s ago] ('2025-06-16 13:57:05.380670', 7)
+2025-06-16 19:27:05,381 - INFO - COMMIT
+2025-06-16 19:27:05,382 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,382 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,383 - INFO - [cached since 0.0219s ago] (7,)
+2025-06-16 19:27:05,383 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,383 - INFO - [cached since 0.02839s ago] ('8',)
+2025-06-16 19:27:05,384 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,384 - INFO - [cached since 0.02772s ago] (8,)
+2025-06-16 19:27:05,384 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,384 - INFO - [cached since 0.02658s ago] ('2025-06-16 13:57:05.384536', 8)
+2025-06-16 19:27:05,385 - INFO - COMMIT
+2025-06-16 19:27:05,386 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,386 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,386 - INFO - [cached since 0.02526s ago] (8,)
+2025-06-16 19:27:05,387 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,387 - INFO - [cached since 0.03181s ago] ('9',)
+2025-06-16 19:27:05,387 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,387 - INFO - [cached since 0.03143s ago] (9,)
+2025-06-16 19:27:05,388 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,388 - INFO - [cached since 0.03064s ago] ('2025-06-16 13:57:05.388503', 9)
+2025-06-16 19:27:05,389 - INFO - COMMIT
+2025-06-16 19:27:05,390 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,390 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,390 - INFO - [cached since 0.02903s ago] (9,)
+2025-06-16 19:27:05,390 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-16 19:27:05,390 - INFO - [cached since 0.03551s ago] ('10',)
+2025-06-16 19:27:05,391 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,391 - INFO - [cached since 0.03487s ago] (10,)
+2025-06-16 19:27:05,391 - INFO - UPDATE images SET updated_at=? WHERE images.id = ?
+2025-06-16 19:27:05,391 - INFO - [cached since 0.03377s ago] ('2025-06-16 13:57:05.391766', 10)
+2025-06-16 19:27:05,392 - INFO - COMMIT
+2025-06-16 19:27:05,393 - INFO - BEGIN (implicit)
+2025-06-16 19:27:05,393 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.id = ?
+2025-06-16 19:27:05,393 - INFO - [cached since 0.03212s ago] (10,)
+2025-06-16 19:27:05,393 - INFO - ROLLBACK
+2025-06-16 19:27:46,635 - INFO - BEGIN (implicit)
+2025-06-16 19:27:46,636 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 19:27:46,636 - INFO - [cached since 81.24s ago] ()
+2025-06-16 19:27:46,638 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 19:27:46,638 - INFO - [cached since 81.24s ago] (100, 0)
+2025-06-16 19:27:46,639 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 19:27:46,639 - INFO - [cached since 81.24s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 19:27:46,639 - INFO - ROLLBACK
+2025-06-16 19:39:31,286 - INFO - BEGIN (implicit)
+2025-06-16 19:39:31,288 - INFO - PRAGMA main.table_info("images")
+2025-06-16 19:39:31,288 - INFO - [raw sql] ()
+2025-06-16 19:39:31,288 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 19:39:31,288 - INFO - [raw sql] ()
+2025-06-16 19:39:31,289 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 19:39:31,289 - INFO - [raw sql] ()
+2025-06-16 19:39:31,289 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 19:39:31,289 - INFO - [raw sql] ()
+2025-06-16 19:39:31,289 - INFO - COMMIT
+2025-06-16 19:45:10,114 - INFO - BEGIN (implicit)
+2025-06-16 19:45:10,115 - INFO - PRAGMA main.table_info("images")
+2025-06-16 19:45:10,115 - INFO - [raw sql] ()
+2025-06-16 19:45:10,116 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 19:45:10,116 - INFO - [raw sql] ()
+2025-06-16 19:45:10,117 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 19:45:10,117 - INFO - [raw sql] ()
+2025-06-16 19:45:10,118 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 19:45:10,118 - INFO - [raw sql] ()
+2025-06-16 19:45:10,118 - INFO - COMMIT
