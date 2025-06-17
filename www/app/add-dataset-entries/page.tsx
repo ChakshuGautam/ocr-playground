@@ -31,6 +31,11 @@ const entries = [
 
 export default function AddDatasetEntriesPage() {
   const [activeTab, setActiveTab] = useState("manual")
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("draft");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard" },
@@ -58,14 +63,14 @@ export default function AddDatasetEntriesPage() {
                   <Label htmlFor="dataset-name" className="text-base font-medium">
                     Dataset Name
                   </Label>
-                  <Input id="dataset-name" placeholder="Enter dataset name" className="mt-2" />
+                  <Input id="dataset-name" placeholder="Enter dataset name" className="mt-2" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
 
                 <div>
                   <Label htmlFor="description" className="text-base font-medium">
                     Description
                   </Label>
-                  <Textarea id="description" placeholder="Enter dataset description" className="mt-2" rows={3} />
+                  <Textarea id="description" placeholder="Enter dataset description" className="mt-2" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
 
                 <div>
@@ -75,7 +80,33 @@ export default function AddDatasetEntriesPage() {
                   <Input id="entries" placeholder="Enter number of entries" type="number" className="mt-2" />
                 </div>
 
-                <Button className="w-full bg-blue-100 text-blue-700 hover:bg-blue-200">Add Dataset</Button>
+                <Button className="w-full bg-blue-100 text-blue-700 hover:bg-blue-200" onClick={async () => {
+                  setLoading(true);
+                  setError(null);
+                  try {
+                    const response = await fetch("/api/datasets", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ name, description, status }),
+                    });
+                    if (!response.ok) {
+                      const errorData = await response.json();
+                      setError(errorData.detail || "Failed to create dataset");
+                      setLoading(false);
+                      return;
+                    }
+                    await response.json();
+                    alert("Dataset created!");
+                  } catch (err) {
+                    setError("An error occurred");
+                  } finally {
+                    setLoading(false);
+                  }
+                }} disabled={loading}>
+                  {loading ? "Adding..." : "Add Dataset"}
+                </Button>
               </div>
             </div>
           </div>
@@ -165,6 +196,7 @@ export default function AddDatasetEntriesPage() {
             </Tabs>
           </div>
         </div>
+        {error && <div className="text-red-500">{error}</div>}
       </main>
     </div>
   )

@@ -1194,3 +1194,69 @@ WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 2025-06-16 22:59:49,119 - INFO - [cached since 666.5s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 2025-06-16 22:59:49,120 - INFO - ROLLBACK
 2025-06-16 22:59:49,120 - INFO - ROLLBACK
+2025-06-17 23:23:28,520 - INFO - BEGIN (implicit)
+2025-06-17 23:23:28,523 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-17 23:23:28,524 - INFO - [raw sql] ()
+2025-06-17 23:23:28,532 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-17 23:23:28,533 - INFO - [raw sql] ()
+2025-06-17 23:23:28,539 - INFO - PRAGMA main.table_info("datasets")
+2025-06-17 23:23:28,541 - INFO - [raw sql] ()
+2025-06-17 23:23:28,543 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-17 23:23:28,544 - INFO - [raw sql] ()
+2025-06-17 23:23:28,547 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-17 23:23:28,549 - INFO - [raw sql] ()
+2025-06-17 23:23:28,552 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-17 23:23:28,553 - INFO - [raw sql] ()
+2025-06-17 23:23:28,557 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-17 23:23:28,560 - INFO - [raw sql] ()
+2025-06-17 23:23:28,562 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-17 23:23:28,562 - INFO - [raw sql] ()
+2025-06-17 23:23:28,564 - INFO - PRAGMA main.table_info("images")
+2025-06-17 23:23:28,565 - INFO - [raw sql] ()
+2025-06-17 23:23:28,568 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-17 23:23:28,570 - INFO - [raw sql] ()
+2025-06-17 23:23:28,575 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-17 23:23:28,576 - INFO - [raw sql] ()
+2025-06-17 23:23:28,580 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-17 23:23:28,582 - INFO - [raw sql] ()
+2025-06-17 23:23:28,588 - INFO - COMMIT
+2025-06-18 02:46:12,987 - INFO - BEGIN (implicit)
+2025-06-18 02:46:13,012 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-18 02:46:13,014 - INFO - [generated in 0.00163s] ('Dummy dataset', 'dummy', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-17 21:16:13.012247', '2025-06-17 21:16:13.012247', None)
+2025-06-18 02:46:13,042 - INFO - COMMIT
+2025-06-18 02:46:13,050 - INFO - BEGIN (implicit)
+2025-06-18 02:46:13,065 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 02:46:13,065 - INFO - [generated in 0.00093s] (1,)
+2025-06-18 02:46:13,097 - INFO - ROLLBACK
+2025-06-18 02:50:33,413 - INFO - BEGIN (implicit)
+2025-06-18 02:50:33,420 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-18 02:50:33,422 - INFO - [cached since 260.4s ago] ('Dummy dataset 2', 'dummy', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-17 21:20:33.420187', '2025-06-17 21:20:33.420187', None)
+2025-06-18 02:50:33,428 - INFO - COMMIT
+2025-06-18 02:50:33,438 - INFO - BEGIN (implicit)
+2025-06-18 02:50:33,441 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 02:50:33,442 - INFO - [cached since 260.4s ago] (2,)
+2025-06-18 02:50:33,447 - INFO - ROLLBACK
+2025-06-18 02:55:41,939 - INFO - BEGIN (implicit)
+2025-06-18 02:55:41,948 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-18 02:55:41,949 - INFO - [cached since 568.9s ago] ('Dummy dataset 3', 'text', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-17 21:25:41.948255', '2025-06-17 21:25:41.948255', None)
+2025-06-18 02:55:41,956 - INFO - COMMIT
+2025-06-18 02:55:41,964 - INFO - BEGIN (implicit)
+2025-06-18 02:55:41,966 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 02:55:41,967 - INFO - [cached since 568.9s ago] (3,)
+2025-06-18 02:55:41,971 - INFO - ROLLBACK
+2025-06-18 02:57:47,879 - INFO - BEGIN (implicit)
+2025-06-18 02:57:47,881 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-18 02:57:47,882 - INFO - [cached since 694.9s ago] ('Dummy dataset 4', 'text-description', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-17 21:27:47.881911', '2025-06-17 21:27:47.881911', None)
+2025-06-18 02:57:47,886 - INFO - COMMIT
+2025-06-18 02:57:47,890 - INFO - BEGIN (implicit)
+2025-06-18 02:57:47,892 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 02:57:47,893 - INFO - [cached since 694.8s ago] (4,)
+2025-06-18 02:57:47,895 - INFO - ROLLBACK

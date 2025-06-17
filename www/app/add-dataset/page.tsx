@@ -10,6 +10,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function AddDatasetPage() {
   const [activeTab, setActiveTab] = useState("manual")
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [status, setStatus] = useState("draft")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard" },
@@ -18,6 +23,39 @@ export default function AddDatasetPage() {
     { name: "Reports", href: "/reports" },
     { name: "Settings", href: "/settings" },
   ]
+
+  const handleAddDataset = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/datasets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description, status }),
+      });
+
+      if (!response.ok) {
+        console.log("Error : ", response)
+        const errorData = await response.json();
+        setError(errorData.detail || "Failed to create dataset");
+        setLoading(false);
+        return;
+      }
+
+      // Optionally, handle the successful creation (e.g., redirect or show a message)
+      const data = await response.json();
+      // e.g., router.push("/dashboard");
+      alert("Dataset created!");
+    } catch (err) {
+      console.log("Error occured : ", err)
+      setError("An error occurred");
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -45,14 +83,29 @@ export default function AddDatasetPage() {
                   <Label htmlFor="dataset-name" className="text-base font-medium">
                     Dataset Name
                   </Label>
-                  <Input id="dataset-name" placeholder="Enter dataset name" className="mt-2" />
+                  <Input
+                    id="dataset-name"
+                    placeholder="Enter dataset name"
+                    className="mt-2"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="description" className="text-base font-medium">
                     Description
                   </Label>
-                  <Textarea id="description" placeholder="Enter dataset description" className="mt-2" rows={3} />
+                  <Textarea
+                    id="description"
+                    placeholder="Enter dataset description"
+                    className="mt-2"
+                    rows={3}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
                 </div>
 
                 <div>
@@ -62,9 +115,28 @@ export default function AddDatasetPage() {
                   <Input id="entries" placeholder="Enter number of entries" type="number" className="mt-2" />
                 </div>
 
+                <div>
+                  <Label htmlFor="status" className="text-base font-medium">
+                    Status
+                  </Label>
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="mt-2 p-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                  </select>
+                </div>
+
                 <div className="flex justify-end">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                    Add Dataset
+                  <Button
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700"
+                    onClick={handleAddDataset}
+                    disabled={loading}
+                  >
+                    {loading ? "Adding..." : "Add Dataset"}
                   </Button>
                 </div>
               </div>
@@ -106,6 +178,8 @@ export default function AddDatasetPage() {
             </div>
           </TabsContent>
         </Tabs>
+
+        {error && <div className="text-red-500">{error}</div>}
       </main>
     </div>
   )
