@@ -875,3 +875,322 @@ WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 2025-06-16 19:45:10,118 - INFO - PRAGMA main.table_info("prompt_templates")
 2025-06-16 19:45:10,118 - INFO - [raw sql] ()
 2025-06-16 19:45:10,118 - INFO - COMMIT
+2025-06-16 22:41:06,290 - INFO - BEGIN (implicit)
+2025-06-16 22:41:06,292 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-16 22:41:06,292 - INFO - [raw sql] ()
+2025-06-16 22:41:06,292 - INFO - PRAGMA temp.table_info("evaluation_run_datasets")
+2025-06-16 22:41:06,292 - INFO - [raw sql] ()
+2025-06-16 22:41:06,292 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-16 22:41:06,292 - INFO - [raw sql] ()
+2025-06-16 22:41:06,293 - INFO - PRAGMA temp.table_info("dataset_images")
+2025-06-16 22:41:06,293 - INFO - [raw sql] ()
+2025-06-16 22:41:06,293 - INFO - PRAGMA main.table_info("datasets")
+2025-06-16 22:41:06,293 - INFO - [raw sql] ()
+2025-06-16 22:41:06,293 - INFO - PRAGMA temp.table_info("datasets")
+2025-06-16 22:41:06,293 - INFO - [raw sql] ()
+2025-06-16 22:41:06,293 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-16 22:41:06,294 - INFO - [raw sql] ()
+2025-06-16 22:41:06,294 - INFO - PRAGMA temp.table_info("prompt_families")
+2025-06-16 22:41:06,294 - INFO - [raw sql] ()
+2025-06-16 22:41:06,294 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-16 22:41:06,294 - INFO - [raw sql] ()
+2025-06-16 22:41:06,294 - INFO - PRAGMA temp.table_info("prompt_versions")
+2025-06-16 22:41:06,294 - INFO - [raw sql] ()
+2025-06-16 22:41:06,295 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-16 22:41:06,295 - INFO - [raw sql] ()
+2025-06-16 22:41:06,295 - INFO - PRAGMA temp.table_info("evaluation_runs")
+2025-06-16 22:41:06,295 - INFO - [raw sql] ()
+2025-06-16 22:41:06,295 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-16 22:41:06,295 - INFO - [raw sql] ()
+2025-06-16 22:41:06,295 - INFO - PRAGMA temp.table_info("evaluation_run_prompts")
+2025-06-16 22:41:06,295 - INFO - [raw sql] ()
+2025-06-16 22:41:06,296 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-16 22:41:06,296 - INFO - [raw sql] ()
+2025-06-16 22:41:06,296 - INFO - PRAGMA temp.table_info("api_keys")
+2025-06-16 22:41:06,296 - INFO - [raw sql] ()
+2025-06-16 22:41:06,296 - INFO - PRAGMA main.table_info("images")
+2025-06-16 22:41:06,296 - INFO - [raw sql] ()
+2025-06-16 22:41:06,296 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-16 22:41:06,296 - INFO - [raw sql] ()
+2025-06-16 22:41:06,297 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-16 22:41:06,297 - INFO - [raw sql] ()
+2025-06-16 22:41:06,297 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-16 22:41:06,297 - INFO - [raw sql] ()
+2025-06-16 22:41:06,297 - INFO - 
+CREATE TABLE datasets (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	description TEXT, 
+	status VARCHAR, 
+	image_count INTEGER, 
+	created_at DATETIME, 
+	updated_at DATETIME, 
+	last_used DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+2025-06-16 22:41:06,297 - INFO - [no key 0.00006s] ()
+2025-06-16 22:41:06,299 - INFO - CREATE INDEX ix_datasets_id ON datasets (id)
+2025-06-16 22:41:06,299 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,300 - INFO - CREATE UNIQUE INDEX ix_datasets_name ON datasets (name)
+2025-06-16 22:41:06,300 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,300 - INFO - 
+CREATE TABLE prompt_families (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	description TEXT, 
+	tags JSON, 
+	production_version VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+2025-06-16 22:41:06,300 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,301 - INFO - CREATE UNIQUE INDEX ix_prompt_families_name ON prompt_families (name)
+2025-06-16 22:41:06,301 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,302 - INFO - CREATE INDEX ix_prompt_families_id ON prompt_families (id)
+2025-06-16 22:41:06,302 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,302 - INFO - 
+CREATE TABLE evaluation_runs (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	description TEXT, 
+	hypothesis TEXT, 
+	status VARCHAR, 
+	progress_percentage INTEGER, 
+	current_step VARCHAR, 
+	created_at DATETIME, 
+	updated_at DATETIME, 
+	completed_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+2025-06-16 22:41:06,302 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,303 - INFO - CREATE INDEX ix_evaluation_runs_id ON evaluation_runs (id)
+2025-06-16 22:41:06,303 - INFO - [no key 0.00004s] ()
+2025-06-16 22:41:06,303 - INFO - CREATE INDEX ix_evaluation_runs_name ON evaluation_runs (name)
+2025-06-16 22:41:06,303 - INFO - [no key 0.00004s] ()
+2025-06-16 22:41:06,304 - INFO - 
+CREATE TABLE api_keys (
+	id INTEGER NOT NULL, 
+	key_name VARCHAR, 
+	key_hash VARCHAR, 
+	key_preview VARCHAR, 
+	created_at DATETIME, 
+	last_used DATETIME, 
+	usage_count INTEGER, 
+	is_active BOOLEAN, 
+	PRIMARY KEY (id), 
+	UNIQUE (key_hash)
+)
+
+
+2025-06-16 22:41:06,304 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,304 - INFO - CREATE INDEX ix_api_keys_key_name ON api_keys (key_name)
+2025-06-16 22:41:06,304 - INFO - [no key 0.00004s] ()
+2025-06-16 22:41:06,305 - INFO - CREATE INDEX ix_api_keys_id ON api_keys (id)
+2025-06-16 22:41:06,305 - INFO - [no key 0.00004s] ()
+2025-06-16 22:41:06,305 - INFO - 
+CREATE TABLE evaluation_run_datasets (
+	evaluation_run_id INTEGER, 
+	dataset_id INTEGER, 
+	FOREIGN KEY(evaluation_run_id) REFERENCES evaluation_runs (id), 
+	FOREIGN KEY(dataset_id) REFERENCES datasets (id)
+)
+
+
+2025-06-16 22:41:06,305 - INFO - [no key 0.00007s] ()
+2025-06-16 22:41:06,306 - INFO - 
+CREATE TABLE dataset_images (
+	dataset_id INTEGER, 
+	image_id INTEGER, 
+	FOREIGN KEY(dataset_id) REFERENCES datasets (id), 
+	FOREIGN KEY(image_id) REFERENCES images (id)
+)
+
+
+2025-06-16 22:41:06,306 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,307 - INFO - 
+CREATE TABLE prompt_versions (
+	id INTEGER NOT NULL, 
+	family_id INTEGER, 
+	version VARCHAR, 
+	prompt_text TEXT, 
+	changelog_message TEXT, 
+	status VARCHAR, 
+	author VARCHAR, 
+	created_at DATETIME, 
+	last_evaluation_accuracy FLOAT, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(family_id) REFERENCES prompt_families (id)
+)
+
+
+2025-06-16 22:41:06,307 - INFO - [no key 0.00005s] ()
+2025-06-16 22:41:06,307 - INFO - CREATE INDEX ix_prompt_versions_version ON prompt_versions (version)
+2025-06-16 22:41:06,307 - INFO - [no key 0.00004s] ()
+2025-06-16 22:41:06,308 - INFO - CREATE INDEX ix_prompt_versions_id ON prompt_versions (id)
+2025-06-16 22:41:06,308 - INFO - [no key 0.00004s] ()
+2025-06-16 22:41:06,308 - INFO - 
+CREATE TABLE evaluation_run_prompts (
+	id INTEGER NOT NULL, 
+	evaluation_run_id INTEGER, 
+	prompt_version_id INTEGER, 
+	label VARCHAR, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(evaluation_run_id) REFERENCES evaluation_runs (id), 
+	FOREIGN KEY(prompt_version_id) REFERENCES prompt_versions (id)
+)
+
+
+2025-06-16 22:41:06,308 - INFO - [no key 0.00006s] ()
+2025-06-16 22:41:06,309 - INFO - CREATE INDEX ix_evaluation_run_prompts_id ON evaluation_run_prompts (id)
+2025-06-16 22:41:06,309 - INFO - [no key 0.00010s] ()
+2025-06-16 22:41:06,310 - INFO - COMMIT
+2025-06-16 22:48:42,580 - INFO - BEGIN (implicit)
+2025-06-16 22:48:42,581 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:48:42,581 - INFO - [generated in 0.00012s] ()
+2025-06-16 22:48:42,581 - INFO - BEGIN (implicit)
+2025-06-16 22:48:42,581 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:48:42,582 - INFO - [cached since 0.0003776s ago] ()
+2025-06-16 22:48:42,583 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:48:42,583 - INFO - [generated in 0.00011s] (100, 0)
+2025-06-16 22:48:42,584 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:48:42,584 - INFO - [cached since 0.000457s ago] (100, 0)
+2025-06-16 22:48:42,586 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:48:42,586 - INFO - [generated in 0.00034s] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:48:42,586 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:48:42,586 - INFO - [cached since 0.0009453s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:48:42,587 - INFO - ROLLBACK
+2025-06-16 22:48:42,587 - INFO - ROLLBACK
+2025-06-16 22:49:01,248 - INFO - BEGIN (implicit)
+2025-06-16 22:49:01,249 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:49:01,249 - INFO - [cached since 18.67s ago] ()
+2025-06-16 22:49:01,249 - INFO - BEGIN (implicit)
+2025-06-16 22:49:01,249 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:49:01,249 - INFO - [cached since 18.67s ago] ()
+2025-06-16 22:49:01,251 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:49:01,251 - INFO - [cached since 18.67s ago] (100, 0)
+2025-06-16 22:49:01,251 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:49:01,251 - INFO - [cached since 18.67s ago] (100, 0)
+2025-06-16 22:49:01,252 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:49:01,252 - INFO - [cached since 18.67s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:49:01,254 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:49:01,254 - INFO - [cached since 18.67s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:49:01,255 - INFO - ROLLBACK
+2025-06-16 22:49:01,255 - INFO - ROLLBACK
+2025-06-16 22:49:09,972 - INFO - BEGIN (implicit)
+2025-06-16 22:49:09,973 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:49:09,973 - INFO - [cached since 27.39s ago] ()
+2025-06-16 22:49:09,973 - INFO - BEGIN (implicit)
+2025-06-16 22:49:09,973 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations
+2025-06-16 22:49:09,974 - INFO - [generated in 0.00011s] ()
+2025-06-16 22:49:09,974 - INFO - BEGIN (implicit)
+2025-06-16 22:49:09,976 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.evaluation_run_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.latency_ms, evaluations.cost_estimate, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.processing_status = ? OR evaluations.processing_status = ?
+2025-06-16 22:49:09,976 - INFO - [generated in 0.00030s] ('pending', 'processing')
+2025-06-16 22:49:09,976 - INFO - BEGIN (implicit)
+2025-06-16 22:49:09,977 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-16 22:49:09,977 - INFO - [generated in 0.00009s] ()
+2025-06-16 22:49:09,977 - INFO - BEGIN (implicit)
+2025-06-16 22:49:09,978 - INFO - SELECT count(evaluations.id) AS count_1 
+FROM evaluations
+2025-06-16 22:49:09,978 - INFO - [cached since 0.004238s ago] ()
+2025-06-16 22:49:09,978 - INFO - BEGIN (implicit)
+2025-06-16 22:49:09,978 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:49:09,978 - INFO - [cached since 27.4s ago] ()
+2025-06-16 22:49:09,979 - INFO - ROLLBACK
+2025-06-16 22:49:09,979 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:49:09,980 - INFO - [cached since 27.4s ago] (100, 0)
+2025-06-16 22:49:09,983 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.evaluation_run_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.latency_ms, evaluations.cost_estimate, evaluations.word_evaluations_json 
+FROM evaluations
+ LIMIT ? OFFSET ?
+2025-06-16 22:49:09,984 - INFO - [generated in 0.00063s] (100, 0)
+2025-06-16 22:49:09,985 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.evaluation_run_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.latency_ms, evaluations.cost_estimate, evaluations.word_evaluations_json 
+FROM evaluations
+ LIMIT ? OFFSET ?
+2025-06-16 22:49:09,986 - INFO - [cached since 0.002461s ago] (100, 0)
+2025-06-16 22:49:09,986 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:49:09,986 - INFO - [cached since 27.4s ago] (100, 0)
+2025-06-16 22:49:09,989 - INFO - ROLLBACK
+2025-06-16 22:49:09,992 - INFO - ROLLBACK
+2025-06-16 22:49:09,993 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:49:09,993 - INFO - [cached since 27.41s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:49:09,994 - INFO - ROLLBACK
+2025-06-16 22:49:09,996 - INFO - ROLLBACK
+2025-06-16 22:49:09,998 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:49:09,998 - INFO - [cached since 27.41s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:49:10,001 - INFO - BEGIN (implicit)
+2025-06-16 22:49:10,001 - INFO - SELECT evaluations.id, evaluations.image_id, evaluations.evaluation_run_id, evaluations.prompt_version, evaluations.ocr_output, evaluations.accuracy, evaluations.correct_words, evaluations.total_words, evaluations.processing_status, evaluations.error_message, evaluations.created_at, evaluations.updated_at, evaluations.progress_percentage, evaluations.current_step, evaluations.estimated_completion, evaluations.latency_ms, evaluations.cost_estimate, evaluations.word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.processing_status = ? OR evaluations.processing_status = ?
+2025-06-16 22:49:10,001 - INFO - [cached since 0.0253s ago] ('pending', 'processing')
+2025-06-16 22:49:10,001 - INFO - ROLLBACK
+2025-06-16 22:49:10,001 - INFO - BEGIN (implicit)
+2025-06-16 22:49:10,002 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-16 22:49:10,002 - INFO - [cached since 0.0247s ago] ()
+2025-06-16 22:49:10,003 - INFO - ROLLBACK
+2025-06-16 22:49:10,008 - INFO - ROLLBACK
+2025-06-16 22:59:49,112 - INFO - BEGIN (implicit)
+2025-06-16 22:59:49,113 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:59:49,114 - INFO - [cached since 666.5s ago] ()
+2025-06-16 22:59:49,114 - INFO - BEGIN (implicit)
+2025-06-16 22:59:49,114 - INFO - SELECT count(images.id) AS count_1 
+FROM images
+2025-06-16 22:59:49,114 - INFO - [cached since 666.5s ago] ()
+2025-06-16 22:59:49,116 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:59:49,116 - INFO - [cached since 666.5s ago] (100, 0)
+2025-06-16 22:59:49,116 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images
+ LIMIT ? OFFSET ?
+2025-06-16 22:59:49,116 - INFO - [cached since 666.5s ago] (100, 0)
+2025-06-16 22:59:49,118 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:59:49,118 - INFO - [cached since 666.5s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:59:49,119 - INFO - SELECT evaluations.image_id AS evaluations_image_id, evaluations.id AS evaluations_id, evaluations.evaluation_run_id AS evaluations_evaluation_run_id, evaluations.prompt_version AS evaluations_prompt_version, evaluations.ocr_output AS evaluations_ocr_output, evaluations.accuracy AS evaluations_accuracy, evaluations.correct_words AS evaluations_correct_words, evaluations.total_words AS evaluations_total_words, evaluations.processing_status AS evaluations_processing_status, evaluations.error_message AS evaluations_error_message, evaluations.created_at AS evaluations_created_at, evaluations.updated_at AS evaluations_updated_at, evaluations.progress_percentage AS evaluations_progress_percentage, evaluations.current_step AS evaluations_current_step, evaluations.estimated_completion AS evaluations_estimated_completion, evaluations.latency_ms AS evaluations_latency_ms, evaluations.cost_estimate AS evaluations_cost_estimate, evaluations.word_evaluations_json AS evaluations_word_evaluations_json 
+FROM evaluations 
+WHERE evaluations.image_id IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-16 22:59:49,119 - INFO - [cached since 666.5s ago] (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+2025-06-16 22:59:49,120 - INFO - ROLLBACK
+2025-06-16 22:59:49,120 - INFO - ROLLBACK
