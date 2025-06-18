@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Plus, Upload } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import JSZip from "jszip"
 
 interface DatasetEntry {
@@ -22,6 +22,7 @@ interface DatasetEntry {
 
 export default function AddDatasetEntriesPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("manual")
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -41,6 +42,25 @@ export default function AddDatasetEntriesPage() {
     { name: "Reports", href: "/reports" },
     { name: "Settings", href: "/settings" },
   ]
+
+  // Set datasetId and datasetCreated if id is present in query string
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id && !isNaN(Number(id))) {
+      setDatasetId(Number(id));
+      setDatasetCreated(true);
+      // Fetch dataset details from new Next.js API route
+      fetch(`/api/datasets/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            setName(data.name || "");
+            setDescription(data.description || "");
+            setStatus(data.status || "draft");
+          }
+        });
+    }
+  }, [searchParams]);
 
   const handleCreateDataset = async () => {
     setLoading(true);

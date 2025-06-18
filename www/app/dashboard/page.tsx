@@ -117,6 +117,13 @@ export default function DashboardPage() {
                       <Button variant="link" className="text-blue-600">
                         View
                       </Button>
+                      <Button
+                        variant="link"
+                        className="text-green-600 ml-2"
+                        onClick={() => window.location.href = `/add-dataset-entries?id=${dataset.id}`}
+                      >
+                        Edit
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
