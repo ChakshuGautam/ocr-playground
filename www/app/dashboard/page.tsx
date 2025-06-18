@@ -1,7 +1,10 @@
+'use client'
+
 import { Sidebar } from "@/components/sidebar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useEffect, useState } from "react"
 
 const activeEvaluations = [
   {
@@ -71,6 +74,18 @@ function getStatusBadge(status: string) {
 }
 
 export default function DashboardPage() {
+  const [datasets, setDatasets] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch("/api/datasets")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setDatasets(data)
+        else if (Array.isArray(data?.data)) setDatasets(data.data)
+      })
+      .catch(() => setDatasets([]))
+  }, [])
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar currentPath="/dashboard" />
@@ -81,6 +96,33 @@ export default function DashboardPage() {
         </div>
 
         <div className="space-y-8">
+          <div className="rounded-lg bg-white p-6 shadow-sm">
+            <h2 className="mb-6 text-xl font-semibold text-gray-900">Datasets</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created At</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {datasets.map((dataset) => (
+                  <TableRow key={dataset.id}>
+                    <TableCell className="font-medium">{dataset.name}</TableCell>
+                    <TableCell>{getStatusBadge(dataset.status)}</TableCell>
+                    <TableCell className="text-gray-600">{dataset.created_at ? new Date(dataset.created_at).toLocaleDateString() : "-"}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="link" className="text-blue-600">
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
           <div className="rounded-lg bg-white p-6 shadow-sm">
             <h2 className="mb-6 text-xl font-semibold text-gray-900">Active Evaluations</h2>
 
