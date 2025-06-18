@@ -120,7 +120,7 @@ export default function DashboardPage() {
                       <Button
                         variant="link"
                         className="text-green-600 ml-2"
-                        onClick={() => window.location.href = `/add-dataset-entries?id=${dataset.id}`}
+                        onClick={() => window.location.href = `/edit-dataset?id=${dataset.id}`}
                       >
                         Edit
                       </Button>
