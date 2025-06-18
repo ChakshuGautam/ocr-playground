@@ -6,6 +6,7 @@ import asyncio
 import os
 import json
 import shutil
+import tempfile
 from pathlib import Path
 
 from .database import get_db, init_db
@@ -168,10 +169,11 @@ async def import_images_csv(
     if not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="File must be a CSV")
     
-    # Save uploaded file temporarily
-    temp_path = f"/tmp/{file.filename}"
-    with open(temp_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # Create a temporary file with proper extension
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        # Save uploaded file temporarily
+        shutil.copyfileobj(file.file, temp_file)
+        temp_path = temp_file.name
     
     try:
         # Import data
@@ -486,10 +488,11 @@ async def import_csv_file(
     if not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="File must be a CSV")
     
-    # Save uploaded file temporarily
-    temp_path = f"/tmp/{file.filename}"
-    with open(temp_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # Create a temporary file with proper extension
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        # Save uploaded file temporarily
+        shutil.copyfileobj(file.file, temp_file)
+        temp_path = temp_file.name
     
     try:
         # Import data

@@ -9,33 +9,30 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Plus } from "lucide-react"
+import { Plus, Upload } from "lucide-react"
+import { useRouter } from "next/navigation"
+import JSZip from "jszip"
 
-const entries = [
-  {
-    id: 1,
-    avatar: "A",
-    expectedText: "The quick brown fox jumps over the lazy dog.",
-  },
-  {
-    id: 2,
-    avatar: "S",
-    expectedText: "All work and no play makes Alex a dull boy.",
-  },
-  {
-    id: 3,
-    avatar: "📄",
-    expectedText: "Better late than never.",
-  },
-]
+interface DatasetEntry {
+  id: number;
+  avatar: string;
+  expectedText: string;
+  imageFile?: File;
+}
 
 export default function AddDatasetEntriesPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("manual")
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("draft");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [datasetCreated, setDatasetCreated] = useState(false);
+  const [datasetId, setDatasetId] = useState<number | null>(null);
+  const [entries, setEntries] = useState<DatasetEntry[]>([]);
+  const [nextEntryId, setNextEntryId] = useState(1);
+  const [csvFile, setCsvFile] = useState<File | null>(null);
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard" },
@@ -44,6 +41,119 @@ export default function AddDatasetEntriesPage() {
     { name: "Reports", href: "/reports" },
     { name: "Settings", href: "/settings" },
   ]
+
+  const handleCreateDataset = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/datasets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description, status }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create dataset");
+      }
+
+      const data = await response.json();
+      setDatasetId(data.id);
+      setDatasetCreated(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddEntry = () => {
+    const newEntry: DatasetEntry = {
+      id: nextEntryId,
+      avatar: "📄",
+      expectedText: "",
+    };
+    setEntries([...entries, newEntry]);
+    setNextEntryId(nextEntryId + 1);
+  };
+
+  const handleEntryChange = (id: number, field: keyof DatasetEntry, value: string | File) => {
+    setEntries(entries.map(entry =>
+      entry.id === id ? { ...entry, [field]: value } : entry
+    ));
+  };
+
+  const handleDeleteEntry = (id: number) => {
+    setEntries(entries.filter(entry => entry.id !== id));
+  };
+
+  const handleSubmitEntries = async () => {
+    if (!datasetId) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      if (activeTab === 'manual') {
+        const formData = new FormData();
+        formData.append('dataset_id', datasetId.toString());
+
+        // Create a CSV file from manual entries
+        const csvContent = entries.map(entry =>
+          `${entry.id},${entry.imageFile?.name || ''},${entry.expectedText}`
+        ).join('\n');
+        const csvBlob = new Blob([csvContent], { type: 'text/csv' });
+        formData.append('reference_csv', new File([csvBlob], 'reference.csv'));
+
+        // Create a ZIP file from image files
+        const zip = new JSZip();
+        entries.forEach(entry => {
+          if (entry.imageFile) {
+            zip.file(entry.imageFile.name, entry.imageFile);
+          }
+        });
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        formData.append('images_zip', new File([zipBlob], 'images.zip'));
+
+        const response = await fetch('/api/datasets/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to upload dataset files");
+        }
+      } else {
+        // CSV import
+        if (!csvFile) {
+          throw new Error('Please upload a CSV file');
+        }
+
+        const formData = new FormData();
+        formData.append('file', csvFile);
+        formData.append('overwrite_existing', 'false');
+
+        const response = await fetch('/api/images/import-csv', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to import CSV");
+        }
+      }
+
+      router.push('/datasets');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -63,50 +173,40 @@ export default function AddDatasetEntriesPage() {
                   <Label htmlFor="dataset-name" className="text-base font-medium">
                     Dataset Name
                   </Label>
-                  <Input id="dataset-name" placeholder="Enter dataset name" className="mt-2" value={name} onChange={(e) => setName(e.target.value)} />
+                  <Input
+                    id="dataset-name"
+                    placeholder="Enter dataset name"
+                    className="mt-2"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={datasetCreated}
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="description" className="text-base font-medium">
                     Description
                   </Label>
-                  <Textarea id="description" placeholder="Enter dataset description" className="mt-2" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+                  <Textarea
+                    id="description"
+                    placeholder="Enter dataset description"
+                    className="mt-2"
+                    rows={3}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    disabled={datasetCreated}
+                  />
                 </div>
 
-                <div>
-                  <Label htmlFor="entries" className="text-base font-medium">
-                    Number of Entries
-                  </Label>
-                  <Input id="entries" placeholder="Enter number of entries" type="number" className="mt-2" />
-                </div>
-
-                <Button className="w-full bg-blue-100 text-blue-700 hover:bg-blue-200" onClick={async () => {
-                  setLoading(true);
-                  setError(null);
-                  try {
-                    const response = await fetch("/api/datasets", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ name, description, status }),
-                    });
-                    if (!response.ok) {
-                      const errorData = await response.json();
-                      setError(errorData.detail || "Failed to create dataset");
-                      setLoading(false);
-                      return;
-                    }
-                    await response.json();
-                    alert("Dataset created!");
-                  } catch (err) {
-                    setError("An error occurred");
-                  } finally {
-                    setLoading(false);
-                  }
-                }} disabled={loading}>
-                  {loading ? "Adding..." : "Add Dataset"}
-                </Button>
+                {!datasetCreated && (
+                  <Button
+                    className="w-full bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    onClick={handleCreateDataset}
+                    disabled={loading || !name}
+                  >
+                    {loading ? "Creating..." : "Create Dataset"}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -115,88 +215,120 @@ export default function AddDatasetEntriesPage() {
           <div>
             <div className="mb-6 flex items-center justify-between">
               <h1 className="text-3xl font-bold text-gray-900">Add Entries</h1>
-              <Button className="bg-gray-900 text-white hover:bg-gray-800">
-                <Plus className="mr-2 h-4 w-4" />
-                Add New Row
-              </Button>
+              {datasetCreated && (
+                <Button
+                  className="bg-gray-900 text-white hover:bg-gray-800"
+                  onClick={handleAddEntry}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add New Row
+                </Button>
+              )}
             </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-fit grid-cols-2">
-                <TabsTrigger value="manual">Manual Entry</TabsTrigger>
-                <TabsTrigger value="upload">Upload CSV</TabsTrigger>
-              </TabsList>
+            {datasetCreated ? (
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                <TabsList className="grid w-fit grid-cols-2">
+                  <TabsTrigger value="manual">Manual Entry</TabsTrigger>
+                  <TabsTrigger value="upload">Upload CSV</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="manual">
-                <div className="rounded-lg bg-white shadow-sm">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Image</TableHead>
-                        <TableHead>Expected Text</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries.map((entry) => (
-                        <TableRow key={entry.id}>
-                          <TableCell>
-                            <Avatar className="h-10 w-10">
-                              <AvatarFallback className="bg-green-100 text-green-700">{entry.avatar}</AvatarFallback>
-                            </Avatar>
-                          </TableCell>
-                          <TableCell className="text-gray-600">{entry.expectedText}</TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button variant="link" className="text-blue-600 p-0">
-                                Edit
-                              </Button>
-                              <span className="text-gray-400">|</span>
-                              <Button variant="link" className="text-gray-600 p-0">
+                <TabsContent value="manual">
+                  <div className="rounded-lg bg-white shadow-sm">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Image</TableHead>
+                          <TableHead>Expected Text</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries.map((entry) => (
+                          <TableRow key={entry.id}>
+                            <TableCell>
+                              <div className="flex items-center gap-4">
+                                <Avatar className="h-10 w-10">
+                                  <AvatarFallback className="bg-green-100 text-green-700">
+                                    {entry.avatar}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleEntryChange(entry.id, 'imageFile', file);
+                                      handleEntryChange(entry.id, 'avatar', '📷');
+                                    }
+                                  }}
+                                />
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={entry.expectedText}
+                                onChange={(e) => handleEntryChange(entry.id, 'expectedText', e.target.value)}
+                                placeholder="Enter expected text"
+                              />
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <Button
+                                variant="link"
+                                className="text-red-600 p-0"
+                                onClick={() => handleDeleteEntry(entry.id)}
+                              >
                                 Delete
                               </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </TabsContent>
 
-              <TabsContent value="upload">
-                <div className="rounded-lg bg-white p-6 shadow-sm">
-                  <div className="flex justify-center rounded-lg border border-dashed border-gray-300 px-6 py-10">
-                    <div className="text-center">
-                      <div className="mx-auto h-12 w-12 text-gray-400">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                <TabsContent value="upload">
+                  <div className="rounded-lg bg-white p-6 shadow-sm">
+                    <div className="space-y-6">
+                      <div>
+                        <Label className="text-base font-medium">Import CSV</Label>
+                        <div className="mt-2">
+                          <Input
+                            type="file"
+                            accept=".csv"
+                            onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
                           />
-                        </svg>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-500">
+                          Upload a CSV file with columns: #, Link, Text, Correctness, OCR Output
+                        </p>
                       </div>
-                      <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                        <label
-                          htmlFor="file-upload"
-                          className="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
-                        >
-                          <span>Upload a file</span>
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" accept=".csv" />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
-                      </div>
-                      <p className="text-xs leading-5 text-gray-600">CSV up to 10MB</p>
                     </div>
                   </div>
-                </div>
-              </TabsContent>
-            </Tabs>
+                </TabsContent>
+
+                <Button
+                  className="w-full bg-blue-600 text-white hover:bg-blue-700"
+                  onClick={handleSubmitEntries}
+                  disabled={loading || (activeTab === 'manual' && entries.length === 0) || (activeTab === 'upload' && !csvFile)}
+                >
+                  {loading ? "Submitting..." : "Submit Dataset"}
+                </Button>
+              </Tabs>
+            ) : (
+              <div className="rounded-lg bg-white p-6 shadow-sm text-center text-gray-500">
+                Create a dataset first to add entries
+              </div>
+            )}
           </div>
         </div>
-        {error && <div className="text-red-500">{error}</div>}
+        {error && (
+          <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-lg">
+            {error}
+          </div>
+        )}
       </main>
     </div>
   )

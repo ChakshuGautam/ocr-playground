@@ -1260,3 +1260,199 @@ FROM datasets
 WHERE datasets.id = ?
 2025-06-18 02:57:47,893 - INFO - [cached since 694.8s ago] (4,)
 2025-06-18 02:57:47,895 - INFO - ROLLBACK
+2025-06-18 23:07:28,352 - INFO - BEGIN (implicit)
+2025-06-18 23:07:28,353 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-18 23:07:28,353 - INFO - [raw sql] ()
+2025-06-18 23:07:28,355 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-18 23:07:28,356 - INFO - [raw sql] ()
+2025-06-18 23:07:28,357 - INFO - PRAGMA main.table_info("datasets")
+2025-06-18 23:07:28,357 - INFO - [raw sql] ()
+2025-06-18 23:07:28,358 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-18 23:07:28,359 - INFO - [raw sql] ()
+2025-06-18 23:07:28,360 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-18 23:07:28,361 - INFO - [raw sql] ()
+2025-06-18 23:07:28,363 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-18 23:07:28,363 - INFO - [raw sql] ()
+2025-06-18 23:07:28,364 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-18 23:07:28,364 - INFO - [raw sql] ()
+2025-06-18 23:07:28,366 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-18 23:07:28,366 - INFO - [raw sql] ()
+2025-06-18 23:07:28,367 - INFO - PRAGMA main.table_info("images")
+2025-06-18 23:07:28,368 - INFO - [raw sql] ()
+2025-06-18 23:07:28,369 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-18 23:07:28,370 - INFO - [raw sql] ()
+2025-06-18 23:07:28,370 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-18 23:07:28,371 - INFO - [raw sql] ()
+2025-06-18 23:07:28,371 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-18 23:07:28,372 - INFO - [raw sql] ()
+2025-06-18 23:07:28,373 - INFO - COMMIT
+2025-06-18 23:14:22,136 - INFO - BEGIN (implicit)
+2025-06-18 23:14:22,138 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-18 23:14:22,139 - INFO - [generated in 0.00075s] ('Handwritten Notes Dataset-Latest', 'Notes', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-18 17:44:22.138565', '2025-06-18 17:44:22.138565', None)
+2025-06-18 23:14:22,141 - INFO - COMMIT
+2025-06-18 23:14:22,146 - INFO - BEGIN (implicit)
+2025-06-18 23:14:22,148 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 23:14:22,148 - INFO - [generated in 0.00044s] (5,)
+2025-06-18 23:14:22,151 - INFO - ROLLBACK
+2025-06-18 23:17:05,970 - INFO - BEGIN (implicit)
+2025-06-18 23:17:05,973 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 23:17:05,973 - INFO - [generated in 0.00064s] (5,)
+2025-06-18 23:17:05,978 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-18 23:17:05,979 - INFO - [generated in 0.00114s] (5,)
+2025-06-18 23:17:05,981 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 23:17:05,982 - INFO - [cached since 0.009298s ago] (5,)
+2025-06-18 23:17:05,984 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-18 23:17:05,984 - INFO - [cached since 0.006874s ago] (5,)
+2025-06-18 23:17:06,013 - INFO - UPDATE datasets SET status=?, updated_at=? WHERE datasets.id = ?
+2025-06-18 23:17:06,013 - INFO - [generated in 0.00069s] (<DatasetStatus.VALIDATED: 'validated'>, '2025-06-18 17:47:06.011384', 5)
+2025-06-18 23:17:06,016 - INFO - COMMIT
+2025-06-18 23:17:06,019 - INFO - BEGIN (implicit)
+2025-06-18 23:17:06,020 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 23:17:06,021 - INFO - [generated in 0.00054s] (5,)
+2025-06-18 23:17:06,024 - INFO - SELECT images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM images, dataset_images 
+WHERE ? = dataset_images.dataset_id AND images.id = dataset_images.image_id
+2025-06-18 23:17:06,025 - INFO - [generated in 0.00089s] (5,)
+2025-06-18 23:17:06,028 - INFO - ROLLBACK
+2025-06-18 23:32:42,364 - INFO - BEGIN (implicit)
+2025-06-18 23:32:42,366 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-18 23:32:42,366 - INFO - [cached since 1100s ago] ('Handwritten Notes Dataset-Latest1', 'ok', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-18 18:02:42.365527', '2025-06-18 18:02:42.365527', None)
+2025-06-18 23:32:42,370 - INFO - COMMIT
+2025-06-18 23:32:42,375 - INFO - BEGIN (implicit)
+2025-06-18 23:32:42,376 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-18 23:32:42,376 - INFO - [cached since 1100s ago] (6,)
+2025-06-18 23:32:42,378 - INFO - ROLLBACK
+2025-06-18 23:39:51,602 - INFO - BEGIN (implicit)
+2025-06-18 23:39:51,603 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-18 23:39:51,603 - INFO - [raw sql] ()
+2025-06-18 23:39:51,605 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-18 23:39:51,606 - INFO - [raw sql] ()
+2025-06-18 23:39:51,607 - INFO - PRAGMA main.table_info("datasets")
+2025-06-18 23:39:51,607 - INFO - [raw sql] ()
+2025-06-18 23:39:51,608 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-18 23:39:51,609 - INFO - [raw sql] ()
+2025-06-18 23:39:51,611 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-18 23:39:51,611 - INFO - [raw sql] ()
+2025-06-18 23:39:51,613 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-18 23:39:51,613 - INFO - [raw sql] ()
+2025-06-18 23:39:51,615 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-18 23:39:51,616 - INFO - [raw sql] ()
+2025-06-18 23:39:51,618 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-18 23:39:51,618 - INFO - [raw sql] ()
+2025-06-18 23:39:51,620 - INFO - PRAGMA main.table_info("images")
+2025-06-18 23:39:51,620 - INFO - [raw sql] ()
+2025-06-18 23:39:51,621 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-18 23:39:51,622 - INFO - [raw sql] ()
+2025-06-18 23:39:51,623 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-18 23:39:51,623 - INFO - [raw sql] ()
+2025-06-18 23:39:51,624 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-18 23:39:51,624 - INFO - [raw sql] ()
+2025-06-18 23:39:51,626 - INFO - COMMIT
+2025-06-18 23:41:40,776 - INFO - BEGIN (implicit)
+2025-06-18 23:41:40,776 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-18 23:41:40,778 - INFO - [raw sql] ()
+2025-06-18 23:41:40,781 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-18 23:41:40,781 - INFO - [raw sql] ()
+2025-06-18 23:41:40,783 - INFO - PRAGMA main.table_info("datasets")
+2025-06-18 23:41:40,784 - INFO - [raw sql] ()
+2025-06-18 23:41:40,786 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-18 23:41:40,787 - INFO - [raw sql] ()
+2025-06-18 23:41:40,790 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-18 23:41:40,790 - INFO - [raw sql] ()
+2025-06-18 23:41:40,792 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-18 23:41:40,793 - INFO - [raw sql] ()
+2025-06-18 23:41:40,795 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-18 23:41:40,795 - INFO - [raw sql] ()
+2025-06-18 23:41:40,797 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-18 23:41:40,797 - INFO - [raw sql] ()
+2025-06-18 23:41:40,798 - INFO - PRAGMA main.table_info("images")
+2025-06-18 23:41:40,799 - INFO - [raw sql] ()
+2025-06-18 23:41:40,801 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-18 23:41:40,802 - INFO - [raw sql] ()
+2025-06-18 23:41:40,803 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-18 23:41:40,804 - INFO - [raw sql] ()
+2025-06-18 23:41:40,806 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-18 23:41:40,807 - INFO - [raw sql] ()
+2025-06-18 23:41:40,809 - INFO - COMMIT
+2025-06-18 23:44:04,567 - INFO - BEGIN (implicit)
+2025-06-18 23:44:04,568 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-18 23:44:04,568 - INFO - [raw sql] ()
+2025-06-18 23:44:04,571 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-18 23:44:04,571 - INFO - [raw sql] ()
+2025-06-18 23:44:04,572 - INFO - PRAGMA main.table_info("datasets")
+2025-06-18 23:44:04,573 - INFO - [raw sql] ()
+2025-06-18 23:44:04,574 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-18 23:44:04,574 - INFO - [raw sql] ()
+2025-06-18 23:44:04,577 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-18 23:44:04,577 - INFO - [raw sql] ()
+2025-06-18 23:44:04,578 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-18 23:44:04,579 - INFO - [raw sql] ()
+2025-06-18 23:44:04,581 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-18 23:44:04,581 - INFO - [raw sql] ()
+2025-06-18 23:44:04,582 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-18 23:44:04,582 - INFO - [raw sql] ()
+2025-06-18 23:44:04,583 - INFO - PRAGMA main.table_info("images")
+2025-06-18 23:44:04,583 - INFO - [raw sql] ()
+2025-06-18 23:44:04,584 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-18 23:44:04,585 - INFO - [raw sql] ()
+2025-06-18 23:44:04,586 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-18 23:44:04,586 - INFO - [raw sql] ()
+2025-06-18 23:44:04,587 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-18 23:44:04,588 - INFO - [raw sql] ()
+2025-06-18 23:44:04,589 - INFO - COMMIT
+2025-06-18 23:44:06,902 - INFO - BEGIN (implicit)
+2025-06-18 23:44:06,924 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,925 - INFO - [generated in 0.00117s] ('1',)
+2025-06-18 23:44:06,927 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,928 - INFO - [cached since 0.004268s ago] ('2',)
+2025-06-18 23:44:06,931 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,931 - INFO - [cached since 0.007483s ago] ('3',)
+2025-06-18 23:44:06,933 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,934 - INFO - [cached since 0.009915s ago] ('4',)
+2025-06-18 23:44:06,936 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,936 - INFO - [cached since 0.01223s ago] ('5',)
+2025-06-18 23:44:06,938 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,938 - INFO - [cached since 0.01446s ago] ('6',)
+2025-06-18 23:44:06,941 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,942 - INFO - [cached since 0.01815s ago] ('7',)
+2025-06-18 23:44:06,944 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,945 - INFO - [cached since 0.02086s ago] ('8',)
+2025-06-18 23:44:06,946 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,946 - INFO - [cached since 0.02268s ago] ('9',)
+2025-06-18 23:44:06,948 - INFO - SELECT images.id, images.number, images.url, images.local_path, images.reference_text, images.created_at, images.updated_at 
+FROM images 
+WHERE images.number = ?
+2025-06-18 23:44:06,950 - INFO - [cached since 0.0257s ago] ('10',)
+2025-06-18 23:44:06,952 - INFO - ROLLBACK
