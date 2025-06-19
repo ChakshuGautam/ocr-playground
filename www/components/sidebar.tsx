@@ -15,6 +15,7 @@ const navigation = [
   { name: "Add Dataset", href: "/add-dataset", icon: Database },
   { name: "Add Dataset Entries", href: "/add-dataset-entries", icon: Database },
   { name: "Prompts", href: "/prompts", icon: MessageSquare },
+  { name: "Prompts Families", href: "/prompt-families", icon: MessageSquare },
   { name: "Create A/B Test", href: "/create-test", icon: MessageSquare },
   { name: "Ground Truth", href: "/ground-truth", icon: Database },
   { name: "Evaluation Report", href: "/evaluation-report", icon: BarChart3 },

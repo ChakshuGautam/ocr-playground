@@ -290,6 +290,7 @@ class PromptVersionCreate(BaseModel):
     prompt_text: str
     changelog_message: str
     version_type: VersionType
+    version: Optional[str] = None
     status: PromptStatus = PromptStatus.DRAFT
 
 class PromptVersionUpdate(BaseModel):

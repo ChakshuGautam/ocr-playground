@@ -752,7 +752,6 @@ async def create_prompt_version(
     # Generate version number based on type
     next_version = await crud.generate_next_version(db, family_id, version.version_type)
     version.version = next_version
-    
     return await crud.create_prompt_version(db, version)
 
 @app.put("/api/prompt-versions/{version_id}", response_model=PromptVersion)
