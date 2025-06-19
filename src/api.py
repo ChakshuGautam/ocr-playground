@@ -726,6 +726,22 @@ async def get_prompt_family(family_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Prompt family not found")
     return family
 
+@app.put("/api/prompt-families/{family_id}", response_model=PromptFamily)
+async def update_prompt_family(
+    family_id: int,
+    family_update: PromptFamilyCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update a prompt family"""
+    # First check if the family exists
+    existing_family = await crud.get_prompt_family(db, family_id)
+    if not existing_family:
+        raise HTTPException(status_code=404, detail="Prompt family not found")
+    
+    # Update the family
+    updated_family = await crud.update_prompt_family(db, family_id, family_update)
+    return updated_family
+
 @app.post("/api/prompt-families", response_model=PromptFamily)
 async def create_prompt_family(family: PromptFamilyCreate, db: AsyncSession = Depends(get_db)):
     """Create a new prompt family"""
@@ -751,7 +767,11 @@ async def create_prompt_version(
     
     # Generate version number based on type
     next_version = await crud.generate_next_version(db, family_id, version.version_type)
+    
+    # Set the generated version number
     version.version = next_version
+    
+    # Create the version
     return await crud.create_prompt_version(db, version)
 
 @app.put("/api/prompt-versions/{version_id}", response_model=PromptVersion)
@@ -761,10 +781,17 @@ async def update_prompt_version(
     db: AsyncSession = Depends(get_db)
 ):
     """Update a prompt version"""
-    version = await crud.update_prompt_version(db, version_id, version_update)
-    if not version:
+    # First check if the version exists
+    existing_version = await crud.get_prompt_version(db, version_id)
+    if not existing_version:
         raise HTTPException(status_code=404, detail="Prompt version not found")
-    return version
+    
+    # Update the version
+    updated_version = await crud.update_prompt_version(db, version_id, version_update)
+    if not updated_version:
+        raise HTTPException(status_code=500, detail="Failed to update prompt version")
+    
+    return updated_version
 
 @app.post("/api/prompt-versions/{version_id}/promote")
 async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get_db)):

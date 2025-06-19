@@ -566,12 +566,35 @@ async def get_prompt_families(db: AsyncSession) -> List[PromptFamily]:
     result = await db.execute(select(PromptFamily).order_by(PromptFamily.created_at.desc()))
     return result.scalars().all()
 
+async def update_prompt_family(db: AsyncSession, family_id: int, family_update: PromptFamilyCreate) -> Optional[PromptFamily]:
+    """Update an existing prompt family"""
+    result = await db.execute(select(PromptFamily).where(PromptFamily.id == family_id))
+    db_family = result.scalar_one_or_none()
+    
+    if db_family:
+        # Update the fields
+        update_data = family_update.dict(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(db_family, field, value)
+        
+        await db.commit()
+        await db.refresh(db_family)
+    
+    return db_family
+
 # Prompt Version CRUD operations
 async def get_prompt_versions(db: AsyncSession, family_id: int) -> List[PromptVersion]:
     result = await db.execute(
         select(PromptVersion).where(PromptVersion.family_id == family_id).order_by(PromptVersion.created_at.desc())
     )
     return result.scalars().all()
+
+async def get_prompt_version(db: AsyncSession, version_id: int) -> Optional[PromptVersion]:
+    """Get a specific prompt version by ID"""
+    result = await db.execute(
+        select(PromptVersion).where(PromptVersion.id == version_id)
+    )
+    return result.scalar_one_or_none()
 
 async def generate_next_version(db: AsyncSession, family_id: int, version_type: VersionType) -> str:
     """Generate the next semantic version number"""
@@ -606,18 +629,26 @@ async def generate_next_version(db: AsyncSession, family_id: int, version_type: 
     
     return f"{major}.{minor}.{patch}"
 
-async def create_prompt_version(db: AsyncSession, version: PromptVersionCreate) -> PromptVersion:
-    db_version = PromptVersion(**version.dict())
+async def create_prompt_version(db: AsyncSession, version_data: PromptVersionCreate) -> PromptVersion:
+    """Create a new prompt version"""
+    # Convert Pydantic model to dict and exclude version_type
+    version_dict = version_data.dict(exclude={'version_type'})
+    
+    # Create the version instance with only the fields that exist in the model
+    db_version = PromptVersion(**version_dict)
     db.add(db_version)
     await db.commit()
     await db.refresh(db_version)
     return db_version
 
 async def update_prompt_version(db: AsyncSession, version_id: int, version_update: PromptVersionUpdate) -> Optional[PromptVersion]:
+    """Update an existing prompt version"""
+    # Get the existing version
     result = await db.execute(select(PromptVersion).where(PromptVersion.id == version_id))
     db_version = result.scalar_one_or_none()
     
     if db_version:
+        # Update only the fields that are provided
         update_data = version_update.dict(exclude_unset=True)
         for field, value in update_data.items():
             setattr(db_version, field, value)

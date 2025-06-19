@@ -73,8 +73,8 @@ export default function PromptVersionsPage() {
     setNewVersion({
       prompt_text: version.prompt_text || "",
       changelog_message: version.changelog_message || "",
-      version_type: version.version_type || "minor",
-      status: version.status || "draft",
+      version_type: "minor",
+      status: (version.status || "draft").toLowerCase(),
     })
     setShowModal(true)
   }
@@ -86,19 +86,47 @@ export default function PromptVersionsPage() {
     try {
       let res, data
       if (editVersion) {
+        // For updates, only send fields that exist in the database
+        const updateData = {
+          prompt_text: newVersion.prompt_text.trim(),
+          changelog_message: newVersion.changelog_message.trim(),
+          status: newVersion.status.toLowerCase()
+        };
         res = await fetch(`/api/prompt-versions/${editVersion.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newVersion),
+          body: JSON.stringify(updateData),
         })
       } else {
+        // For creation, separate version_type from the data that will create the database record
+        const createData = {
+          family_id: Number(familyId),
+          prompt_text: newVersion.prompt_text.trim(),
+          changelog_message: newVersion.changelog_message.trim(),
+          status: newVersion.status.toLowerCase(),
+          // Send version_type for version number generation only
+          version_type: newVersion.version_type.toLowerCase()
+        };
+        
+        console.log('Creating version with payload:', JSON.stringify(createData, null, 2));
+        
         res = await fetch(`/api/prompt-families/${familyId}/versions`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...newVersion, family_id: Number(familyId) }),
+          body: JSON.stringify(createData),
         })
       }
-      data = await res.json()
+      
+      const responseText = await res.text();
+      console.log('Raw response:', responseText);
+      
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error('Failed to parse response as JSON:', e);
+        data = { error: 'Invalid response format' };
+      }
+      
       if (res.ok) {
         setShowModal(false)
         setEditVersion(null)
@@ -115,9 +143,11 @@ export default function PromptVersionsPage() {
             errorMsg = data.detail;
           }
         }
+        console.error('Error details:', data);
         setError(errorMsg)
       }
     } catch (e) {
+      console.error('Request error:', e);
       setError(editVersion ? "Failed to update version" : "Failed to create version")
     } finally {
       setSubmitting(false)
@@ -173,17 +203,15 @@ export default function PromptVersionsPage() {
                 <TableRow>
                   <TableHead>Version</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Type</TableHead>
                   <TableHead>Changelog</TableHead>
                   <TableHead>Created</TableHead>
-                  <TableHead>Updated</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {versions.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-gray-400">
+                    <TableCell colSpan={5} className="text-center text-gray-400">
                       No versions found.
                     </TableCell>
                   </TableRow>
@@ -196,13 +224,9 @@ export default function PromptVersionsPage() {
                           {version.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>{version.version_type}</TableCell>
-                      <TableCell>{version.changelog}</TableCell>
+                      <TableCell>{version.changelog_message}</TableCell>
                       <TableCell>
                         {version.created_at ? new Date(version.created_at).toLocaleDateString() : "-"}
-                      </TableCell>
-                      <TableCell>
-                        {version.updated_at ? new Date(version.updated_at).toLocaleDateString() : "-"}
                       </TableCell>
                       <TableCell className="text-right flex gap-2 justify-end">
                         <Button
@@ -251,26 +275,31 @@ export default function PromptVersionsPage() {
                 value={newVersion.changelog_message}
                 onChange={e => setNewVersion({ ...newVersion, changelog_message: e.target.value })}
               />
+              {!editVersion && (
+                <div className="flex gap-2">
+                  <label className="text-sm">Type:</label>
+                  <select
+                    className="border rounded px-2 py-1"
+                    value={newVersion.version_type}
+                    onChange={e => setNewVersion({ ...newVersion, version_type: e.target.value.toLowerCase() })}
+                  >
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                    <option value="patch">Patch</option>
+                  </select>
+                </div>
+              )}
               <div className="flex gap-2">
-                <label className="text-sm">Type:</label>
-                <select
-                  className="border rounded px-2 py-1"
-                  value={newVersion.version_type}
-                  onChange={e => setNewVersion({ ...newVersion, version_type: e.target.value })}
-                >
-                  <option value="major">Major</option>
-                  <option value="minor">Minor</option>
-                  <option value="patch">Patch</option>
-                </select>
-                <label className="text-sm ml-4">Status:</label>
+                <label className="text-sm">Status:</label>
                 <select
                   className="border rounded px-2 py-1"
                   value={newVersion.status}
-                  onChange={e => setNewVersion({ ...newVersion, status: e.target.value })}
+                  onChange={e => setNewVersion({ ...newVersion, status: e.target.value.toLowerCase() })}
                 >
                   <option value="draft">Draft</option>
-                  <option value="testing">Testing</option>
+                  <option value="staging">Staging</option>
                   <option value="production">Production</option>
+                  <option value="archived">Archived</option>
                 </select>
               </div>
               {error && <div className="text-red-500 text-sm">{error}</div>}
