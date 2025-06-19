@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, context: { params: { dataset_id: string } }) {
-  const dataset_id = context.params.dataset_id;
+  const params = await context.params;
+  const dataset_id = params.dataset_id;
   if (!dataset_id) {
     return NextResponse.json({ error: 'Missing dataset_id' }, { status: 400 });
   }

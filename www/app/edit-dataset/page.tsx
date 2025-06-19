@@ -123,9 +123,12 @@ export default function EditDatasetPage() {
     };
 
     const handleEntryChange = (id: number, field: keyof DatasetEntry, value: string | File) => {
-        setEntries(entries.map(entry =>
-            entry.id === id ? { ...entry, [field]: value } : entry
-        ));
+        console.log(`Entry change: id=${id}, field=${field}, value=`, value);
+        setEntries(prevEntries =>
+            prevEntries.map(entry =>
+                entry.id === id ? { ...entry, [field]: value } : entry
+            )
+        );
     };
 
     const handleDeleteEntry = (id: number) => {
@@ -140,25 +143,36 @@ export default function EditDatasetPage() {
 
         try {
             if (activeTab === 'manual') {
+                console.log("Entries before submitting : ", entries)
                 const formData = new FormData();
                 formData.append('dataset_id', datasetId.toString());
 
                 // Create a CSV file from manual entries
-                const csvContent = entries.map(entry =>
-                    `${entry.id},${entry.imageFile?.name || ''},${entry.expectedText}`
-                ).join('\n');
+                const csvContent = [
+                    'image_filename,reference_text',
+                    ...entries.map(entry =>
+                        `${entry.imageFile?.name || ''},${entry.expectedText}`
+                    )
+                ].join('\n');
+                console.log('Generated CSV content:', csvContent);
                 const csvBlob = new Blob([csvContent], { type: 'text/csv' });
                 formData.append('reference_csv', new File([csvBlob], 'reference.csv'));
 
                 // Create a ZIP file from image files
                 const zip = new JSZip();
+                const imageFileNames: string[] = [];
                 entries.forEach(entry => {
                     if (entry.imageFile) {
                         zip.file(entry.imageFile.name, entry.imageFile);
+                        imageFileNames.push(entry.imageFile.name);
                     }
                 });
+                console.log('Image files being zipped:', imageFileNames);
                 const zipBlob = await zip.generateAsync({ type: 'blob' });
                 formData.append('images_zip', new File([zipBlob], 'images.zip'));
+
+                // Log FormData keys
+                console.log('FormData keys:', Array.from(formData.keys()));
 
                 const response = await fetch('/api/datasets/upload', {
                     method: 'POST',
@@ -190,7 +204,7 @@ export default function EditDatasetPage() {
                 }
             }
 
-            router.push('/datasets');
+            // router.push('/datasets');
         } catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred");
         } finally {

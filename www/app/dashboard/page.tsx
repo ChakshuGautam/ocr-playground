@@ -96,7 +96,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="space-y-8">
-          <div className="rounded-lg bg-white p-6 shadow-sm">
+          {/* <div className="rounded-lg bg-white p-6 shadow-sm">
             <h2 className="mb-6 text-xl font-semibold text-gray-900">Datasets</h2>
             <Table>
               <TableHeader>
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </div> */}
           <div className="rounded-lg bg-white p-6 shadow-sm">
             <h2 className="mb-6 text-xl font-semibold text-gray-900">Active Evaluations</h2>
 
