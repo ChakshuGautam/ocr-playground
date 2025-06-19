@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const baseUrl = 'http://localhost:8000'
 
+// create a new dataset
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
   }
 }
 
+// Get all datasets
 export async function GET() {
   try {
     const response = await fetch('http://localhost:8000/api/datasets');

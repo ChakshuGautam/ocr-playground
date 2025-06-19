@@ -1,3 +1,5 @@
+'use client'
+
 import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +15,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { useEffect, useState, useRef } from "react"
 
 export default function CreateTestPage() {
   const navigation = [
@@ -22,6 +25,76 @@ export default function CreateTestPage() {
     { name: "Docs", href: "/docs" },
     { name: "Community", href: "/community" },
   ]
+
+  const [datasets, setDatasets] = useState<{ id: number; name: string }[]>([])
+  const [selectedDataset, setSelectedDataset] = useState<string>("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const nameRef = useRef<HTMLInputElement>(null)
+  const descriptionRef = useRef<HTMLInputElement>(null)
+  const hypothesisRef = useRef<HTMLInputElement>(null)
+  const promptARef = useRef<HTMLTextAreaElement>(null)
+  const promptBRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    setLoading(true)
+    fetch("/api/datasets")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch datasets")
+        return res.json()
+      })
+      .then((data) => {
+        // If the API returns { data: [...] }
+        if (Array.isArray(data)) {
+          setDatasets(data)
+        } else if (Array.isArray(data.data)) {
+          setDatasets(data.data)
+        } else {
+          setDatasets([])
+        }
+        setError(null)
+      })
+      .catch((err) => {
+        setError(err.message)
+        setDatasets([])
+      })
+      .finally(() => setLoading(false))
+  }, [])
+
+  async function handleCreateTest() {
+    const name = nameRef.current?.value || ""
+    const description = descriptionRef.current?.value || ""
+    const hypothesis = hypothesisRef.current?.value || ""
+    const promptA = promptARef.current?.value || ""
+    const promptB = promptBRef.current?.value || ""
+    const datasetId = selectedDataset ? Number(selectedDataset) : null
+    if (!name || !description || !hypothesis || !datasetId || !promptA || !promptB) {
+      alert("Please fill in all fields.")
+      return
+    }
+    const body = {
+      name,
+      description,
+      hypothesis,
+      dataset_ids: [datasetId],
+      prompt_version_a: promptA,
+      prompt_version_b: promptB,
+    }
+    try {
+      const res = await fetch("/api/evaluation-runs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Failed to create test")
+      alert("Test created successfully!")
+      // Optionally, redirect or reset form here
+    } catch (err: any) {
+      alert(err.message || "Failed to create test")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -67,25 +140,47 @@ export default function CreateTestPage() {
                   <Label htmlFor="test-name" className="text-base font-medium">
                     Test Name
                   </Label>
-                  <Input id="test-name" placeholder="Enter a name for your A/B test" className="mt-2" />
+                  <Input id="test-name" ref={nameRef} placeholder="Enter a name for your A/B test" className="mt-2" />
+                </div>
+
+                <div>
+                  <Label htmlFor="test-description" className="text-base font-medium">
+                    Description
+                  </Label>
+                  <Input id="test-description" ref={descriptionRef} placeholder="Enter description for your A/B test" className="mt-2" />
+                </div>
+
+                <div>
+                  <Label htmlFor="test-hypothesis" className="text-base font-medium">
+                    Hypothesis
+                  </Label>
+                  <Input id="test-hypothesis" ref={hypothesisRef} placeholder="Enter hypothesis for your A/B test" className="mt-2" />
                 </div>
 
                 <div>
                   <Label htmlFor="dataset" className="text-base font-medium">
                     Dataset
                   </Label>
-                  <Select>
+                  <Select value={selectedDataset} onValueChange={setSelectedDataset}>
                     <SelectTrigger className="mt-2">
-                      <SelectValue placeholder="Select dataset" />
+                      <SelectValue placeholder={loading ? "Loading..." : "Select dataset"} />
                       <div className="flex items-center gap-1">
                         <ChevronUp className="h-4 w-4" />
                         <ChevronDown className="h-4 w-4" />
                       </div>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="dataset-a">Dataset A</SelectItem>
-                      <SelectItem value="dataset-b">Dataset B</SelectItem>
-                      <SelectItem value="dataset-c">Dataset C</SelectItem>
+                      {error && (
+                        <div className="text-red-500 px-2 py-1">{error}</div>
+                      )}
+                      {!error && datasets.length === 0 && !loading && (
+                        <div className="px-2 py-1">No datasets found</div>
+                      )}
+                      {datasets.map((dataset) => (
+                        <SelectItem key={dataset.id} value={String(dataset.id)}>
+                          {dataset.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -100,20 +195,20 @@ export default function CreateTestPage() {
                   <Label htmlFor="prompt-a" className="text-base font-medium">
                     Prompt Version A
                   </Label>
-                  <Textarea id="prompt-a" placeholder="Enter prompt version A" className="mt-2" rows={4} />
+                  <Textarea id="prompt-a" ref={promptARef} placeholder="Enter prompt version A" className="mt-2" rows={4} />
                 </div>
 
                 <div>
                   <Label htmlFor="prompt-b" className="text-base font-medium">
                     Prompt Version B
                   </Label>
-                  <Textarea id="prompt-b" placeholder="Enter prompt version B" className="mt-2" rows={4} />
+                  <Textarea id="prompt-b" ref={promptBRef} placeholder="Enter prompt version B" className="mt-2" rows={4} />
                 </div>
               </div>
             </div>
 
             <div className="flex justify-end">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleCreateTest} size="lg" className="bg-blue-600 hover:bg-blue-700">
                 Create Test
               </Button>
             </div>
