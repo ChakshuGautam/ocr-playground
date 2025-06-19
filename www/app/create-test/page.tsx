@@ -28,14 +28,16 @@ export default function CreateTestPage() {
 
   const [datasets, setDatasets] = useState<{ id: number; name: string }[]>([])
   const [selectedDataset, setSelectedDataset] = useState<string>("")
+  const [families, setFamilies] = useState<any[]>([])
+  const [selectedFamily, setSelectedFamily] = useState<string>("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const nameRef = useRef<HTMLInputElement>(null)
   const descriptionRef = useRef<HTMLInputElement>(null)
   const hypothesisRef = useRef<HTMLInputElement>(null)
-  const promptARef = useRef<HTMLTextAreaElement>(null)
-  const promptBRef = useRef<HTMLTextAreaElement>(null)
+  const promptARef = useRef<HTMLInputElement>(null)
+  const promptBRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setLoading(true)
@@ -62,6 +64,23 @@ export default function CreateTestPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  useEffect(() => {
+    setLoading(true)
+    fetch("/api/prompt-families")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setFamilies(data)
+        } else if (Array.isArray(data.data)) {
+          setFamilies(data.data)
+        } else {
+          setFamilies([])
+        }
+      })
+      .catch(() => setFamilies([]))
+      .finally(() => setLoading(false))
+  }, [])
+
   async function handleCreateTest() {
     const name = nameRef.current?.value || ""
     const description = descriptionRef.current?.value || ""
@@ -69,7 +88,8 @@ export default function CreateTestPage() {
     const promptA = promptARef.current?.value || ""
     const promptB = promptBRef.current?.value || ""
     const datasetId = selectedDataset ? Number(selectedDataset) : null
-    if (!name || !description || !hypothesis || !datasetId || !promptA || !promptB) {
+    const promptFamilyId = selectedFamily ? Number(selectedFamily) : null
+    if (!name || !description || !hypothesis || !datasetId || !promptA || !promptB || !promptFamilyId) {
       alert("Please fill in all fields.")
       return
     }
@@ -78,6 +98,7 @@ export default function CreateTestPage() {
       description,
       hypothesis,
       dataset_ids: [datasetId],
+      prompt_family_id: promptFamilyId,
       prompt_version_a: promptA,
       prompt_version_b: promptB,
     }
@@ -187,22 +208,48 @@ export default function CreateTestPage() {
               </div>
             </div>
 
+
             <div>
               <h2 className="mb-6 text-xl font-semibold text-gray-900">Prompt Versions</h2>
 
               <div className="space-y-6">
                 <div>
+                  <Label htmlFor="prompt-family" className="text-base font-medium">
+                    Prompt Family
+                  </Label>
+                  <Select value={selectedFamily} onValueChange={setSelectedFamily}>
+                    <SelectTrigger className="mt-2">
+                      <SelectValue placeholder={loading ? "Loading..." : "Select prompt family"} />
+                      <div className="flex items-center gap-1">
+                        <ChevronUp className="h-4 w-4" />
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {families.length === 0 && !loading && (
+                        <div className="px-2 py-1">No prompt families found</div>
+                      )}
+                      {families.map((family) => (
+                        <SelectItem key={family.id} value={String(family.id)}>
+                          {family.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
                   <Label htmlFor="prompt-a" className="text-base font-medium">
                     Prompt Version A
                   </Label>
-                  <Textarea id="prompt-a" ref={promptARef} placeholder="Enter prompt version A" className="mt-2" rows={4} />
+                  <Input id="prompt-a" ref={promptARef} placeholder="Enter prompt version A" className="mt-2" />
                 </div>
 
                 <div>
                   <Label htmlFor="prompt-b" className="text-base font-medium">
                     Prompt Version B
                   </Label>
-                  <Textarea id="prompt-b" ref={promptBRef} placeholder="Enter prompt version B" className="mt-2" rows={4} />
+                  <Input id="prompt-b" ref={promptBRef} placeholder="Enter prompt version B" className="mt-2" />
                 </div>
               </div>
             </div>
