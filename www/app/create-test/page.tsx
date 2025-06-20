@@ -341,13 +341,15 @@ export default function CreateTestPage() {
                             <ChevronDown className="h-4 w-4" />
                           </div>
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-w-xs md:max-w-md lg:max-w-lg">
                           {versions.length === 0 && !loading && (
                             <div className="px-2 py-1">No versions found</div>
                           )}
                           {versions.map((version) => (
-                            <SelectItem key={version.id} value={String(version.id)}>
-                              {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
+                            <SelectItem key={version.id} value={String(version.id)} className="max-w-xs md:max-w-md lg:max-w-lg">
+                              <span className="truncate">
+                                {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
+                              </span>
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -379,13 +381,15 @@ export default function CreateTestPage() {
                             <ChevronDown className="h-4 w-4" />
                           </div>
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-w-xs md:max-w-md lg:max-w-lg">
                           {versions.length === 0 && !loading && (
                             <div className="px-2 py-1">No versions found</div>
                           )}
                           {versions.map((version) => (
-                            <SelectItem key={version.id} value={String(version.id)}>
-                              {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
+                            <SelectItem key={version.id} value={String(version.id)} className="max-w-xs md:max-w-md lg:max-w-lg">
+                              <span className="truncate">
+                                {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
+                              </span>
                             </SelectItem>
                           ))}
                         </SelectContent>

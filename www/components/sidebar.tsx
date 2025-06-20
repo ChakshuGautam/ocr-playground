@@ -8,24 +8,18 @@ interface SidebarProps {
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Assessments", href: "/assessments", icon: FileText },
-  { name: "Evaluations", href: "/evaluations", icon: BarChart3 },
   { name: "Evaluation Runs", href: "/evaluation-runs", icon: BarChart3 },
   { name: "Datasets", href: "/datasets", icon: Database },
-  { name: "Add Dataset", href: "/add-dataset", icon: Database },
-  { name: "Add Dataset Entries", href: "/add-dataset-entries", icon: Database },
   { name: "Prompts", href: "/prompts", icon: MessageSquare },
   { name: "Prompts Families", href: "/prompt-families", icon: MessageSquare },
   { name: "Create A/B Test", href: "/create-test", icon: MessageSquare },
   { name: "Ground Truth", href: "/ground-truth", icon: Database },
-  { name: "Evaluation Report", href: "/evaluation-report", icon: BarChart3 },
-  { name: "Users", href: "/users", icon: Users },
-  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Evaluation Report", href: "/evaluation-report", icon: BarChart3 }
 ]
 
 export function Sidebar({ currentPath }: SidebarProps) {
   return (
-    <div className="flex h-full w-64 flex-col bg-white border-r">
+    <div className="min-h-screen flex h-full w-64 flex-col bg-white border-r">
       <div className="p-6">
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-900">Handwriting AI</h2>
