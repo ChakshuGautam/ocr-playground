@@ -9,6 +9,7 @@ import shutil
 import tempfile
 from pathlib import Path
 from datetime import datetime
+import logging
 
 from .database import get_db, init_db, EvaluationRun
 from .schemas import (
@@ -989,21 +990,46 @@ async def create_evaluation_run(
     db: AsyncSession = Depends(get_db)
 ):
     """Create and start a new evaluation run (A/B test)"""
-    # Validate datasets exist
-    for dataset_id in run.dataset_ids:
-        dataset = await crud.get_dataset(db, dataset_id)
-        if not dataset:
-            raise HTTPException(status_code=404, detail=f"Dataset {dataset_id} not found")
-        if dataset.status != DatasetStatus.VALIDATED:
-            raise HTTPException(status_code=400, detail=f"Dataset {dataset.name} is not validated")
-    
-    # Create the evaluation run
-    db_run = await crud.create_evaluation_run(db, run)
-    
-    # Queue background processing
-    background_tasks.add_task(process_evaluation_run_background, db_run.id)
-    
-    return db_run
+    logging.info("[API] Entered create_evaluation_run endpoint")
+    try:
+        # Validate datasets exist
+        for dataset_id in run.dataset_ids:
+            logging.info(f"[API] Validating dataset_id: {dataset_id}")
+            dataset = await crud.get_dataset(db, dataset_id)
+            if not dataset:
+                logging.error(f"[API] Dataset {dataset_id} not found")
+                raise HTTPException(status_code=404, detail=f"Dataset {dataset_id} not found")
+            if dataset.status != DatasetStatus.VALIDATED:
+                logging.error(f"[API] Dataset {dataset.name} is not validated (status: {dataset.status})")
+                raise HTTPException(status_code=400, detail=f"Dataset {dataset.name} is not validated")
+        
+        # Create the evaluation run
+        logging.info("[API] Creating evaluation run in DB")
+        db_run = await crud.create_evaluation_run(db, run)
+        logging.info(f"[API] Evaluation run created with id: {db_run.id}")
+        
+        # Queue background processing
+        logging.info(f"[API] Adding background task for run id: {db_run.id}")
+        background_tasks.add_task(process_evaluation_run_background, db_run.id)
+        
+        logging.info(f"[API] Returning evaluation run with id: {db_run.id}")
+        # return db_run
+        return EvaluationRun(
+            id = db_run.id,
+            name = db_run.name,
+            description = db_run.description,
+            hypothesis = db_run.hypothesis,
+            status = db_run.status,
+            progress_percentage = db_run.progress_percentage,
+            current_step = db_run.current_step,
+            created_at = db_run.created_at,
+            updated_at = db_run.updated_at,
+            completed_at = db_run.completed_at,
+            dataset_ids=[d.id for d in db_run.datasets]
+        )
+    except Exception as e:
+        logging.exception(f"[API] Exception in create_evaluation_run: {str(e)}")
+        raise
 
 @app.get("/api/evaluation-runs/{run_id}/comparison", response_model=ComparisonResults)
 async def get_evaluation_comparison(run_id: int, db: AsyncSession = Depends(get_db)):

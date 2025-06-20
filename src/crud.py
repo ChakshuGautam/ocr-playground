@@ -9,10 +9,11 @@ import os
 import zipfile
 import tempfile
 from datetime import datetime, timedelta
+import logging
 
 from .database import (
     Image, Evaluation, WordEvaluation, PromptTemplate,
-    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey
+    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey, evaluation_run_datasets
 )
 from .schemas import (
     ImageCreate, ImageUpdate, EvaluationCreate, EvaluationUpdate,
@@ -703,44 +704,74 @@ async def promote_prompt_version(db: AsyncSession, version_id: int) -> bool:
 
 # Evaluation Run CRUD operations
 async def create_evaluation_run(db: AsyncSession, run: EvaluationRunCreate) -> EvaluationRun:
-    db_run = EvaluationRun(
-        name=run.name,
-        description=run.description,
-        hypothesis=run.hypothesis
-    )
-    db.add(db_run)
-    await db.flush()  # Get the ID
-    
-    # Add datasets
-    for dataset_id in run.dataset_ids:
-        dataset = await get_dataset(db, dataset_id)
-        if dataset:
-            db_run.datasets.append(dataset)
-    
-    # Add prompt configurations
-    for config in run.prompt_configurations:
-        # Find the prompt version
-        version_result = await db.execute(
-            select(PromptVersion).where(
-                and_(
-                    PromptVersion.family_id == config.family_id,
-                    PromptVersion.version == config.version
+    logging.info("[CRUD] Entered create_evaluation_run")
+    try:
+        db_run = EvaluationRun(
+            name=run.name,
+            description=run.description,
+            hypothesis=run.hypothesis
+        )
+        db.add(db_run)
+        # await db.flush()  # Get the ID
+        # await db.refresh(db_run)
+        logging.info(f"[CRUD] Created EvaluationRun object with id: {db_run.id}")
+        
+        # Append datasets BEFORE flush/refresh
+        for dataset_id in run.dataset_ids:
+            logging.info(f"[CRUD] Adding dataset_id: {dataset_id} to run {db_run.id}")
+            dataset = await get_dataset(db, dataset_id)
+            logging.info(f"[Crud]!!Dataset Found")
+            if dataset:
+                await db.execute(
+                    evaluation_run_datasets.insert().values(
+                        evaluation_run_id=db_run.id,
+                        dataset_id=dataset_id
+                    )
+                )
+                # await db_run.datasets.append(dataset)
+            else:
+                logging.warning(f"[CRUD] Dataset {dataset_id} not found when adding to run {db_run.id}")
+        await db.flush()  # Get the ID
+        await db.refresh(db_run)
+        
+        logging.info(f"[CRUD] Datasets Added to run {db_run.id}")
+        # Add prompt configurations
+        for config in run.prompt_configurations:
+            logging.info(f"[CRUD] Adding prompt config: family_id={config.family_id}, version={config.version}, label={config.label}")
+            # Find the prompt version
+            version_result = await db.execute(
+                select(PromptVersion).where(
+                    and_(
+                        PromptVersion.family_id == config.family_id,
+                        PromptVersion.version == config.version
+                    )
                 )
             )
-        )
-        version = version_result.scalar_one_or_none()
+            version = version_result.scalar_one_or_none()
+            
+            if version:
+                run_prompt = EvaluationRunPrompt(
+                    evaluation_run_id=db_run.id,
+                    prompt_version_id=version.id,
+                    label=config.label
+                )
+                db.add(run_prompt)
+                logging.info(f"[CRUD] Added EvaluationRunPrompt for version_id={version.id} to run {db_run.id}")
+            else:
+                logging.warning(f"[CRUD] PromptVersion not found for family_id={config.family_id}, version={config.version}")
         
-        if version:
-            run_prompt = EvaluationRunPrompt(
-                evaluation_run_id=db_run.id,
-                prompt_version_id=version.id,
-                label=config.label
-            )
-            db.add(run_prompt)
-    
-    await db.commit()
-    await db.refresh(db_run)
-    return db_run
+        await db.commit()
+        await db.refresh(db_run)
+        logging.info(f"[CRUD] Committed and refreshed EvaluationRun with id: {db_run.id}")
+        # Eagerly load datasets relationship
+        result = await db.execute(
+            select(EvaluationRun).options(selectinload(EvaluationRun.datasets)).where(EvaluationRun.id == db_run.id)
+        )
+        db_run_loaded = result.scalar_one()
+        return db_run_loaded
+    except Exception as e:
+        logging.exception(f"[CRUD] Exception in create_evaluation_run: {str(e)}")
+        raise
 
 async def get_evaluation_runs(db: AsyncSession) -> List[EvaluationRun]:
     result = await db.execute(

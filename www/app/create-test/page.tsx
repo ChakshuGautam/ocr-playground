@@ -99,7 +99,7 @@ export default function CreateTestPage() {
       alert("Please fill in all fields.")
       return
     }
-
+    console.log("!!!Inside handleCreateTest")
     setCreating(true)
     try {
       // Step 1: Create prompt version A
@@ -159,7 +159,7 @@ export default function CreateTestPage() {
           }
         ]
       }
-
+      console.log("evaluationRunBody : ", evaluationRunBody);
       const runResponse = await fetch("/api/evaluation-runs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -173,7 +173,7 @@ export default function CreateTestPage() {
 
       const runData = await runResponse.json()
       alert(`A/B test created successfully! Run ID: ${runData.id}`)
-      
+
       // Reset form
       if (nameRef.current) nameRef.current.value = ""
       if (descriptionRef.current) descriptionRef.current.value = ""
@@ -260,11 +260,11 @@ export default function CreateTestPage() {
                   <Label htmlFor="test-hypothesis" className="text-base font-medium">
                     Hypothesis
                   </Label>
-                  <Textarea 
-                    id="test-hypothesis" 
-                    ref={hypothesisRef} 
-                    placeholder="e.g., Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text because the model will use surrounding words to disambiguate unclear characters." 
-                    className="mt-2" 
+                  <Textarea
+                    id="test-hypothesis"
+                    ref={hypothesisRef}
+                    placeholder="e.g., Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text because the model will use surrounding words to disambiguate unclear characters."
+                    className="mt-2"
                     rows={3}
                   />
                 </div>
@@ -341,22 +341,22 @@ export default function CreateTestPage() {
                       <Label htmlFor="label-a" className="text-base font-medium">
                         Version A Label
                       </Label>
-                      <Input 
-                        id="label-a" 
-                        ref={labelARef} 
-                        placeholder="Control (Baseline)" 
-                        className="mt-2" 
+                      <Input
+                        id="label-a"
+                        ref={labelARef}
+                        placeholder="Control (Baseline)"
+                        className="mt-2"
                       />
                     </div>
                     <div>
                       <Label htmlFor="prompt-a" className="text-base font-medium">
                         Prompt Version A
                       </Label>
-                      <Textarea 
-                        id="prompt-a" 
-                        ref={promptARef} 
-                        placeholder="e.g., Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting." 
-                        className="mt-2" 
+                      <Textarea
+                        id="prompt-a"
+                        ref={promptARef}
+                        placeholder="e.g., Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting."
+                        className="mt-2"
                         rows={6}
                       />
                     </div>
@@ -368,22 +368,22 @@ export default function CreateTestPage() {
                       <Label htmlFor="label-b" className="text-base font-medium">
                         Version B Label
                       </Label>
-                      <Input 
-                        id="label-b" 
-                        ref={labelBRef} 
-                        placeholder="Variation (Context-Aware)" 
-                        className="mt-2" 
+                      <Input
+                        id="label-b"
+                        ref={labelBRef}
+                        placeholder="Variation (Context-Aware)"
+                        className="mt-2"
                       />
                     </div>
                     <div>
                       <Label htmlFor="prompt-b" className="text-base font-medium">
                         Prompt Version B
                       </Label>
-                      <Textarea 
-                        id="prompt-b" 
-                        ref={promptBRef} 
-                        placeholder="e.g., Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text." 
-                        className="mt-2" 
+                      <Textarea
+                        id="prompt-b"
+                        ref={promptBRef}
+                        placeholder="e.g., Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text."
+                        className="mt-2"
                         rows={6}
                       />
                     </div>
@@ -393,9 +393,9 @@ export default function CreateTestPage() {
             </div>
 
             <div className="flex justify-end">
-              <Button 
-                onClick={handleCreateTest} 
-                size="lg" 
+              <Button
+                onClick={handleCreateTest}
+                size="lg"
                 className="bg-blue-600 hover:bg-blue-700"
                 disabled={creating}
               >
