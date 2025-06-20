@@ -11,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 import logging
 
-from .database import get_db, init_db, EvaluationRun
+from .database import get_db, init_db, EvaluationRun, async_session
 from .schemas import (
     Image, ImageCreate, ImageUpdate, ImageWithEvaluations,
     Evaluation, EvaluationCreate, EvaluationUpdate, EvaluationWithDetails,
@@ -696,6 +696,7 @@ async def process_evaluation_background(evaluation_id: int):
 async def process_evaluation_run_background(run_id: int):
     """Background task to process an evaluation run (A/B test)"""
     from .database import async_session
+    from sqlalchemy import update
     
     async with async_session() as db:
         try:
@@ -705,7 +706,6 @@ async def process_evaluation_run_background(run_id: int):
                 return
             
             # Update run status to processing
-            from sqlalchemy import update
             await db.execute(
                 update(EvaluationRun)
                 .where(EvaluationRun.id == run_id)
@@ -1079,14 +1079,15 @@ async def websocket_evaluation_progress(websocket: WebSocket, run_id: int):
     
     try:
         while True:
-            # Get current progress
+            # Get current progress using database module directly
+            from .database import async_session
             async with async_session() as db:
                 progress = await crud.get_evaluation_run_progress(db, run_id)
                 if progress:
-                    await websocket.send_json(progress.dict())
+                    await websocket.send_json(progress)
                 
                 # If completed, send final update and close
-                if progress and progress.status in [ProcessingStatus.SUCCESS, ProcessingStatus.FAILED]:
+                if progress and progress.get('status') in ['success', 'failed']:
                     break
             
             # Wait before next update
