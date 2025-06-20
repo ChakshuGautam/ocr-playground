@@ -33,12 +33,13 @@ export default function CreateTestPage() {
   const [loading, setLoading] = useState(false)
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [versions, setVersions] = useState<any[]>([])
+  const [selectedVersionA, setSelectedVersionA] = useState<string>("")
+  const [selectedVersionB, setSelectedVersionB] = useState<string>("")
 
   const nameRef = useRef<HTMLInputElement>(null)
   const descriptionRef = useRef<HTMLInputElement>(null)
   const hypothesisRef = useRef<HTMLTextAreaElement>(null)
-  const promptARef = useRef<HTMLTextAreaElement>(null)
-  const promptBRef = useRef<HTMLTextAreaElement>(null)
   const labelARef = useRef<HTMLInputElement>(null)
   const labelBRef = useRef<HTMLInputElement>(null)
 
@@ -84,63 +85,48 @@ export default function CreateTestPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  useEffect(() => {
+    if (!selectedFamily) {
+      setVersions([])
+      setSelectedVersionA("")
+      setSelectedVersionB("")
+      return
+    }
+    setLoading(true)
+    fetch(`/api/prompt-families/${selectedFamily}/versions`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setVersions(data)
+        } else if (Array.isArray(data.data)) {
+          setVersions(data.data)
+        } else {
+          setVersions([])
+        }
+        setSelectedVersionA("")
+        setSelectedVersionB("")
+      })
+      .catch(() => setVersions([]))
+      .finally(() => setLoading(false))
+  }, [selectedFamily])
+
   async function handleCreateTest() {
     const name = nameRef.current?.value || ""
     const description = descriptionRef.current?.value || ""
     const hypothesis = hypothesisRef.current?.value || ""
-    const promptA = promptARef.current?.value || ""
-    const promptB = promptBRef.current?.value || ""
     const labelA = labelARef.current?.value || "Control (Baseline)"
     const labelB = labelBRef.current?.value || "Variation (Test)"
     const datasetId = selectedDataset ? Number(selectedDataset) : null
     const promptFamilyId = selectedFamily ? Number(selectedFamily) : null
-
-    if (!name || !description || !hypothesis || !datasetId || !promptA || !promptB || !promptFamilyId) {
+    const versionAObj = versions.find(v => String(v.id) === selectedVersionA)
+    const versionBObj = versions.find(v => String(v.id) === selectedVersionB)
+    if (!name || !description || !hypothesis || !datasetId || !promptFamilyId || !versionAObj || !versionBObj) {
       alert("Please fill in all fields.")
       return
     }
-    console.log("!!!Inside handleCreateTest")
     setCreating(true)
     try {
-      // Step 1: Create prompt version A
-      const versionAResponse = await fetch(`/api/prompt-families/${promptFamilyId}/versions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          version_type: "patch",
-          prompt_text: promptA,
-          changelog_message: `Version A for A/B test: ${name}`,
-          author: "A/B Test Creator"
-        }),
-      })
-
-      if (!versionAResponse.ok) {
-        const errorData = await versionAResponse.json()
-        throw new Error(errorData.detail || "Failed to create prompt version A")
-      }
-
-      const versionA = await versionAResponse.json()
-
-      // Step 2: Create prompt version B
-      const versionBResponse = await fetch(`/api/prompt-families/${promptFamilyId}/versions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          version_type: "patch",
-          prompt_text: promptB,
-          changelog_message: `Version B for A/B test: ${name}`,
-          author: "A/B Test Creator"
-        }),
-      })
-
-      if (!versionBResponse.ok) {
-        const errorData = await versionBResponse.json()
-        throw new Error(errorData.detail || "Failed to create prompt version B")
-      }
-
-      const versionB = await versionBResponse.json()
-
-      // Step 3: Create the evaluation run
+      // Step: Create the evaluation run using selected versions
       const evaluationRunBody = {
         name,
         description,
@@ -150,12 +136,12 @@ export default function CreateTestPage() {
           {
             label: labelA,
             family_id: promptFamilyId,
-            version: versionA.version
+            version: versionAObj.version
           },
           {
             label: labelB,
             family_id: promptFamilyId,
-            version: versionB.version
+            version: versionBObj.version
           }
         ]
       }
@@ -165,26 +151,22 @@ export default function CreateTestPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(evaluationRunBody),
       })
-
       if (!runResponse.ok) {
         const errorData = await runResponse.json()
         throw new Error(errorData.detail || "Failed to create evaluation run")
       }
-
       const runData = await runResponse.json()
       alert(`A/B test created successfully! Run ID: ${runData.id}`)
-
       // Reset form
       if (nameRef.current) nameRef.current.value = ""
       if (descriptionRef.current) descriptionRef.current.value = ""
       if (hypothesisRef.current) hypothesisRef.current.value = ""
-      if (promptARef.current) promptARef.current.value = ""
-      if (promptBRef.current) promptBRef.current.value = ""
       if (labelARef.current) labelARef.current.value = ""
       if (labelBRef.current) labelBRef.current.value = ""
       setSelectedDataset("")
       setSelectedFamily("")
-
+      setSelectedVersionA("")
+      setSelectedVersionB("")
     } catch (err: any) {
       alert(err.message || "Failed to create A/B test")
     } finally {
@@ -332,7 +314,6 @@ export default function CreateTestPage() {
 
             <div>
               <h2 className="mb-6 text-xl font-semibold text-gray-900">Prompt Versions</h2>
-
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Version A */}
@@ -349,19 +330,30 @@ export default function CreateTestPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="prompt-a" className="text-base font-medium">
-                        Prompt Version A
+                      <Label htmlFor="version-a" className="text-base font-medium">
+                        Select Version A
                       </Label>
-                      <Textarea
-                        id="prompt-a"
-                        ref={promptARef}
-                        placeholder="e.g., Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting."
-                        className="mt-2"
-                        rows={6}
-                      />
+                      <Select value={selectedVersionA} onValueChange={setSelectedVersionA} disabled={versions.length === 0}>
+                        <SelectTrigger className="mt-2">
+                          <SelectValue placeholder={loading ? "Loading..." : "Select version A"} />
+                          <div className="flex items-center gap-1">
+                            <ChevronUp className="h-4 w-4" />
+                            <ChevronDown className="h-4 w-4" />
+                          </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {versions.length === 0 && !loading && (
+                            <div className="px-2 py-1">No versions found</div>
+                          )}
+                          {versions.map((version) => (
+                            <SelectItem key={version.id} value={String(version.id)}>
+                              {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
-
                   {/* Version B */}
                   <div className="space-y-4">
                     <div>
@@ -376,16 +368,28 @@ export default function CreateTestPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="prompt-b" className="text-base font-medium">
-                        Prompt Version B
+                      <Label htmlFor="version-b" className="text-base font-medium">
+                        Select Version B
                       </Label>
-                      <Textarea
-                        id="prompt-b"
-                        ref={promptBRef}
-                        placeholder="e.g., Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text."
-                        className="mt-2"
-                        rows={6}
-                      />
+                      <Select value={selectedVersionB} onValueChange={setSelectedVersionB} disabled={versions.length === 0}>
+                        <SelectTrigger className="mt-2">
+                          <SelectValue placeholder={loading ? "Loading..." : "Select version B"} />
+                          <div className="flex items-center gap-1">
+                            <ChevronUp className="h-4 w-4" />
+                            <ChevronDown className="h-4 w-4" />
+                          </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {versions.length === 0 && !loading && (
+                            <div className="px-2 py-1">No versions found</div>
+                          )}
+                          {versions.map((version) => (
+                            <SelectItem key={version.id} value={String(version.id)}>
+                              {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                 </div>

@@ -26,7 +26,7 @@ export default function EditDatasetPage() {
     const [activeTab, setActiveTab] = useState("manual")
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("draft");
+    const [status, setStatus] = useState<string>("draft");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [datasetId, setDatasetId] = useState<number | null>(null);
@@ -261,6 +261,22 @@ export default function EditDatasetPage() {
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
                                     />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="status" className="text-base font-medium">
+                                        Status
+                                    </Label>
+                                    <select
+                                        id="status"
+                                        className="mt-2 block w-full rounded-md border border-gray-300 p-2"
+                                        value={status}
+                                        onChange={e => setStatus(e.target.value)}
+                                    >
+                                        <option value="draft">Draft</option>
+                                        <option value="validated">Validated</option>
+                                        <option value="archived">Archived</option>
+                                    </select>
                                 </div>
 
                                 {datasetId && (
