@@ -493,6 +493,10 @@ async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dat
                     errors.append(f"Row {row_num}: {str(e)}")
                     continue
         
+        dataset.image_count = imported_count
+        dataset.status = DatasetStatus.VALIDATED
+        dataset.updated_at = datetime.utcnow()
+
         return {
             "imported_count": imported_count,
             "updated_count": updated_count,

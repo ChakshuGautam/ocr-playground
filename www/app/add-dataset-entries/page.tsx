@@ -121,19 +121,25 @@ export default function AddDatasetEntriesPage() {
         formData.append('dataset_id', datasetId.toString());
 
         // Create a CSV file from manual entries
-        const csvContent = entries.map(entry =>
-          `${entry.id},${entry.imageFile?.name || ''},${entry.expectedText}`
-        ).join('\n');
+        const csvContent = [
+          'image_filename,reference_text',
+          ...entries.map(entry =>
+            `${entry.imageFile?.name || ''},${entry.expectedText}`
+          )
+        ].join('\n');
         const csvBlob = new Blob([csvContent], { type: 'text/csv' });
         formData.append('reference_csv', new File([csvBlob], 'reference.csv'));
 
         // Create a ZIP file from image files
         const zip = new JSZip();
+        const imageFileNames: string[] = [];
         entries.forEach(entry => {
           if (entry.imageFile) {
             zip.file(entry.imageFile.name, entry.imageFile);
+            imageFileNames.push(entry.imageFile.name);
           }
         });
+        console.log('Image files being zipped:', imageFileNames);
         const zipBlob = await zip.generateAsync({ type: 'blob' });
         formData.append('images_zip', new File([zipBlob], 'images.zip'));
 
@@ -156,7 +162,7 @@ export default function AddDatasetEntriesPage() {
         formData.append('file', csvFile);
         formData.append('overwrite_existing', 'false');
 
-        const response = await fetch('/api/images/import-csv', {
+        const response = await fetch(`/api/images/${datasetId}/import-csv`, {
           method: 'POST',
           body: formData,
         });
