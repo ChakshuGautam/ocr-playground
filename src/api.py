@@ -8,8 +8,9 @@ import json
 import shutil
 import tempfile
 from pathlib import Path
+from datetime import datetime
 
-from .database import get_db, init_db
+from .database import get_db, init_db, EvaluationRun
 from .schemas import (
     Image, ImageCreate, ImageUpdate, ImageWithEvaluations,
     Evaluation, EvaluationCreate, EvaluationUpdate, EvaluationWithDetails,
@@ -658,6 +659,172 @@ async def process_evaluation_background(evaluation_id: int):
                     error_message=str(e)
                 )
             )
+
+async def process_evaluation_run_background(run_id: int):
+    """Background task to process an evaluation run (A/B test)"""
+    from .database import async_session
+    
+    async with async_session() as db:
+        try:
+            # Get the evaluation run
+            evaluation_run = await crud.get_evaluation_run(db, run_id)
+            if not evaluation_run:
+                return
+            
+            # Update run status to processing
+            from sqlalchemy import update
+            await db.execute(
+                update(EvaluationRun)
+                .where(EvaluationRun.id == run_id)
+                .values(
+                    status="processing",
+                    progress_percentage=0,
+                    current_step="Initializing evaluation run"
+                )
+            )
+            await db.commit()
+            
+            # Get all images from all datasets in this run
+            all_images = []
+            for dataset in evaluation_run.datasets:
+                # Access images through the relationship
+                all_images.extend(dataset.images)
+            
+            total_images = len(all_images)
+            if total_images == 0:
+                # No images to process
+                await db.execute(
+                    update(EvaluationRun)
+                    .where(EvaluationRun.id == run_id)
+                    .values(
+                        status="failed",
+                        current_step="No images found in datasets"
+                    )
+                )
+                await db.commit()
+                return
+            
+            # Get prompt configurations for this run
+            prompt_configs = evaluation_run.prompt_configurations
+            if not prompt_configs:
+                await db.execute(
+                    update(EvaluationRun)
+                    .where(EvaluationRun.id == run_id)
+                    .values(
+                        status="failed",
+                        current_step="No prompt configurations found"
+                    )
+                )
+                await db.commit()
+                return
+            
+            # Process each image with each prompt configuration
+            processed_count = 0
+            orchestrator = get_ocr_orchestrator()
+            
+            for image in all_images:
+                for prompt_config in prompt_configs:
+                    try:
+                        # Create evaluation for this image and prompt
+                        evaluation_create = crud.EvaluationCreate(
+                            image_id=image.id,
+                            evaluation_run_id=run_id,
+                            prompt_version=prompt_config.prompt_version.version,
+                            force_reprocess=True
+                        )
+                        
+                        # Create the evaluation record
+                        db_evaluation = await crud.create_evaluation(db, evaluation_create)
+                        
+                        # Update progress
+                        processed_count += 1
+                        progress_percentage = int((processed_count / (total_images * len(prompt_configs))) * 100)
+                        
+                        await db.execute(
+                            update(EvaluationRun)
+                            .where(EvaluationRun.id == run_id)
+                            .values(
+                                progress_percentage=progress_percentage,
+                                current_step=f"Processing image {image.number} with {prompt_config.label}"
+                            )
+                        )
+                        await db.commit()
+                        
+                        # Process the evaluation
+                        result = await orchestrator.process_single_evaluation(
+                            image.url,
+                            image.reference_text,
+                            image.number
+                        )
+                        
+                        if result.get('success'):
+                            # Update evaluation with results
+                            word_evaluations = []
+                            evaluation_data = result.get('evaluation', {})
+                            
+                            for word_eval in evaluation_data.get('word_evaluations', []):
+                                word_evaluations.append(crud.WordEvaluationCreate(
+                                    reference_word=word_eval.get('reference_word', ''),
+                                    transcribed_word=word_eval.get('transcribed_word'),
+                                    match=word_eval.get('match', False),
+                                    reason_diff=word_eval.get('reason_diff', ''),
+                                    word_position=word_eval.get('word_position', 0)
+                                ))
+                            
+                            update_data = crud.EvaluationUpdate(
+                                ocr_output=evaluation_data.get('full_text', ''),
+                                accuracy=evaluation_data.get('accuracy', 0),
+                                correct_words=evaluation_data.get('correct_words', 0),
+                                total_words=evaluation_data.get('total_words', 0),
+                                processing_status="success",
+                                progress_percentage=100,
+                                current_step="Completed",
+                                word_evaluations=word_evaluations
+                            )
+                            
+                            await crud.update_evaluation(db, db_evaluation.id, update_data)
+                        else:
+                            # Update with error
+                            await crud.update_evaluation(
+                                db,
+                                db_evaluation.id,
+                                crud.EvaluationUpdate(
+                                    processing_status="failed",
+                                    progress_percentage=0,
+                                    current_step="Failed",
+                                    error_message=result.get('error', 'Unknown error')
+                                )
+                            )
+                    
+                    except Exception as e:
+                        # Log error but continue with other evaluations
+                        print(f"Error processing image {image.id} with prompt {prompt_config.label}: {str(e)}")
+                        continue
+            
+            # Mark run as completed
+            await db.execute(
+                update(EvaluationRun)
+                .where(EvaluationRun.id == run_id)
+                .values(
+                    status="success",
+                    progress_percentage=100,
+                    current_step="Evaluation run completed",
+                    completed_at=datetime.utcnow()
+                )
+            )
+            await db.commit()
+            
+        except Exception as e:
+            # Update run with error
+            await db.execute(
+                update(EvaluationRun)
+                .where(EvaluationRun.id == run_id)
+                .values(
+                    status="failed",
+                    current_step=f"Failed: {str(e)}"
+                )
+            )
+            await db.commit()
 
 # Dataset endpoints
 @app.get("/api/datasets", response_model=List[Dataset])

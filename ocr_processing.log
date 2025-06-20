@@ -3387,3 +3387,1572 @@ FROM prompt_versions
 WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
 2025-06-19 23:54:58,589 - INFO - [cached since 457.7s ago] (1,)
 2025-06-19 23:54:58,591 - INFO - ROLLBACK
+2025-06-20 10:10:05,987 - INFO - BEGIN (implicit)
+2025-06-20 10:10:05,988 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-20 10:10:05,989 - INFO - [raw sql] ()
+2025-06-20 10:10:05,992 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-20 10:10:05,993 - INFO - [raw sql] ()
+2025-06-20 10:10:05,994 - INFO - PRAGMA main.table_info("datasets")
+2025-06-20 10:10:05,994 - INFO - [raw sql] ()
+2025-06-20 10:10:05,995 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-20 10:10:05,995 - INFO - [raw sql] ()
+2025-06-20 10:10:05,996 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-20 10:10:05,997 - INFO - [raw sql] ()
+2025-06-20 10:10:05,998 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-20 10:10:05,999 - INFO - [raw sql] ()
+2025-06-20 10:10:06,000 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-20 10:10:06,001 - INFO - [raw sql] ()
+2025-06-20 10:10:06,002 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-20 10:10:06,003 - INFO - [raw sql] ()
+2025-06-20 10:10:06,004 - INFO - PRAGMA main.table_info("images")
+2025-06-20 10:10:06,005 - INFO - [raw sql] ()
+2025-06-20 10:10:06,007 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-20 10:10:06,007 - INFO - [raw sql] ()
+2025-06-20 10:10:06,009 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-20 10:10:06,009 - INFO - [raw sql] ()
+2025-06-20 10:10:06,011 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-20 10:10:06,012 - INFO - [raw sql] ()
+2025-06-20 10:10:06,013 - INFO - COMMIT
+2025-06-20 10:10:16,757 - INFO - BEGIN (implicit)
+2025-06-20 10:10:16,789 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:16,789 - INFO - [generated in 0.00085s] ()
+2025-06-20 10:10:16,798 - INFO - ROLLBACK
+2025-06-20 10:10:22,564 - INFO - BEGIN (implicit)
+2025-06-20 10:10:22,566 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:22,567 - INFO - [cached since 5.779s ago] ()
+2025-06-20 10:10:22,569 - INFO - ROLLBACK
+2025-06-20 10:10:22,600 - INFO - BEGIN (implicit)
+2025-06-20 10:10:22,601 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:22,602 - INFO - [cached since 5.814s ago] ()
+2025-06-20 10:10:22,605 - INFO - ROLLBACK
+2025-06-20 10:10:30,136 - INFO - BEGIN (implicit)
+2025-06-20 10:10:30,139 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 10:10:30,140 - INFO - [generated in 0.00100s] (6,)
+2025-06-20 10:10:30,146 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 10:10:30,147 - INFO - [generated in 0.00124s] (6,)
+2025-06-20 10:10:30,151 - INFO - ROLLBACK
+2025-06-20 10:10:33,642 - INFO - BEGIN (implicit)
+2025-06-20 10:10:33,644 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:33,645 - INFO - [cached since 16.86s ago] ()
+2025-06-20 10:10:33,648 - INFO - ROLLBACK
+2025-06-20 10:10:42,498 - INFO - BEGIN (implicit)
+2025-06-20 10:10:42,499 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:42,500 - INFO - [cached since 25.71s ago] ()
+2025-06-20 10:10:42,503 - INFO - ROLLBACK
+2025-06-20 10:10:42,530 - INFO - BEGIN (implicit)
+2025-06-20 10:10:42,531 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:42,532 - INFO - [cached since 25.74s ago] ()
+2025-06-20 10:10:42,536 - INFO - ROLLBACK
+2025-06-20 10:10:46,208 - INFO - BEGIN (implicit)
+2025-06-20 10:10:46,210 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:46,211 - INFO - [cached since 29.42s ago] ()
+2025-06-20 10:10:46,214 - INFO - ROLLBACK
+2025-06-20 10:10:46,239 - INFO - BEGIN (implicit)
+2025-06-20 10:10:46,241 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:46,241 - INFO - [cached since 29.45s ago] ()
+2025-06-20 10:10:46,244 - INFO - ROLLBACK
+2025-06-20 10:10:49,683 - INFO - BEGIN (implicit)
+2025-06-20 10:10:49,686 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 10:10:49,693 - INFO - [generated in 0.00098s] ()
+2025-06-20 10:10:49,696 - INFO - ROLLBACK
+2025-06-20 10:10:49,715 - INFO - BEGIN (implicit)
+2025-06-20 10:10:49,717 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 10:10:49,718 - INFO - [cached since 0.03205s ago] ()
+2025-06-20 10:10:49,720 - INFO - ROLLBACK
+2025-06-20 10:10:52,038 - INFO - BEGIN (implicit)
+2025-06-20 10:10:52,040 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:52,042 - INFO - [cached since 35.25s ago] ()
+2025-06-20 10:10:52,046 - INFO - ROLLBACK
+2025-06-20 10:10:52,070 - INFO - BEGIN (implicit)
+2025-06-20 10:10:52,071 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:10:52,073 - INFO - [cached since 35.28s ago] ()
+2025-06-20 10:10:52,076 - INFO - ROLLBACK
+2025-06-20 10:10:54,640 - INFO - BEGIN (implicit)
+2025-06-20 10:10:54,642 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 10:10:54,643 - INFO - [generated in 0.00092s] ()
+2025-06-20 10:10:54,646 - INFO - ROLLBACK
+2025-06-20 10:10:54,676 - INFO - BEGIN (implicit)
+2025-06-20 10:10:54,678 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 10:10:54,679 - INFO - [cached since 0.03587s ago] ()
+2025-06-20 10:10:54,681 - INFO - ROLLBACK
+2025-06-20 10:11:04,408 - INFO - BEGIN (implicit)
+2025-06-20 10:11:04,410 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:11:04,410 - INFO - [generated in 0.00092s] (1,)
+2025-06-20 10:11:04,414 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:11:04,415 - INFO - [generated in 0.00111s] (1,)
+2025-06-20 10:11:04,418 - INFO - ROLLBACK
+2025-06-20 10:11:05,792 - INFO - BEGIN (implicit)
+2025-06-20 10:11:05,794 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:11:05,795 - INFO - [generated in 0.00069s] (1,)
+2025-06-20 10:11:05,797 - INFO - ROLLBACK
+2025-06-20 10:11:27,682 - INFO - BEGIN (implicit)
+2025-06-20 10:11:27,684 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 10:11:27,685 - INFO - [generated in 0.00122s] (6,)
+2025-06-20 10:11:27,688 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 10:11:27,689 - INFO - [cached since 0.004763s ago] (6,)
+2025-06-20 10:11:27,693 - INFO - UPDATE prompt_versions SET status=? WHERE prompt_versions.id = ?
+2025-06-20 10:11:27,694 - INFO - [generated in 0.00087s] (<PromptStatus.ARCHIVED: 'archived'>, 6)
+2025-06-20 10:11:27,704 - INFO - COMMIT
+2025-06-20 10:11:27,709 - INFO - BEGIN (implicit)
+2025-06-20 10:11:27,712 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 10:11:27,713 - INFO - [generated in 0.00101s] (6,)
+2025-06-20 10:11:27,716 - INFO - ROLLBACK
+2025-06-20 10:11:27,951 - INFO - BEGIN (implicit)
+2025-06-20 10:11:27,952 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:11:27,953 - INFO - [cached since 23.54s ago] (1,)
+2025-06-20 10:11:27,957 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:11:27,958 - INFO - [cached since 23.54s ago] (1,)
+2025-06-20 10:11:27,967 - INFO - ROLLBACK
+2025-06-20 10:11:28,097 - INFO - BEGIN (implicit)
+2025-06-20 10:11:28,098 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:11:28,098 - INFO - [cached since 22.3s ago] (1,)
+2025-06-20 10:11:28,100 - INFO - ROLLBACK
+2025-06-20 10:11:57,049 - INFO - BEGIN (implicit)
+2025-06-20 10:11:57,050 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:11:57,050 - INFO - [cached since 100.3s ago] ()
+2025-06-20 10:11:57,053 - INFO - ROLLBACK
+2025-06-20 10:11:57,064 - INFO - BEGIN (implicit)
+2025-06-20 10:11:57,065 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 10:11:57,066 - INFO - [cached since 62.42s ago] ()
+2025-06-20 10:11:57,069 - INFO - ROLLBACK
+2025-06-20 10:11:57,074 - INFO - BEGIN (implicit)
+2025-06-20 10:11:57,075 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 10:11:57,076 - INFO - [cached since 100.3s ago] ()
+2025-06-20 10:11:57,078 - INFO - ROLLBACK
+2025-06-20 10:11:57,093 - INFO - BEGIN (implicit)
+2025-06-20 10:11:57,094 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 10:11:57,095 - INFO - [cached since 62.45s ago] ()
+2025-06-20 10:11:57,097 - INFO - ROLLBACK
+2025-06-20 10:55:02,275 - INFO - BEGIN (implicit)
+2025-06-20 10:55:02,277 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-20 10:55:02,277 - INFO - [raw sql] ()
+2025-06-20 10:55:02,279 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-20 10:55:02,280 - INFO - [raw sql] ()
+2025-06-20 10:55:02,282 - INFO - PRAGMA main.table_info("datasets")
+2025-06-20 10:55:02,282 - INFO - [raw sql] ()
+2025-06-20 10:55:02,283 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-20 10:55:02,283 - INFO - [raw sql] ()
+2025-06-20 10:55:02,285 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-20 10:55:02,286 - INFO - [raw sql] ()
+2025-06-20 10:55:02,288 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-20 10:55:02,288 - INFO - [raw sql] ()
+2025-06-20 10:55:02,290 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-20 10:55:02,292 - INFO - [raw sql] ()
+2025-06-20 10:55:02,292 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-20 10:55:02,293 - INFO - [raw sql] ()
+2025-06-20 10:55:02,295 - INFO - PRAGMA main.table_info("images")
+2025-06-20 10:55:02,295 - INFO - [raw sql] ()
+2025-06-20 10:55:02,297 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-20 10:55:02,297 - INFO - [raw sql] ()
+2025-06-20 10:55:02,299 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-20 10:55:02,299 - INFO - [raw sql] ()
+2025-06-20 10:55:02,301 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-20 10:55:02,301 - INFO - [raw sql] ()
+2025-06-20 10:55:02,302 - INFO - COMMIT
+2025-06-20 10:57:54,020 - INFO - BEGIN (implicit)
+2025-06-20 10:57:54,024 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:57:54,025 - INFO - [generated in 0.00130s] (1,)
+2025-06-20 10:57:54,030 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:57:54,031 - INFO - [generated in 0.00089s] (1,)
+2025-06-20 10:57:54,036 - INFO - ROLLBACK
+2025-06-20 10:57:54,757 - INFO - BEGIN (implicit)
+2025-06-20 10:57:54,759 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:57:54,760 - INFO - [cached since 0.7358s ago] (1,)
+2025-06-20 10:57:54,765 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:57:54,766 - INFO - [cached since 0.7353s ago] (1,)
+2025-06-20 10:57:54,770 - INFO - ROLLBACK
+2025-06-20 10:57:55,739 - INFO - BEGIN (implicit)
+2025-06-20 10:57:55,742 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:57:55,742 - INFO - [generated in 0.00100s] (1,)
+2025-06-20 10:57:55,745 - INFO - ROLLBACK
+2025-06-20 10:57:56,682 - INFO - BEGIN (implicit)
+2025-06-20 10:57:56,685 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:57:56,686 - INFO - [cached since 0.9443s ago] (1,)
+2025-06-20 10:57:56,689 - INFO - ROLLBACK
+2025-06-20 10:58:03,225 - INFO - BEGIN (implicit)
+2025-06-20 10:58:03,226 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:58:03,227 - INFO - [cached since 9.204s ago] (1,)
+2025-06-20 10:58:03,232 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:58:03,233 - INFO - [cached since 9.203s ago] (1,)
+2025-06-20 10:58:03,237 - INFO - ROLLBACK
+2025-06-20 10:58:03,395 - INFO - BEGIN (implicit)
+2025-06-20 10:58:03,397 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:58:03,398 - INFO - [cached since 9.374s ago] (1,)
+2025-06-20 10:58:03,402 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:58:03,403 - INFO - [cached since 9.373s ago] (1,)
+2025-06-20 10:58:03,407 - INFO - ROLLBACK
+2025-06-20 10:58:03,546 - INFO - BEGIN (implicit)
+2025-06-20 10:58:03,548 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:58:03,549 - INFO - [cached since 7.808s ago] (1,)
+2025-06-20 10:58:03,551 - INFO - ROLLBACK
+2025-06-20 10:58:03,689 - INFO - BEGIN (implicit)
+2025-06-20 10:58:03,690 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:58:03,691 - INFO - [cached since 7.95s ago] (1,)
+2025-06-20 10:58:03,695 - INFO - ROLLBACK
+2025-06-20 10:58:09,657 - INFO - BEGIN (implicit)
+2025-06-20 10:58:09,659 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 10:58:09,660 - INFO - [cached since 15.64s ago] (1,)
+2025-06-20 10:58:09,663 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 10:58:09,663 - INFO - [cached since 15.63s ago] (1,)
+2025-06-20 10:58:09,666 - INFO - ROLLBACK
+2025-06-20 10:58:09,833 - INFO - BEGIN (implicit)
+2025-06-20 10:58:09,834 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 10:58:09,835 - INFO - [cached since 14.09s ago] (1,)
+2025-06-20 10:58:09,837 - INFO - ROLLBACK
+2025-06-20 11:03:51,943 - INFO - BEGIN (implicit)
+2025-06-20 11:03:51,944 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:03:51,945 - INFO - [generated in 0.00108s] ()
+2025-06-20 11:03:51,952 - INFO - ROLLBACK
+2025-06-20 11:03:51,954 - INFO - BEGIN (implicit)
+2025-06-20 11:03:51,957 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:03:51,958 - INFO - [generated in 0.00095s] ()
+2025-06-20 11:03:51,962 - INFO - ROLLBACK
+2025-06-20 11:03:52,004 - INFO - BEGIN (implicit)
+2025-06-20 11:03:52,006 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:03:52,007 - INFO - [cached since 0.06249s ago] ()
+2025-06-20 11:03:52,009 - INFO - ROLLBACK
+2025-06-20 11:03:52,011 - INFO - BEGIN (implicit)
+2025-06-20 11:03:52,012 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:03:52,013 - INFO - [cached since 0.05563s ago] ()
+2025-06-20 11:03:52,015 - INFO - ROLLBACK
+2025-06-20 11:04:47,343 - INFO - BEGIN (implicit)
+2025-06-20 11:04:47,345 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:04:47,346 - INFO - [cached since 413.3s ago] (1,)
+2025-06-20 11:04:47,350 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:04:47,351 - INFO - [cached since 413.3s ago] (1,)
+2025-06-20 11:04:47,355 - INFO - ROLLBACK
+2025-06-20 11:04:48,141 - INFO - BEGIN (implicit)
+2025-06-20 11:04:48,142 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:04:48,143 - INFO - [cached since 414.1s ago] (1,)
+2025-06-20 11:04:48,145 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:04:48,146 - INFO - [cached since 414.1s ago] (1,)
+2025-06-20 11:04:48,148 - INFO - ROLLBACK
+2025-06-20 11:04:48,267 - INFO - BEGIN (implicit)
+2025-06-20 11:04:48,268 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:04:48,269 - INFO - [cached since 412.5s ago] (1,)
+2025-06-20 11:04:48,271 - INFO - ROLLBACK
+2025-06-20 11:04:48,415 - INFO - BEGIN (implicit)
+2025-06-20 11:04:48,416 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:04:48,416 - INFO - [cached since 412.7s ago] (1,)
+2025-06-20 11:04:48,419 - INFO - ROLLBACK
+2025-06-20 11:04:53,977 - INFO - BEGIN (implicit)
+2025-06-20 11:04:53,978 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:04:53,978 - INFO - [cached since 62.03s ago] ()
+2025-06-20 11:04:53,981 - INFO - ROLLBACK
+2025-06-20 11:04:54,005 - INFO - BEGIN (implicit)
+2025-06-20 11:04:54,007 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:04:54,007 - INFO - [cached since 62.06s ago] ()
+2025-06-20 11:04:54,010 - INFO - ROLLBACK
+2025-06-20 11:04:57,632 - INFO - BEGIN (implicit)
+2025-06-20 11:04:57,633 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:04:57,634 - INFO - [cached since 423.6s ago] (1,)
+2025-06-20 11:04:57,638 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:04:57,639 - INFO - [cached since 423.6s ago] (1,)
+2025-06-20 11:04:57,643 - INFO - ROLLBACK
+2025-06-20 11:04:57,796 - INFO - BEGIN (implicit)
+2025-06-20 11:04:57,797 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:04:57,798 - INFO - [cached since 423.8s ago] (1,)
+2025-06-20 11:04:57,801 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:04:57,802 - INFO - [cached since 423.8s ago] (1,)
+2025-06-20 11:04:57,806 - INFO - ROLLBACK
+2025-06-20 11:04:57,941 - INFO - BEGIN (implicit)
+2025-06-20 11:04:57,943 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:04:57,944 - INFO - [cached since 422.2s ago] (1,)
+2025-06-20 11:04:57,948 - INFO - ROLLBACK
+2025-06-20 11:04:58,090 - INFO - BEGIN (implicit)
+2025-06-20 11:04:58,091 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:04:58,093 - INFO - [cached since 422.4s ago] (1,)
+2025-06-20 11:04:58,097 - INFO - ROLLBACK
+2025-06-20 11:18:41,595 - INFO - BEGIN (implicit)
+2025-06-20 11:18:41,596 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:18:41,597 - INFO - [cached since 889.7s ago] ()
+2025-06-20 11:18:41,599 - INFO - ROLLBACK
+2025-06-20 11:18:41,628 - INFO - BEGIN (implicit)
+2025-06-20 11:18:41,629 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:18:41,630 - INFO - [cached since 889.7s ago] ()
+2025-06-20 11:18:41,633 - INFO - ROLLBACK
+2025-06-20 11:18:58,407 - INFO - BEGIN (implicit)
+2025-06-20 11:18:58,411 - INFO - INSERT INTO prompt_families (name, description, tags, production_version, created_at) VALUES (?, ?, ?, ?, ?)
+2025-06-20 11:18:58,411 - INFO - [generated in 0.00109s] ('OCR Handwriting Recognition', 'Prompts for handwritten text recognition', '[]', None, '2025-06-20 05:48:58.411001')
+2025-06-20 11:18:58,415 - INFO - COMMIT
+2025-06-20 11:18:58,422 - INFO - BEGIN (implicit)
+2025-06-20 11:18:58,425 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:18:58,426 - INFO - [generated in 0.00117s] (2,)
+2025-06-20 11:18:58,429 - INFO - ROLLBACK
+2025-06-20 11:18:58,471 - INFO - BEGIN (implicit)
+2025-06-20 11:18:58,472 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:18:58,473 - INFO - [cached since 906.5s ago] ()
+2025-06-20 11:18:58,476 - INFO - ROLLBACK
+2025-06-20 11:19:24,575 - INFO - BEGIN (implicit)
+2025-06-20 11:19:24,576 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:19:24,577 - INFO - [cached since 1291s ago] (2,)
+2025-06-20 11:19:24,581 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:19:24,581 - INFO - [cached since 1291s ago] (2,)
+2025-06-20 11:19:24,583 - INFO - ROLLBACK
+2025-06-20 11:19:25,042 - INFO - BEGIN (implicit)
+2025-06-20 11:19:25,044 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:19:25,045 - INFO - [cached since 1289s ago] (2,)
+2025-06-20 11:19:25,047 - INFO - ROLLBACK
+2025-06-20 11:19:57,538 - INFO - BEGIN (implicit)
+2025-06-20 11:19:57,539 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:19:57,541 - INFO - [cached since 1324s ago] (2,)
+2025-06-20 11:19:57,544 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:19:57,545 - INFO - [cached since 1324s ago] (2,)
+2025-06-20 11:19:57,550 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 11:19:57,551 - INFO - [generated in 0.00126s] (2, 1, 0)
+2025-06-20 11:19:57,556 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 11:19:57,557 - INFO - [generated in 0.00120s] (2, '1.0.0', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting.', 'Initial baseline prompt for handwriting recognition', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 05:49:57.556578', None)
+2025-06-20 11:19:57,562 - INFO - COMMIT
+2025-06-20 11:19:57,570 - INFO - BEGIN (implicit)
+2025-06-20 11:19:57,573 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 11:19:57,573 - INFO - [generated in 0.00124s] (7,)
+2025-06-20 11:19:57,577 - INFO - ROLLBACK
+2025-06-20 11:19:57,732 - INFO - BEGIN (implicit)
+2025-06-20 11:19:57,733 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:19:57,734 - INFO - [cached since 1324s ago] (2,)
+2025-06-20 11:19:57,738 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:19:57,739 - INFO - [cached since 1324s ago] (2,)
+2025-06-20 11:19:57,743 - INFO - ROLLBACK
+2025-06-20 11:19:57,887 - INFO - BEGIN (implicit)
+2025-06-20 11:19:57,889 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:19:57,890 - INFO - [cached since 1322s ago] (2,)
+2025-06-20 11:19:57,893 - INFO - ROLLBACK
+2025-06-20 11:20:35,628 - INFO - BEGIN (implicit)
+2025-06-20 11:20:35,629 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:20:35,630 - INFO - [cached since 1362s ago] (2,)
+2025-06-20 11:20:35,633 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:20:35,634 - INFO - [cached since 1362s ago] (2,)
+2025-06-20 11:20:35,636 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 11:20:35,637 - INFO - [cached since 38.09s ago] (2, 1, 0)
+2025-06-20 11:20:35,641 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 11:20:35,642 - INFO - [cached since 38.09s ago] (2, '1.0.1', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Enhanced prompt with context awareness and pattern recognition', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 05:50:35.641482', None)
+2025-06-20 11:20:35,645 - INFO - COMMIT
+2025-06-20 11:20:35,649 - INFO - BEGIN (implicit)
+2025-06-20 11:20:35,650 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 11:20:35,651 - INFO - [cached since 38.08s ago] (8,)
+2025-06-20 11:20:35,653 - INFO - ROLLBACK
+2025-06-20 11:20:35,821 - INFO - BEGIN (implicit)
+2025-06-20 11:20:35,822 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:20:35,822 - INFO - [cached since 1362s ago] (2,)
+2025-06-20 11:20:35,824 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:20:35,825 - INFO - [cached since 1362s ago] (2,)
+2025-06-20 11:20:35,828 - INFO - ROLLBACK
+2025-06-20 11:20:35,936 - INFO - BEGIN (implicit)
+2025-06-20 11:20:35,937 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:20:35,938 - INFO - [cached since 1360s ago] (2,)
+2025-06-20 11:20:35,942 - INFO - ROLLBACK
+2025-06-20 11:21:27,728 - INFO - BEGIN (implicit)
+2025-06-20 11:21:27,729 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:21:27,730 - INFO - [cached since 1056s ago] ()
+2025-06-20 11:21:27,732 - INFO - ROLLBACK
+2025-06-20 11:21:27,761 - INFO - BEGIN (implicit)
+2025-06-20 11:21:27,762 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:21:27,763 - INFO - [cached since 1056s ago] ()
+2025-06-20 11:21:27,766 - INFO - ROLLBACK
+2025-06-20 11:21:39,370 - INFO - BEGIN (implicit)
+2025-06-20 11:21:39,373 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:21:39,374 - INFO - [generated in 0.00087s] (5,)
+2025-06-20 11:21:39,381 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:21:39,382 - INFO - [generated in 0.00132s] (5,)
+2025-06-20 11:21:39,385 - INFO - ROLLBACK
+2025-06-20 11:21:43,791 - INFO - BEGIN (implicit)
+2025-06-20 11:21:43,792 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:21:43,793 - INFO - [cached since 1072s ago] ()
+2025-06-20 11:21:43,795 - INFO - ROLLBACK
+2025-06-20 11:22:16,598 - INFO - BEGIN (implicit)
+2025-06-20 11:22:16,599 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:22:16,600 - INFO - [cached since 37.23s ago] (5,)
+2025-06-20 11:22:16,603 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:22:16,603 - INFO - [cached since 37.22s ago] (5,)
+2025-06-20 11:22:16,606 - INFO - ROLLBACK
+2025-06-20 11:22:22,219 - INFO - BEGIN (implicit)
+2025-06-20 11:22:22,220 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:22:22,221 - INFO - [cached since 42.85s ago] (5,)
+2025-06-20 11:22:22,224 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:22:22,226 - INFO - [cached since 42.84s ago] (5,)
+2025-06-20 11:22:22,230 - INFO - ROLLBACK
+2025-06-20 11:22:36,921 - INFO - BEGIN (implicit)
+2025-06-20 11:22:36,922 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:22:36,923 - INFO - [cached since 1125s ago] ()
+2025-06-20 11:22:36,927 - INFO - ROLLBACK
+2025-06-20 11:22:46,130 - INFO - BEGIN (implicit)
+2025-06-20 11:22:46,131 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:22:46,132 - INFO - [cached since 66.76s ago] (6,)
+2025-06-20 11:22:46,139 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:22:46,140 - INFO - [cached since 66.76s ago] (6,)
+2025-06-20 11:22:46,145 - INFO - ROLLBACK
+2025-06-20 11:22:48,537 - INFO - BEGIN (implicit)
+2025-06-20 11:22:48,539 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:22:48,540 - INFO - [cached since 1137s ago] ()
+2025-06-20 11:22:48,543 - INFO - ROLLBACK
+2025-06-20 11:22:52,814 - INFO - BEGIN (implicit)
+2025-06-20 11:22:52,816 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:22:52,816 - INFO - [cached since 73.44s ago] (6,)
+2025-06-20 11:22:52,820 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:22:52,821 - INFO - [cached since 73.44s ago] (6,)
+2025-06-20 11:22:52,826 - INFO - ROLLBACK
+2025-06-20 11:23:02,071 - INFO - BEGIN (implicit)
+2025-06-20 11:23:02,073 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:23:02,074 - INFO - [cached since 82.7s ago] (4,)
+2025-06-20 11:23:02,077 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:23:02,078 - INFO - [cached since 82.7s ago] (4,)
+2025-06-20 11:23:02,082 - INFO - ROLLBACK
+2025-06-20 11:23:05,901 - INFO - BEGIN (implicit)
+2025-06-20 11:23:05,903 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:23:05,905 - INFO - [cached since 86.53s ago] (3,)
+2025-06-20 11:23:05,909 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:23:05,910 - INFO - [cached since 86.53s ago] (3,)
+2025-06-20 11:23:05,914 - INFO - ROLLBACK
+2025-06-20 11:23:39,674 - INFO - BEGIN (implicit)
+2025-06-20 11:23:39,677 - INFO - INSERT INTO datasets (name, description, status, image_count, created_at, updated_at, last_used) VALUES (?, ?, ?, ?, ?, ?, ?)
+2025-06-20 11:23:39,677 - INFO - [generated in 0.00118s] ('Handwritten Notes Datasets', 'Collection of handwritten notes for OCR testing', <DatasetStatus.DRAFT: 'draft'>, 0, '2025-06-20 05:53:39.677695', '2025-06-20 05:53:39.677695', None)
+2025-06-20 11:23:39,686 - INFO - COMMIT
+2025-06-20 11:23:39,691 - INFO - BEGIN (implicit)
+2025-06-20 11:23:39,693 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:23:39,694 - INFO - [generated in 0.00109s] (7,)
+2025-06-20 11:23:39,698 - INFO - ROLLBACK
+2025-06-20 11:25:59,121 - INFO - BEGIN (implicit)
+2025-06-20 11:25:59,122 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:25:59,122 - INFO - [cached since 259.7s ago] (7,)
+2025-06-20 11:25:59,125 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:25:59,126 - INFO - [cached since 259.7s ago] (7,)
+2025-06-20 11:25:59,128 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:25:59,129 - INFO - [cached since 259.8s ago] (7,)
+2025-06-20 11:25:59,132 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:25:59,132 - INFO - [cached since 259.8s ago] (7,)
+2025-06-20 11:25:59,167 - INFO - UPDATE datasets SET status=?, updated_at=? WHERE datasets.id = ?
+2025-06-20 11:25:59,168 - INFO - [generated in 0.00100s] (<DatasetStatus.VALIDATED: 'validated'>, '2025-06-20 05:55:59.165360', 7)
+2025-06-20 11:25:59,170 - INFO - COMMIT
+2025-06-20 11:25:59,174 - INFO - BEGIN (implicit)
+2025-06-20 11:25:59,175 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:25:59,176 - INFO - [generated in 0.00078s] (7,)
+2025-06-20 11:25:59,179 - INFO - SELECT images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM images, dataset_images 
+WHERE ? = dataset_images.dataset_id AND images.id = dataset_images.image_id
+2025-06-20 11:25:59,181 - INFO - [generated in 0.00092s] (7,)
+2025-06-20 11:25:59,184 - INFO - ROLLBACK
+2025-06-20 11:25:59,632 - INFO - BEGIN (implicit)
+2025-06-20 11:25:59,633 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:25:59,633 - INFO - [cached since 1328s ago] ()
+2025-06-20 11:25:59,635 - INFO - ROLLBACK
+2025-06-20 11:25:59,652 - INFO - BEGIN (implicit)
+2025-06-20 11:25:59,653 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:25:59,654 - INFO - [cached since 1328s ago] ()
+2025-06-20 11:25:59,657 - INFO - ROLLBACK
+2025-06-20 11:26:06,046 - INFO - BEGIN (implicit)
+2025-06-20 11:26:06,047 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:26:06,048 - INFO - [cached since 266.7s ago] (7,)
+2025-06-20 11:26:06,053 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:26:06,054 - INFO - [cached since 266.7s ago] (7,)
+2025-06-20 11:26:06,058 - INFO - ROLLBACK
+2025-06-20 11:26:07,829 - INFO - BEGIN (implicit)
+2025-06-20 11:26:07,830 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:26:07,832 - INFO - [cached since 1336s ago] ()
+2025-06-20 11:26:07,834 - INFO - ROLLBACK
+2025-06-20 11:26:18,621 - INFO - BEGIN (implicit)
+2025-06-20 11:26:18,622 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 11:26:18,623 - INFO - [cached since 279.2s ago] (7,)
+2025-06-20 11:26:18,626 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 11:26:18,628 - INFO - [cached since 279.2s ago] (7,)
+2025-06-20 11:26:18,631 - INFO - ROLLBACK
+2025-06-20 11:27:02,748 - INFO - BEGIN (implicit)
+2025-06-20 11:27:02,750 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:27:02,751 - INFO - [cached since 1391s ago] ()
+2025-06-20 11:27:02,756 - INFO - ROLLBACK
+2025-06-20 11:27:03,665 - INFO - BEGIN (implicit)
+2025-06-20 11:27:03,666 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:27:03,667 - INFO - [cached since 1392s ago] ()
+2025-06-20 11:27:03,669 - INFO - ROLLBACK
+2025-06-20 11:27:03,686 - INFO - BEGIN (implicit)
+2025-06-20 11:27:03,687 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:27:03,688 - INFO - [cached since 1392s ago] ()
+2025-06-20 11:27:03,691 - INFO - ROLLBACK
+2025-06-20 11:27:03,715 - INFO - BEGIN (implicit)
+2025-06-20 11:27:03,716 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:27:03,717 - INFO - [cached since 1392s ago] ()
+2025-06-20 11:27:03,719 - INFO - ROLLBACK
+2025-06-20 11:33:52,885 - INFO - BEGIN (implicit)
+2025-06-20 11:33:52,886 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:33:52,887 - INFO - [cached since 1801s ago] ()
+2025-06-20 11:33:52,889 - INFO - BEGIN (implicit)
+2025-06-20 11:33:52,890 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:33:52,891 - INFO - [cached since 1801s ago] ()
+2025-06-20 11:33:52,893 - INFO - ROLLBACK
+2025-06-20 11:33:52,908 - INFO - ROLLBACK
+2025-06-20 11:40:05,442 - INFO - BEGIN (implicit)
+2025-06-20 11:40:05,443 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:40:05,444 - INFO - [cached since 2173s ago] ()
+2025-06-20 11:40:05,447 - INFO - ROLLBACK
+2025-06-20 11:40:05,482 - INFO - BEGIN (implicit)
+2025-06-20 11:40:05,484 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:40:05,485 - INFO - [cached since 2174s ago] ()
+2025-06-20 11:40:05,490 - INFO - ROLLBACK
+2025-06-20 11:40:11,329 - INFO - BEGIN (implicit)
+2025-06-20 11:40:11,331 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:40:11,331 - INFO - [cached since 2179s ago] ()
+2025-06-20 11:40:11,334 - INFO - ROLLBACK
+2025-06-20 11:40:11,363 - INFO - BEGIN (implicit)
+2025-06-20 11:40:11,364 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:40:11,365 - INFO - [cached since 2179s ago] ()
+2025-06-20 11:40:11,368 - INFO - ROLLBACK
+2025-06-20 11:41:35,755 - INFO - BEGIN (implicit)
+2025-06-20 11:41:35,757 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:41:35,758 - INFO - [cached since 2264s ago] ()
+2025-06-20 11:41:35,760 - INFO - ROLLBACK
+2025-06-20 11:41:35,788 - INFO - BEGIN (implicit)
+2025-06-20 11:41:35,790 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:41:35,791 - INFO - [cached since 2264s ago] ()
+2025-06-20 11:41:35,795 - INFO - ROLLBACK
+2025-06-20 11:41:38,559 - INFO - BEGIN (implicit)
+2025-06-20 11:41:38,561 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:41:38,564 - INFO - [cached since 2267s ago] ()
+2025-06-20 11:41:38,570 - INFO - ROLLBACK
+2025-06-20 11:41:39,583 - INFO - BEGIN (implicit)
+2025-06-20 11:41:39,585 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:41:39,585 - INFO - [cached since 2268s ago] ()
+2025-06-20 11:41:39,588 - INFO - ROLLBACK
+2025-06-20 11:41:39,593 - INFO - BEGIN (implicit)
+2025-06-20 11:41:39,595 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:41:39,595 - INFO - [cached since 2268s ago] ()
+2025-06-20 11:41:39,598 - INFO - ROLLBACK
+2025-06-20 11:41:39,625 - INFO - BEGIN (implicit)
+2025-06-20 11:41:39,627 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:41:39,627 - INFO - [cached since 2268s ago] ()
+2025-06-20 11:41:39,630 - INFO - ROLLBACK
+2025-06-20 11:42:00,353 - INFO - BEGIN (implicit)
+2025-06-20 11:42:00,355 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:42:00,356 - INFO - [cached since 2288s ago] ()
+2025-06-20 11:42:00,360 - INFO - ROLLBACK
+2025-06-20 11:42:00,377 - INFO - BEGIN (implicit)
+2025-06-20 11:42:00,378 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:42:00,379 - INFO - [cached since 2288s ago] ()
+2025-06-20 11:42:00,382 - INFO - ROLLBACK
+2025-06-20 11:42:05,672 - INFO - BEGIN (implicit)
+2025-06-20 11:42:05,674 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:42:05,674 - INFO - [cached since 2294s ago] ()
+2025-06-20 11:42:05,677 - INFO - ROLLBACK
+2025-06-20 11:42:05,698 - INFO - BEGIN (implicit)
+2025-06-20 11:42:05,700 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:42:05,701 - INFO - [cached since 2294s ago] ()
+2025-06-20 11:42:05,704 - INFO - ROLLBACK
+2025-06-20 11:42:15,240 - INFO - BEGIN (implicit)
+2025-06-20 11:42:15,242 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:42:15,245 - INFO - [cached since 2303s ago] ()
+2025-06-20 11:42:15,249 - INFO - ROLLBACK
+2025-06-20 11:42:15,252 - INFO - BEGIN (implicit)
+2025-06-20 11:42:15,253 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:42:15,254 - INFO - [cached since 2303s ago] ()
+2025-06-20 11:42:15,257 - INFO - ROLLBACK
+2025-06-20 11:42:15,296 - INFO - BEGIN (implicit)
+2025-06-20 11:42:15,297 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:42:15,298 - INFO - [cached since 2303s ago] ()
+2025-06-20 11:42:15,302 - INFO - ROLLBACK
+2025-06-20 11:42:15,305 - INFO - BEGIN (implicit)
+2025-06-20 11:42:15,306 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:42:15,307 - INFO - [cached since 2303s ago] ()
+2025-06-20 11:42:15,313 - INFO - ROLLBACK
+2025-06-20 11:44:00,057 - INFO - BEGIN (implicit)
+2025-06-20 11:44:00,058 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:44:00,058 - INFO - [cached since 2408s ago] ()
+2025-06-20 11:44:00,062 - INFO - ROLLBACK
+2025-06-20 11:44:00,095 - INFO - BEGIN (implicit)
+2025-06-20 11:44:00,097 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:44:00,098 - INFO - [cached since 2408s ago] ()
+2025-06-20 11:44:00,102 - INFO - ROLLBACK
+2025-06-20 11:44:07,954 - INFO - BEGIN (implicit)
+2025-06-20 11:44:07,955 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:44:07,956 - INFO - [cached since 2416s ago] ()
+2025-06-20 11:44:07,959 - INFO - ROLLBACK
+2025-06-20 11:44:07,984 - INFO - BEGIN (implicit)
+2025-06-20 11:44:07,986 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:44:07,987 - INFO - [cached since 2416s ago] ()
+2025-06-20 11:44:07,992 - INFO - ROLLBACK
+2025-06-20 11:44:12,766 - INFO - BEGIN (implicit)
+2025-06-20 11:44:12,767 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 11:44:12,767 - INFO - [cached since 2779s ago] (2,)
+2025-06-20 11:44:12,770 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 11:44:12,771 - INFO - [cached since 2779s ago] (2,)
+2025-06-20 11:44:12,773 - INFO - ROLLBACK
+2025-06-20 11:44:13,206 - INFO - BEGIN (implicit)
+2025-06-20 11:44:13,207 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+2025-06-20 11:44:13,208 - INFO - [cached since 2777s ago] (2,)
+2025-06-20 11:44:13,209 - INFO - ROLLBACK
+2025-06-20 11:48:44,910 - INFO - BEGIN (implicit)
+2025-06-20 11:48:44,912 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:48:44,913 - INFO - [cached since 2693s ago] ()
+2025-06-20 11:48:44,918 - INFO - ROLLBACK
+2025-06-20 11:48:44,935 - INFO - BEGIN (implicit)
+2025-06-20 11:48:44,936 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:48:44,938 - INFO - [cached since 2693s ago] ()
+2025-06-20 11:48:44,941 - INFO - ROLLBACK
+2025-06-20 11:48:44,962 - INFO - BEGIN (implicit)
+2025-06-20 11:48:44,964 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:48:44,965 - INFO - [cached since 2693s ago] ()
+2025-06-20 11:48:44,969 - INFO - ROLLBACK
+2025-06-20 11:48:44,987 - INFO - BEGIN (implicit)
+2025-06-20 11:48:44,988 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:48:44,989 - INFO - [cached since 2693s ago] ()
+2025-06-20 11:48:44,991 - INFO - ROLLBACK
+2025-06-20 11:49:14,251 - INFO - BEGIN (implicit)
+2025-06-20 11:49:14,252 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:49:14,254 - INFO - [cached since 2722s ago] ()
+2025-06-20 11:49:14,258 - INFO - ROLLBACK
+2025-06-20 11:49:14,263 - INFO - BEGIN (implicit)
+2025-06-20 11:49:14,264 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:49:14,265 - INFO - [cached since 2722s ago] ()
+2025-06-20 11:49:14,269 - INFO - ROLLBACK
+2025-06-20 11:49:14,301 - INFO - BEGIN (implicit)
+2025-06-20 11:49:14,303 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 11:49:14,304 - INFO - [cached since 2722s ago] ()
+2025-06-20 11:49:14,307 - INFO - ROLLBACK
+2025-06-20 11:49:14,311 - INFO - BEGIN (implicit)
+2025-06-20 11:49:14,312 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 11:49:14,313 - INFO - [cached since 2722s ago] ()
+2025-06-20 11:49:14,317 - INFO - ROLLBACK
+2025-06-20 11:55:53,325 - INFO - BEGIN (implicit)
+2025-06-20 11:55:53,329 - INFO - SELECT evaluation_runs.id, evaluation_runs.name, evaluation_runs.description, evaluation_runs.hypothesis, evaluation_runs.status, evaluation_runs.progress_percentage, evaluation_runs.current_step, evaluation_runs.created_at, evaluation_runs.updated_at, evaluation_runs.completed_at 
+FROM evaluation_runs ORDER BY evaluation_runs.created_at DESC
+2025-06-20 11:55:53,330 - INFO - [generated in 0.00111s] ()
+2025-06-20 11:55:53,334 - INFO - ROLLBACK
+2025-06-20 12:00:37,313 - INFO - BEGIN (implicit)
+2025-06-20 12:00:37,313 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:00:37,314 - INFO - [cached since 3405s ago] ()
+2025-06-20 12:00:37,314 - INFO - BEGIN (implicit)
+2025-06-20 12:00:37,315 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:00:37,316 - INFO - [cached since 3405s ago] ()
+2025-06-20 12:00:37,318 - INFO - ROLLBACK
+2025-06-20 12:00:37,319 - INFO - ROLLBACK
+2025-06-20 12:00:37,355 - INFO - BEGIN (implicit)
+2025-06-20 12:00:37,356 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:00:37,357 - INFO - [cached since 3405s ago] ()
+2025-06-20 12:00:37,360 - INFO - ROLLBACK
+2025-06-20 12:00:37,363 - INFO - BEGIN (implicit)
+2025-06-20 12:00:37,364 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:00:37,365 - INFO - [cached since 3405s ago] ()
+2025-06-20 12:00:37,369 - INFO - ROLLBACK
+2025-06-20 12:02:45,137 - INFO - BEGIN (implicit)
+2025-06-20 12:02:45,139 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:02:45,140 - INFO - [cached since 3533s ago] ()
+2025-06-20 12:02:45,142 - INFO - ROLLBACK
+2025-06-20 12:02:45,158 - INFO - BEGIN (implicit)
+2025-06-20 12:02:45,159 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:02:45,160 - INFO - [cached since 3533s ago] ()
+2025-06-20 12:02:45,163 - INFO - ROLLBACK
+2025-06-20 12:02:45,192 - INFO - BEGIN (implicit)
+2025-06-20 12:02:45,193 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:02:45,194 - INFO - [cached since 3533s ago] ()
+2025-06-20 12:02:45,197 - INFO - ROLLBACK
+2025-06-20 12:02:45,207 - INFO - BEGIN (implicit)
+2025-06-20 12:02:45,208 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:02:45,210 - INFO - [cached since 3533s ago] ()
+2025-06-20 12:02:45,213 - INFO - ROLLBACK
+2025-06-20 12:02:49,190 - INFO - BEGIN (implicit)
+2025-06-20 12:02:49,191 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:02:49,192 - INFO - [cached since 3537s ago] ()
+2025-06-20 12:02:49,194 - INFO - ROLLBACK
+2025-06-20 12:02:49,223 - INFO - BEGIN (implicit)
+2025-06-20 12:02:49,224 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:02:49,225 - INFO - [cached since 3537s ago] ()
+2025-06-20 12:02:49,228 - INFO - ROLLBACK
+2025-06-20 12:02:53,407 - INFO - BEGIN (implicit)
+2025-06-20 12:02:53,410 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:02:53,411 - INFO - [generated in 0.00093s] ()
+2025-06-20 12:02:53,415 - INFO - ROLLBACK
+2025-06-20 12:02:53,538 - INFO - BEGIN (implicit)
+2025-06-20 12:02:53,539 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:02:53,540 - INFO - [cached since 0.1309s ago] ()
+2025-06-20 12:02:53,544 - INFO - ROLLBACK
+2025-06-20 12:03:28,597 - INFO - BEGIN (implicit)
+2025-06-20 12:03:28,598 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:03:28,599 - INFO - [cached since 35.19s ago] ()
+2025-06-20 12:03:28,602 - INFO - ROLLBACK
+2025-06-20 12:03:32,873 - INFO - BEGIN (implicit)
+2025-06-20 12:03:32,875 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:03:32,875 - INFO - [cached since 39.47s ago] ()
+2025-06-20 12:03:32,878 - INFO - ROLLBACK
+2025-06-20 12:03:32,900 - INFO - BEGIN (implicit)
+2025-06-20 12:03:32,901 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:03:32,902 - INFO - [cached since 39.49s ago] ()
+2025-06-20 12:03:32,904 - INFO - ROLLBACK
+2025-06-20 12:03:34,556 - INFO - BEGIN (implicit)
+2025-06-20 12:03:34,558 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:03:34,559 - INFO - [cached since 3583s ago] ()
+2025-06-20 12:03:34,566 - INFO - ROLLBACK
+2025-06-20 12:03:34,582 - INFO - BEGIN (implicit)
+2025-06-20 12:03:34,584 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:03:34,585 - INFO - [cached since 3583s ago] ()
+2025-06-20 12:03:34,588 - INFO - ROLLBACK
+2025-06-20 12:03:34,596 - INFO - BEGIN (implicit)
+2025-06-20 12:03:34,598 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:03:34,599 - INFO - [cached since 3583s ago] ()
+2025-06-20 12:03:34,604 - INFO - ROLLBACK
+2025-06-20 12:03:34,629 - INFO - BEGIN (implicit)
+2025-06-20 12:03:34,630 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:03:34,631 - INFO - [cached since 3583s ago] ()
+2025-06-20 12:03:34,634 - INFO - ROLLBACK
+2025-06-20 12:03:46,136 - INFO - BEGIN (implicit)
+2025-06-20 12:03:46,137 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:03:46,138 - INFO - [cached since 52.73s ago] ()
+2025-06-20 12:03:46,141 - INFO - ROLLBACK
+2025-06-20 12:03:46,161 - INFO - BEGIN (implicit)
+2025-06-20 12:03:46,163 - INFO - SELECT prompt_templates.id, prompt_templates.name, prompt_templates.version, prompt_templates.prompt_text, prompt_templates.is_active, prompt_templates.created_at, prompt_templates.description 
+FROM prompt_templates ORDER BY prompt_templates.created_at DESC
+2025-06-20 12:03:46,164 - INFO - [cached since 52.76s ago] ()
+2025-06-20 12:03:46,167 - INFO - ROLLBACK
+2025-06-20 12:03:51,203 - INFO - BEGIN (implicit)
+2025-06-20 12:03:51,204 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:03:51,205 - INFO - [cached since 3599s ago] ()
+2025-06-20 12:03:51,207 - INFO - ROLLBACK
+2025-06-20 12:03:51,231 - INFO - BEGIN (implicit)
+2025-06-20 12:03:51,232 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:03:51,234 - INFO - [cached since 3599s ago] ()
+2025-06-20 12:03:51,237 - INFO - ROLLBACK
+2025-06-20 12:03:52,311 - INFO - BEGIN (implicit)
+2025-06-20 12:03:52,312 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:03:52,314 - INFO - [cached since 3600s ago] ()
+2025-06-20 12:03:52,321 - INFO - ROLLBACK
+2025-06-20 12:03:52,326 - INFO - BEGIN (implicit)
+2025-06-20 12:03:52,327 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:03:52,328 - INFO - [cached since 3600s ago] ()
+2025-06-20 12:03:52,331 - INFO - ROLLBACK
+2025-06-20 12:03:52,362 - INFO - BEGIN (implicit)
+2025-06-20 12:03:52,363 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets ORDER BY datasets.created_at DESC
+2025-06-20 12:03:52,364 - INFO - [cached since 3600s ago] ()
+2025-06-20 12:03:52,369 - INFO - ROLLBACK
+2025-06-20 12:03:52,372 - INFO - BEGIN (implicit)
+2025-06-20 12:03:52,373 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families ORDER BY prompt_families.created_at DESC
+2025-06-20 12:03:52,374 - INFO - [cached since 3600s ago] ()
+2025-06-20 12:03:52,380 - INFO - ROLLBACK
+2025-06-20 12:09:29,557 - INFO - BEGIN (implicit)
+2025-06-20 12:09:29,559 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:09:29,560 - INFO - [cached since 4296s ago] (2,)
+2025-06-20 12:09:29,562 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:09:29,563 - INFO - [cached since 4296s ago] (2,)
+2025-06-20 12:09:29,568 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:09:29,569 - INFO - [cached since 2972s ago] (2, 1, 0)
+2025-06-20 12:09:29,575 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:09:29,576 - INFO - [cached since 2972s ago] (2, '1.0.2', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:39:29.575034', None)
+2025-06-20 12:09:29,579 - INFO - COMMIT
+2025-06-20 12:09:29,586 - INFO - BEGIN (implicit)
+2025-06-20 12:09:29,587 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:09:29,588 - INFO - [cached since 2972s ago] (9,)
+2025-06-20 12:09:29,591 - INFO - ROLLBACK
+2025-06-20 12:09:29,925 - INFO - BEGIN (implicit)
+2025-06-20 12:09:29,926 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:09:29,927 - INFO - [cached since 4296s ago] (2,)
+2025-06-20 12:09:29,929 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:09:29,930 - INFO - [cached since 4296s ago] (2,)
+2025-06-20 12:09:29,934 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:09:29,935 - INFO - [cached since 2972s ago] (2, 1, 0)
+2025-06-20 12:09:29,937 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:09:29,938 - INFO - [cached since 2972s ago] (2, '1.0.3', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:39:29.937012', None)
+2025-06-20 12:09:29,945 - INFO - COMMIT
+2025-06-20 12:09:29,949 - INFO - BEGIN (implicit)
+2025-06-20 12:09:29,950 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:09:29,951 - INFO - [cached since 2972s ago] (10,)
+2025-06-20 12:09:29,953 - INFO - ROLLBACK
+2025-06-20 12:09:30,436 - INFO - BEGIN (implicit)
+2025-06-20 12:09:30,437 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:09:30,438 - INFO - [cached since 2871s ago] (7,)
+2025-06-20 12:09:30,440 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:09:30,441 - INFO - [cached since 2871s ago] (7,)
+2025-06-20 12:09:30,446 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:09:30,447 - INFO - [generated in 0.00096s] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:39:30.446627', '2025-06-20 06:39:30.446627', None)
+2025-06-20 12:09:30,450 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:09:30,451 - INFO - [cached since 2871s ago] (7,)
+2025-06-20 12:09:30,454 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:09:30,454 - INFO - [cached since 2871s ago] (7,)
+2025-06-20 12:09:30,457 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:09:30,458 - INFO - [generated in 0.00106s] (1,)
+2025-06-20 12:09:30,460 - INFO - ROLLBACK
+2025-06-20 12:11:00,882 - INFO - BEGIN (implicit)
+2025-06-20 12:11:00,882 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:11:00,883 - INFO - [cached since 4387s ago] (2,)
+2025-06-20 12:11:00,886 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:11:00,887 - INFO - [cached since 4387s ago] (2,)
+2025-06-20 12:11:00,889 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:11:00,890 - INFO - [cached since 3063s ago] (2, 1, 0)
+2025-06-20 12:11:00,893 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:11:00,894 - INFO - [cached since 3063s ago] (2, '1.0.4', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:41:00.893020', None)
+2025-06-20 12:11:00,898 - INFO - COMMIT
+2025-06-20 12:11:00,903 - INFO - BEGIN (implicit)
+2025-06-20 12:11:00,904 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:11:00,905 - INFO - [cached since 3063s ago] (11,)
+2025-06-20 12:11:00,907 - INFO - ROLLBACK
+2025-06-20 12:11:01,110 - INFO - BEGIN (implicit)
+2025-06-20 12:11:01,112 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:11:01,113 - INFO - [cached since 4387s ago] (2,)
+2025-06-20 12:11:01,116 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:11:01,118 - INFO - [cached since 4387s ago] (2,)
+2025-06-20 12:11:01,123 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:11:01,124 - INFO - [cached since 3064s ago] (2, 1, 0)
+2025-06-20 12:11:01,129 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:11:01,131 - INFO - [cached since 3064s ago] (2, '1.0.5', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:41:01.129019', None)
+2025-06-20 12:11:01,135 - INFO - COMMIT
+2025-06-20 12:11:01,141 - INFO - BEGIN (implicit)
+2025-06-20 12:11:01,142 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:11:01,143 - INFO - [cached since 3064s ago] (12,)
+2025-06-20 12:11:01,145 - INFO - ROLLBACK
+2025-06-20 12:11:01,491 - INFO - BEGIN (implicit)
+2025-06-20 12:11:01,492 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:11:01,492 - INFO - [cached since 2962s ago] (7,)
+2025-06-20 12:11:01,494 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:11:01,495 - INFO - [cached since 2962s ago] (7,)
+2025-06-20 12:11:01,497 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:11:01,498 - INFO - [cached since 91.05s ago] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:41:01.497397', '2025-06-20 06:41:01.497397', None)
+2025-06-20 12:11:01,502 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:11:01,503 - INFO - [cached since 2962s ago] (7,)
+2025-06-20 12:11:01,505 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:11:01,506 - INFO - [cached since 2962s ago] (7,)
+2025-06-20 12:11:01,509 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:11:01,510 - INFO - [cached since 91.05s ago] (1,)
+2025-06-20 12:11:01,511 - INFO - ROLLBACK
+2025-06-20 12:11:25,253 - INFO - BEGIN (implicit)
+2025-06-20 12:11:25,254 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-20 12:11:25,255 - INFO - [raw sql] ()
+2025-06-20 12:11:25,256 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-20 12:11:25,257 - INFO - [raw sql] ()
+2025-06-20 12:11:25,257 - INFO - PRAGMA main.table_info("datasets")
+2025-06-20 12:11:25,258 - INFO - [raw sql] ()
+2025-06-20 12:11:25,258 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-20 12:11:25,259 - INFO - [raw sql] ()
+2025-06-20 12:11:25,259 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-20 12:11:25,260 - INFO - [raw sql] ()
+2025-06-20 12:11:25,261 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-20 12:11:25,262 - INFO - [raw sql] ()
+2025-06-20 12:11:25,263 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-20 12:11:25,263 - INFO - [raw sql] ()
+2025-06-20 12:11:25,265 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-20 12:11:25,266 - INFO - [raw sql] ()
+2025-06-20 12:11:25,267 - INFO - PRAGMA main.table_info("images")
+2025-06-20 12:11:25,267 - INFO - [raw sql] ()
+2025-06-20 12:11:25,268 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-20 12:11:25,269 - INFO - [raw sql] ()
+2025-06-20 12:11:25,269 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-20 12:11:25,270 - INFO - [raw sql] ()
+2025-06-20 12:11:25,271 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-20 12:11:25,272 - INFO - [raw sql] ()
+2025-06-20 12:11:25,274 - INFO - COMMIT
+2025-06-20 12:11:29,518 - INFO - BEGIN (implicit)
+2025-06-20 12:11:29,521 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:11:29,522 - INFO - [generated in 0.00073s] (2,)
+2025-06-20 12:11:29,526 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:11:29,527 - INFO - [generated in 0.00112s] (2,)
+2025-06-20 12:11:29,531 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:11:29,532 - INFO - [generated in 0.00094s] (2, 1, 0)
+2025-06-20 12:11:29,536 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:11:29,537 - INFO - [generated in 0.00097s] (2, '1.0.6', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:41:29.536586', None)
+2025-06-20 12:11:29,540 - INFO - COMMIT
+2025-06-20 12:11:29,545 - INFO - BEGIN (implicit)
+2025-06-20 12:11:29,547 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:11:29,548 - INFO - [generated in 0.00100s] (13,)
+2025-06-20 12:11:29,551 - INFO - ROLLBACK
+2025-06-20 12:11:29,704 - INFO - BEGIN (implicit)
+2025-06-20 12:11:29,705 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:11:29,706 - INFO - [cached since 0.1852s ago] (2,)
+2025-06-20 12:11:29,710 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:11:29,711 - INFO - [cached since 0.1858s ago] (2,)
+2025-06-20 12:11:29,716 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:11:29,717 - INFO - [cached since 0.1871s ago] (2, 1, 0)
+2025-06-20 12:11:29,721 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:11:29,722 - INFO - [cached since 0.1859s ago] (2, '1.0.7', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:41:29.721588', None)
+2025-06-20 12:11:29,726 - INFO - COMMIT
+2025-06-20 12:11:29,732 - INFO - BEGIN (implicit)
+2025-06-20 12:11:29,734 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:11:29,735 - INFO - [cached since 0.1883s ago] (14,)
+2025-06-20 12:11:29,740 - INFO - ROLLBACK
+2025-06-20 12:11:29,773 - INFO - BEGIN (implicit)
+2025-06-20 12:11:29,776 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:11:29,777 - INFO - [generated in 0.00087s] (7,)
+2025-06-20 12:11:29,784 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:11:29,785 - INFO - [generated in 0.00115s] (7,)
+2025-06-20 12:11:29,789 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:11:29,790 - INFO - [generated in 0.00093s] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:41:29.789584', '2025-06-20 06:41:29.789584', None)
+2025-06-20 12:11:29,794 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:11:29,794 - INFO - [cached since 0.0181s ago] (7,)
+2025-06-20 12:11:29,797 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:11:29,798 - INFO - [cached since 0.01394s ago] (7,)
+2025-06-20 12:11:29,802 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:11:29,803 - INFO - [generated in 0.00102s] (1,)
+2025-06-20 12:11:29,804 - INFO - ROLLBACK
+2025-06-20 12:13:56,021 - INFO - BEGIN (implicit)
+2025-06-20 12:13:56,022 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-20 12:13:56,022 - INFO - [raw sql] ()
+2025-06-20 12:13:56,024 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-20 12:13:56,024 - INFO - [raw sql] ()
+2025-06-20 12:13:56,025 - INFO - PRAGMA main.table_info("datasets")
+2025-06-20 12:13:56,026 - INFO - [raw sql] ()
+2025-06-20 12:13:56,026 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-20 12:13:56,027 - INFO - [raw sql] ()
+2025-06-20 12:13:56,027 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-20 12:13:56,028 - INFO - [raw sql] ()
+2025-06-20 12:13:56,029 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-20 12:13:56,030 - INFO - [raw sql] ()
+2025-06-20 12:13:56,031 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-20 12:13:56,032 - INFO - [raw sql] ()
+2025-06-20 12:13:56,033 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-20 12:13:56,033 - INFO - [raw sql] ()
+2025-06-20 12:13:56,034 - INFO - PRAGMA main.table_info("images")
+2025-06-20 12:13:56,035 - INFO - [raw sql] ()
+2025-06-20 12:13:56,036 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-20 12:13:56,036 - INFO - [raw sql] ()
+2025-06-20 12:13:56,037 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-20 12:13:56,037 - INFO - [raw sql] ()
+2025-06-20 12:13:56,039 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-20 12:13:56,040 - INFO - [raw sql] ()
+2025-06-20 12:13:56,041 - INFO - COMMIT
+2025-06-20 12:13:58,721 - INFO - BEGIN (implicit)
+2025-06-20 12:13:58,724 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:13:58,725 - INFO - [generated in 0.00059s] (2,)
+2025-06-20 12:13:58,728 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:13:58,734 - INFO - [generated in 0.00593s] (2,)
+2025-06-20 12:13:58,738 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:13:58,739 - INFO - [generated in 0.00097s] (2, 1, 0)
+2025-06-20 12:13:58,745 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:13:58,746 - INFO - [generated in 0.00124s] (2, '1.0.8', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:43:58.744982', None)
+2025-06-20 12:13:58,750 - INFO - COMMIT
+2025-06-20 12:13:58,756 - INFO - BEGIN (implicit)
+2025-06-20 12:13:58,759 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:13:58,759 - INFO - [generated in 0.00083s] (15,)
+2025-06-20 12:13:58,761 - INFO - ROLLBACK
+2025-06-20 12:13:58,891 - INFO - BEGIN (implicit)
+2025-06-20 12:13:58,891 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:13:58,893 - INFO - [cached since 0.1686s ago] (2,)
+2025-06-20 12:13:58,894 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:13:58,896 - INFO - [cached since 0.1675s ago] (2,)
+2025-06-20 12:13:58,898 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:13:58,898 - INFO - [cached since 0.16s ago] (2, 1, 0)
+2025-06-20 12:13:58,902 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:13:58,902 - INFO - [cached since 0.1577s ago] (2, '1.0.9', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:43:58.902000', None)
+2025-06-20 12:13:58,905 - INFO - COMMIT
+2025-06-20 12:13:58,909 - INFO - BEGIN (implicit)
+2025-06-20 12:13:58,911 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:13:58,911 - INFO - [cached since 0.1525s ago] (16,)
+2025-06-20 12:13:58,913 - INFO - ROLLBACK
+2025-06-20 12:13:58,940 - INFO - BEGIN (implicit)
+2025-06-20 12:13:58,944 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:13:58,945 - INFO - [generated in 0.00092s] (7,)
+2025-06-20 12:13:58,950 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:13:58,951 - INFO - [generated in 0.00126s] (7,)
+2025-06-20 12:13:58,955 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:13:58,957 - INFO - [generated in 0.00097s] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:43:58.955979', '2025-06-20 06:43:58.955979', None)
+2025-06-20 12:13:58,960 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:13:58,962 - INFO - [cached since 0.0171s ago] (7,)
+2025-06-20 12:13:58,963 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:13:58,964 - INFO - [cached since 0.01384s ago] (7,)
+2025-06-20 12:13:58,968 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:13:58,970 - INFO - [generated in 0.00102s] (1,)
+2025-06-20 12:13:58,971 - INFO - ROLLBACK
+2025-06-20 12:15:10,527 - INFO - BEGIN (implicit)
+2025-06-20 12:15:10,528 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:15:10,529 - INFO - [cached since 71.8s ago] (2,)
+2025-06-20 12:15:10,531 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:15:10,532 - INFO - [cached since 71.8s ago] (2,)
+2025-06-20 12:15:10,535 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:15:10,535 - INFO - [cached since 71.8s ago] (2, 1, 0)
+2025-06-20 12:15:10,537 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:15:10,538 - INFO - [cached since 71.79s ago] (2, '1.0.10', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:45:10.537106', None)
+2025-06-20 12:15:10,546 - INFO - COMMIT
+2025-06-20 12:15:10,552 - INFO - BEGIN (implicit)
+2025-06-20 12:15:10,553 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:15:10,553 - INFO - [cached since 71.79s ago] (17,)
+2025-06-20 12:15:10,555 - INFO - ROLLBACK
+2025-06-20 12:15:10,709 - INFO - BEGIN (implicit)
+2025-06-20 12:15:10,710 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:15:10,711 - INFO - [cached since 71.99s ago] (2,)
+2025-06-20 12:15:10,713 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:15:10,714 - INFO - [cached since 71.99s ago] (2,)
+2025-06-20 12:15:10,716 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:15:10,717 - INFO - [cached since 71.98s ago] (2, 1, 0)
+2025-06-20 12:15:10,719 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:15:10,719 - INFO - [cached since 71.97s ago] (2, '1.0.11', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:45:10.719213', None)
+2025-06-20 12:15:10,722 - INFO - COMMIT
+2025-06-20 12:15:10,725 - INFO - BEGIN (implicit)
+2025-06-20 12:15:10,726 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:15:10,727 - INFO - [cached since 71.97s ago] (18,)
+2025-06-20 12:15:10,728 - INFO - ROLLBACK
+2025-06-20 12:15:10,751 - INFO - BEGIN (implicit)
+2025-06-20 12:15:10,752 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:15:10,753 - INFO - [cached since 71.81s ago] (7,)
+2025-06-20 12:15:10,755 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:15:10,756 - INFO - [cached since 71.8s ago] (7,)
+2025-06-20 12:15:10,758 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:15:10,758 - INFO - [cached since 71.8s ago] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:45:10.758214', '2025-06-20 06:45:10.758214', None)
+2025-06-20 12:15:10,761 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:15:10,762 - INFO - [cached since 71.82s ago] (7,)
+2025-06-20 12:15:10,765 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:15:10,766 - INFO - [cached since 71.81s ago] (7,)
+2025-06-20 12:15:10,768 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:15:10,768 - INFO - [cached since 71.8s ago] (1,)
+2025-06-20 12:15:10,769 - INFO - ROLLBACK
+2025-06-20 12:18:37,358 - INFO - BEGIN (implicit)
+2025-06-20 12:18:37,360 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:18:37,360 - INFO - [cached since 278.6s ago] (2,)
+2025-06-20 12:18:37,368 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:18:37,368 - INFO - [cached since 278.6s ago] (2,)
+2025-06-20 12:18:37,371 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:18:37,371 - INFO - [cached since 278.6s ago] (2, 1, 0)
+2025-06-20 12:18:37,374 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:18:37,374 - INFO - [cached since 278.6s ago] (2, '1.0.12', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:48:37.374095', None)
+2025-06-20 12:18:37,383 - INFO - COMMIT
+2025-06-20 12:18:37,388 - INFO - BEGIN (implicit)
+2025-06-20 12:18:37,389 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:18:37,390 - INFO - [cached since 278.6s ago] (19,)
+2025-06-20 12:18:37,391 - INFO - ROLLBACK
+2025-06-20 12:18:37,519 - INFO - BEGIN (implicit)
+2025-06-20 12:18:37,519 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:18:37,520 - INFO - [cached since 278.8s ago] (2,)
+2025-06-20 12:18:37,523 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:18:37,523 - INFO - [cached since 278.8s ago] (2,)
+2025-06-20 12:18:37,526 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:18:37,527 - INFO - [cached since 278.8s ago] (2, 1, 0)
+2025-06-20 12:18:37,530 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:18:37,531 - INFO - [cached since 278.8s ago] (2, '1.0.13', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:48:37.530096', None)
+2025-06-20 12:18:37,534 - INFO - COMMIT
+2025-06-20 12:18:37,539 - INFO - BEGIN (implicit)
+2025-06-20 12:18:37,541 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:18:37,541 - INFO - [cached since 278.8s ago] (20,)
+2025-06-20 12:18:37,544 - INFO - ROLLBACK
+2025-06-20 12:18:37,586 - INFO - BEGIN (implicit)
+2025-06-20 12:18:37,587 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:18:37,588 - INFO - [cached since 278.6s ago] (7,)
+2025-06-20 12:18:37,591 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:18:37,592 - INFO - [cached since 278.6s ago] (7,)
+2025-06-20 12:18:37,595 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:18:37,596 - INFO - [cached since 278.6s ago] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:48:37.595100', '2025-06-20 06:48:37.595100', None)
+2025-06-20 12:18:37,601 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:18:37,602 - INFO - [cached since 278.7s ago] (7,)
+2025-06-20 12:18:37,605 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:18:37,606 - INFO - [cached since 278.7s ago] (7,)
+2025-06-20 12:18:37,608 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:18:37,609 - INFO - [cached since 278.6s ago] (1,)
+2025-06-20 12:18:37,610 - INFO - ROLLBACK
+2025-06-20 12:18:46,132 - INFO - BEGIN (implicit)
+2025-06-20 12:18:46,132 - INFO - PRAGMA main.table_info("evaluation_run_datasets")
+2025-06-20 12:18:46,132 - INFO - [raw sql] ()
+2025-06-20 12:18:46,134 - INFO - PRAGMA main.table_info("dataset_images")
+2025-06-20 12:18:46,134 - INFO - [raw sql] ()
+2025-06-20 12:18:46,135 - INFO - PRAGMA main.table_info("datasets")
+2025-06-20 12:18:46,135 - INFO - [raw sql] ()
+2025-06-20 12:18:46,137 - INFO - PRAGMA main.table_info("prompt_families")
+2025-06-20 12:18:46,137 - INFO - [raw sql] ()
+2025-06-20 12:18:46,139 - INFO - PRAGMA main.table_info("prompt_versions")
+2025-06-20 12:18:46,139 - INFO - [raw sql] ()
+2025-06-20 12:18:46,141 - INFO - PRAGMA main.table_info("evaluation_runs")
+2025-06-20 12:18:46,142 - INFO - [raw sql] ()
+2025-06-20 12:18:46,143 - INFO - PRAGMA main.table_info("evaluation_run_prompts")
+2025-06-20 12:18:46,143 - INFO - [raw sql] ()
+2025-06-20 12:18:46,144 - INFO - PRAGMA main.table_info("api_keys")
+2025-06-20 12:18:46,145 - INFO - [raw sql] ()
+2025-06-20 12:18:46,147 - INFO - PRAGMA main.table_info("images")
+2025-06-20 12:18:46,147 - INFO - [raw sql] ()
+2025-06-20 12:18:46,149 - INFO - PRAGMA main.table_info("evaluations")
+2025-06-20 12:18:46,149 - INFO - [raw sql] ()
+2025-06-20 12:18:46,150 - INFO - PRAGMA main.table_info("word_evaluations")
+2025-06-20 12:18:46,150 - INFO - [raw sql] ()
+2025-06-20 12:18:46,151 - INFO - PRAGMA main.table_info("prompt_templates")
+2025-06-20 12:18:46,151 - INFO - [raw sql] ()
+2025-06-20 12:18:46,153 - INFO - COMMIT
+2025-06-20 12:18:48,639 - INFO - BEGIN (implicit)
+2025-06-20 12:18:48,643 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:18:48,644 - INFO - [generated in 0.00129s] (2,)
+2025-06-20 12:18:48,649 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:18:48,650 - INFO - [generated in 0.00089s] (2,)
+2025-06-20 12:18:48,654 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:18:48,655 - INFO - [generated in 0.00110s] (2, 1, 0)
+2025-06-20 12:18:48,659 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:18:48,660 - INFO - [generated in 0.00080s] (2, '1.0.14', 'Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting', 'Version A for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:48:48.659119', None)
+2025-06-20 12:18:48,663 - INFO - COMMIT
+2025-06-20 12:18:48,668 - INFO - BEGIN (implicit)
+2025-06-20 12:18:48,670 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:18:48,670 - INFO - [generated in 0.00073s] (21,)
+2025-06-20 12:18:48,673 - INFO - ROLLBACK
+2025-06-20 12:18:48,784 - INFO - BEGIN (implicit)
+2025-06-20 12:18:48,785 - INFO - SELECT prompt_families.id, prompt_families.name, prompt_families.description, prompt_families.tags, prompt_families.production_version, prompt_families.created_at 
+FROM prompt_families 
+WHERE prompt_families.id = ?
+2025-06-20 12:18:48,786 - INFO - [cached since 0.143s ago] (2,)
+2025-06-20 12:18:48,788 - INFO - SELECT prompt_versions.family_id AS prompt_versions_family_id, prompt_versions.id AS prompt_versions_id, prompt_versions.version AS prompt_versions_version, prompt_versions.prompt_text AS prompt_versions_prompt_text, prompt_versions.changelog_message AS prompt_versions_changelog_message, prompt_versions.status AS prompt_versions_status, prompt_versions.author AS prompt_versions_author, prompt_versions.created_at AS prompt_versions_created_at, prompt_versions.last_evaluation_accuracy AS prompt_versions_last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.family_id IN (?)
+2025-06-20 12:18:48,789 - INFO - [cached since 0.1401s ago] (2,)
+2025-06-20 12:18:48,792 - INFO - SELECT prompt_versions.version 
+FROM prompt_versions 
+WHERE prompt_versions.family_id = ? ORDER BY prompt_versions.created_at DESC
+ LIMIT ? OFFSET ?
+2025-06-20 12:18:48,792 - INFO - [cached since 0.1386s ago] (2, 1, 0)
+2025-06-20 12:18:48,795 - INFO - INSERT INTO prompt_versions (family_id, version, prompt_text, changelog_message, status, author, created_at, last_evaluation_accuracy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:18:48,796 - INFO - [cached since 0.1364s ago] (2, '1.0.15', 'Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.', 'Version B for A/B test: Handwriting OCR A/B Test - Context vs Baseline', <PromptStatus.DRAFT: 'draft'>, None, '2025-06-20 06:48:48.795122', None)
+2025-06-20 12:18:48,798 - INFO - COMMIT
+2025-06-20 12:18:48,802 - INFO - BEGIN (implicit)
+2025-06-20 12:18:48,803 - INFO - SELECT prompt_versions.id, prompt_versions.family_id, prompt_versions.version, prompt_versions.prompt_text, prompt_versions.changelog_message, prompt_versions.status, prompt_versions.author, prompt_versions.created_at, prompt_versions.last_evaluation_accuracy 
+FROM prompt_versions 
+WHERE prompt_versions.id = ?
+2025-06-20 12:18:48,803 - INFO - [cached since 0.1339s ago] (22,)
+2025-06-20 12:18:48,805 - INFO - ROLLBACK
+2025-06-20 12:18:48,838 - INFO - BEGIN (implicit)
+2025-06-20 12:18:48,842 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:18:48,843 - INFO - [generated in 0.00076s] (7,)
+2025-06-20 12:18:48,849 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:18:48,849 - INFO - [generated in 0.00089s] (7,)
+2025-06-20 12:18:48,853 - INFO - INSERT INTO evaluation_runs (name, description, hypothesis, status, progress_percentage, current_step, created_at, updated_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-20 12:18:48,854 - INFO - [generated in 0.00099s] ('Handwriting OCR A/B Test - Context vs Baseline', 'Comparing baseline OCR prompt against context-aware prompt for handwritten text recognition', 'Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text', 'pending', 0, None, '2025-06-20 06:48:48.853119', '2025-06-20 06:48:48.853119', None)
+2025-06-20 12:18:48,858 - INFO - SELECT datasets.id, datasets.name, datasets.description, datasets.status, datasets.image_count, datasets.created_at, datasets.updated_at, datasets.last_used 
+FROM datasets 
+WHERE datasets.id = ?
+2025-06-20 12:18:48,859 - INFO - [cached since 0.01719s ago] (7,)
+2025-06-20 12:18:48,862 - INFO - SELECT datasets_1.id AS datasets_1_id, images.id AS images_id, images.number AS images_number, images.url AS images_url, images.local_path AS images_local_path, images.reference_text AS images_reference_text, images.created_at AS images_created_at, images.updated_at AS images_updated_at 
+FROM datasets AS datasets_1 JOIN dataset_images AS dataset_images_1 ON datasets_1.id = dataset_images_1.dataset_id JOIN images ON images.id = dataset_images_1.image_id 
+WHERE datasets_1.id IN (?)
+2025-06-20 12:18:48,862 - INFO - [cached since 0.01385s ago] (7,)
+2025-06-20 12:18:48,866 - INFO - SELECT datasets.id AS datasets_id, datasets.name AS datasets_name, datasets.description AS datasets_description, datasets.status AS datasets_status, datasets.image_count AS datasets_image_count, datasets.created_at AS datasets_created_at, datasets.updated_at AS datasets_updated_at, datasets.last_used AS datasets_last_used 
+FROM datasets, evaluation_run_datasets 
+WHERE ? = evaluation_run_datasets.evaluation_run_id AND datasets.id = evaluation_run_datasets.dataset_id
+2025-06-20 12:18:48,867 - INFO - [generated in 0.00085s] (1,)
+2025-06-20 12:18:48,868 - INFO - ROLLBACK

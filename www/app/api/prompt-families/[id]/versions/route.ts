@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = 'http://localhost:8000/api/prompt-families';
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
-    const res = await fetch(`${BACKEND_URL}/${params.id}/versions`);
+    const res = await fetch(`${BACKEND_URL}/${id}/versions`);
     if (!res.ok) {
       return NextResponse.json({ error: 'Failed to fetch prompt versions' }, { status: res.status });
     }
@@ -15,22 +16,23 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const body = await req.json();
     
-    // Ensure all fields are lowercase and properly formatted
+    // Ensure all fields are lowercase and properly formatted, with safe defaults
     const requestData = {
-      family_id: Number(params.id),  // Use the URL parameter for family_id
-      prompt_text: body.prompt_text.trim(),
-      changelog_message: body.changelog_message.trim(),
-      version_type: body.version_type.toLowerCase(),  // Used by backend for version generation
-      status: body.status.toLowerCase()
+      family_id: Number(id),
+      prompt_text: body.prompt_text?.trim() || "",
+      changelog_message: body.changelog_message?.trim() || "",
+      version_type: (body.version_type || "patch").toLowerCase(),  // fallback to patch if not provided
+      status: (body.status || "draft").toLowerCase()               // fallback to draft if not provided
     };
     
     console.log('Sending to backend:', requestData);
     
-    const res = await fetch(`${BACKEND_URL}/${params.id}/versions`, {
+    const res = await fetch(`${BACKEND_URL}/${id}/versions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestData),
