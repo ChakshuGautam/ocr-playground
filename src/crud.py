@@ -782,19 +782,41 @@ async def get_evaluation_runs(db: AsyncSession) -> List[EvaluationRun]:
         )
         .order_by(EvaluationRun.created_at.desc())
     )
-    return result.scalars().all()
+    runs = result.scalars().all()
+    
+    # Add dataset_ids to each run for Pydantic schema compatibility
+    for run in runs:
+        run.dataset_ids = [dataset.id for dataset in run.datasets]
+    
+    return runs
 
 async def get_evaluation_run(db: AsyncSession, run_id: int) -> Optional[EvaluationRun]:
     result = await db.execute(
         select(EvaluationRun)
         .options(
             selectinload(EvaluationRun.datasets),
-            selectinload(EvaluationRun.prompt_configurations),
+            selectinload(EvaluationRun.prompt_configurations).selectinload(EvaluationRunPrompt.prompt_version),
             selectinload(EvaluationRun.evaluations)
         )
         .where(EvaluationRun.id == run_id)
     )
-    return result.scalar_one_or_none()
+    run = result.scalar_one_or_none()
+    
+    if run:
+        # Add dataset_ids to the run for Pydantic schema compatibility
+        run.dataset_ids = [dataset.id for dataset in run.datasets]
+        
+        # Format prompt_configurations to match the schema
+        for prompt_config in run.prompt_configurations:
+            # Add family_id and version fields that the schema expects
+            if prompt_config.prompt_version:
+                prompt_config.family_id = prompt_config.prompt_version.family_id
+                prompt_config.version = prompt_config.prompt_version.version
+            else:
+                prompt_config.family_id = None
+                prompt_config.version = None
+    
+    return run
 
 async def get_evaluation_comparison(db: AsyncSession, run_id: int) -> Optional[Dict[str, Any]]:
     """Generate comparison results for an evaluation run"""
