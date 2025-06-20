@@ -437,6 +437,114 @@ async def import_csv_data(db: AsyncSession, csv_file_path: str, overwrite_existi
             "message": "Import failed"
         }
 
+async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dataset_id: int, overwrite_existing: bool = False) -> Dict[str, Any]:
+    """Import data from CSV file into the database"""
+    imported_count = 0
+    updated_count = 0
+    errors = []
+    dataset = await get_dataset(db, dataset_id)
+    if not dataset:
+        raise ValueError("Dataset not found")
+    
+    try:
+        with open(csv_file_path, 'r', encoding='utf-8') as file:
+            csv_reader = csv.DictReader(file)
+            for row_num, row in enumerate(csv_reader, start=2):  # Start at 2 for header
+                try:
+                    # Extract required fields
+                    number = row.get('#', '').strip()
+                    url = row.get('Link', '').strip()
+                    reference_text = row.get('Text', '').strip()
+                    local_image = row.get('Local Image', '').strip()
+                    
+                    if not number or not reference_text:
+                        errors.append(f"Row {row_num}: Missing required fields (# or Text)")
+                        continue
+                    
+                    # Check if image already exists
+                    existing_image = await get_image_by_number(db, number)
+                    
+                    if existing_image:
+                        if overwrite_existing:
+                            # Update existing image
+                            update_data = ImageUpdate(
+                                reference_text=reference_text,
+                                url=url,
+                                local_path=local_image
+                            )
+                            await update_image(db, existing_image.id, update_data)
+                            updated_count += 1
+                        else:
+                            # Skip existing
+                            continue
+                    else:
+                        # Create new image
+                        image_data = ImageCreate(
+                            number=number,
+                            url=url,
+                            reference_text=reference_text,
+                            local_path=local_image
+                        )
+                        db_image = await create_image(db, image_data)
+                        dataset.images.append(db_image)
+                        imported_count += 1
+                    
+                except Exception as e:
+                    errors.append(f"Row {row_num}: {str(e)}")
+                    continue
+        
+        return {
+            "imported_count": imported_count,
+            "updated_count": updated_count,
+            "errors": errors,
+            "message": f"Import completed. {imported_count} new images, {updated_count} updated."
+        }
+    
+    except FileNotFoundError:
+        return {
+            "imported_count": 0,
+            "updated_count": 0,
+            "errors": [f"CSV file not found: {csv_file_path}"],
+            "message": "Import failed - file not found"
+        }
+    except Exception as e:
+        return {
+            "imported_count": 0,
+            "updated_count": 0,
+            "errors": [f"Import error: {str(e)}"],
+            "message": "Import failed"
+        }
+
+async def get_latest_imported_images(db: AsyncSession, count: int) -> List[int]:
+    """Get IDs of the most recently imported images"""
+    result = await db.execute(
+        select(Image.id)
+        .order_by(Image.created_at.desc())
+        .limit(count)
+    )
+    return [row[0] for row in result.fetchall()]
+
+async def associate_image_with_dataset(db: AsyncSession, image_id: int, dataset_id: int) -> bool:
+    """Associate an image with a dataset"""
+    # Get the image and dataset
+    image_result = await db.execute(select(Image).where(Image.id == image_id))
+    dataset_result = await db.execute(select(Dataset).where(Dataset.id == dataset_id))
+    
+    image = image_result.scalar_one_or_none()
+    dataset = dataset_result.scalar_one_or_none()
+    
+    if not image or not dataset:
+        return False
+    
+    # Add image to dataset's images collection
+    if image not in dataset.images:
+        dataset.images.append(image)
+        dataset.image_count = len(dataset.images)
+        dataset.updated_at = datetime.utcnow()
+        await db.commit()
+    
+    return True
+
 # New Dataset CRUD operations
 async def create_dataset(db: AsyncSession, dataset: DatasetCreate) -> Dataset:
     db_dataset = Dataset(**dataset.dict())

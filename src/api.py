@@ -186,6 +186,38 @@ async def import_images_csv(
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
+@app.post("/api/images/{dataset_id}/import-csv", response_model=CSVImportResponse)
+async def import_images_csv_to_dataset(
+    dataset_id: int,
+    file: UploadFile = File(...),
+    overwrite_existing: bool = Query(False),
+    db: AsyncSession = Depends(get_db)
+):
+    """Import images from CSV file and associate them with a dataset"""
+    logging.info(f"Hit /api/images/{dataset_id}/import-csv with dataset_id={dataset_id}")
+    # First check if dataset exists
+    dataset = await crud.get_dataset(db, dataset_id)
+    if not dataset:
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="File must be a CSV")
+    
+    # Create a temporary file with proper extension
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        # Save uploaded file temporarily
+        shutil.copyfileobj(file.file, temp_file)
+        temp_path = temp_file.name
+    
+    try:
+        # Import data
+        result = await crud.import_csv_data_into_dataset(db, temp_path, dataset_id, overwrite_existing)
+        return CSVImportResponse(**result)
+    finally:
+        # Clean up temp file
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
 @app.get("/api/images/export-csv")
 async def export_images_csv(db: AsyncSession = Depends(get_db)):
     """Export images to CSV format"""

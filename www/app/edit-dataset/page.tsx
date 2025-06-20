@@ -189,19 +189,29 @@ export default function EditDatasetPage() {
                     throw new Error('Please upload a CSV file');
                 }
 
+                console.log('Uploading CSV file:', csvFile.name);
                 const formData = new FormData();
                 formData.append('file', csvFile);
                 formData.append('overwrite_existing', 'false');
 
-                const response = await fetch('/api/images/import-csv', {
+                console.log('Making request to:', `/api/images/${datasetId}/import-csv`);
+                const response = await fetch(`/api/images/${datasetId}/import-csv`, {
                     method: 'POST',
                     body: formData,
                 });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || "Failed to import CSV");
                 }
+                const data = await response.json();
+                console.log('CSV import successful:', data);
+
+                // Show success message
+                setError(null);
             }
 
             // router.push('/datasets');
