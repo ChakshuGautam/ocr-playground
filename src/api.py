@@ -11,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 import logging
 
-from .database import get_db, init_db, EvaluationRun, async_session
+from .database import get_db, init_db, EvaluationRun as EvaluationRunDB, async_session
 from .schemas import (
     Image, ImageCreate, ImageUpdate, ImageWithEvaluations,
     Evaluation, EvaluationCreate, EvaluationUpdate, EvaluationWithDetails,
@@ -25,7 +25,7 @@ from .schemas import (
     Dataset, DatasetCreate, DatasetUpdate, DatasetWithImages,
     PromptFamily, PromptFamilyCreate, PromptFamilyWithVersions,
     PromptVersion, PromptVersionCreate, PromptVersionUpdate,
-    EvaluationRun, EvaluationRunCreate, EvaluationRunUpdate, EvaluationRunWithDetails,
+    EvaluationRun as EvaluationRunSchema, EvaluationRunCreate, EvaluationRunUpdate, EvaluationRunWithDetails,
     ComparisonResults, LiveProgressUpdate, PerformanceTrend,
     APIKey, APIKeyCreate, APIUsageStats,
     ProcessingStatus, DatasetStatus, PromptStatus
@@ -707,8 +707,8 @@ async def process_evaluation_run_background(run_id: int):
             
             # Update run status to processing
             await db.execute(
-                update(EvaluationRun)
-                .where(EvaluationRun.id == run_id)
+                update(EvaluationRunDB)
+                .where(EvaluationRunDB.id == run_id)
                 .values(
                     status="processing",
                     progress_percentage=0,
@@ -727,8 +727,8 @@ async def process_evaluation_run_background(run_id: int):
             if total_images == 0:
                 # No images to process
                 await db.execute(
-                    update(EvaluationRun)
-                    .where(EvaluationRun.id == run_id)
+                    update(EvaluationRunDB)
+                    .where(EvaluationRunDB.id == run_id)
                     .values(
                         status="failed",
                         current_step="No images found in datasets"
@@ -741,8 +741,8 @@ async def process_evaluation_run_background(run_id: int):
             prompt_configs = evaluation_run.prompt_configurations
             if not prompt_configs:
                 await db.execute(
-                    update(EvaluationRun)
-                    .where(EvaluationRun.id == run_id)
+                    update(EvaluationRunDB)
+                    .where(EvaluationRunDB.id == run_id)
                     .values(
                         status="failed",
                         current_step="No prompt configurations found"
@@ -774,8 +774,8 @@ async def process_evaluation_run_background(run_id: int):
                         progress_percentage = int((processed_count / (total_images * len(prompt_configs))) * 100)
                         
                         await db.execute(
-                            update(EvaluationRun)
-                            .where(EvaluationRun.id == run_id)
+                            update(EvaluationRunDB)
+                            .where(EvaluationRunDB.id == run_id)
                             .values(
                                 progress_percentage=progress_percentage,
                                 current_step=f"Processing image {image.number} with {prompt_config.label}"
@@ -836,8 +836,8 @@ async def process_evaluation_run_background(run_id: int):
             
             # Mark run as completed
             await db.execute(
-                update(EvaluationRun)
-                .where(EvaluationRun.id == run_id)
+                update(EvaluationRunDB)
+                .where(EvaluationRunDB.id == run_id)
                 .values(
                     status="success",
                     progress_percentage=100,
@@ -850,8 +850,8 @@ async def process_evaluation_run_background(run_id: int):
         except Exception as e:
             # Update run with error
             await db.execute(
-                update(EvaluationRun)
-                .where(EvaluationRun.id == run_id)
+                update(EvaluationRunDB)
+                .where(EvaluationRunDB.id == run_id)
                 .values(
                     status="failed",
                     current_step=f"Failed: {str(e)}"
@@ -1002,7 +1002,7 @@ async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get
     return {"message": "Prompt version promoted to production"}
 
 # Evaluation Run endpoints
-@app.get("/api/evaluation-runs", response_model=List[EvaluationRun])
+@app.get("/api/evaluation-runs", response_model=List[EvaluationRunSchema])
 async def get_evaluation_runs(db: AsyncSession = Depends(get_db)):
     """Get all evaluation runs"""
     return await crud.get_evaluation_runs(db)
@@ -1015,7 +1015,7 @@ async def get_evaluation_run(run_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Evaluation run not found")
     return run
 
-@app.post("/api/evaluation-runs", response_model=EvaluationRun)
+@app.post("/api/evaluation-runs", response_model=EvaluationRunSchema)
 async def create_evaluation_run(
     run: EvaluationRunCreate,
     background_tasks: BackgroundTasks,
@@ -1046,7 +1046,7 @@ async def create_evaluation_run(
         
         logging.info(f"[API] Returning evaluation run with id: {db_run.id}")
         # return db_run
-        return EvaluationRun(
+        return EvaluationRunSchema(
             id = db_run.id,
             name = db_run.name,
             description = db_run.description,

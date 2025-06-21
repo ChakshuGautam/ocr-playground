@@ -945,7 +945,7 @@ async def get_evaluation_run(db: AsyncSession, run_id: int) -> Optional[Evaluati
     result = await db.execute(
         select(EvaluationRun)
         .options(
-            selectinload(EvaluationRun.datasets),
+            selectinload(EvaluationRun.datasets).selectinload(Dataset.images),
             selectinload(EvaluationRun.prompt_configurations).selectinload(EvaluationRunPrompt.prompt_version),
             selectinload(EvaluationRun.evaluations)
         )
