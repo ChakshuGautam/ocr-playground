@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle, XCircle, AlertCircle, TrendingUp, TrendingDown, ArrowRight, Clock } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
+import { Sidebar } from "@/components/sidebar"
 
 interface WordEvaluation {
   reference_word: string
@@ -150,8 +151,11 @@ export default function EvaluationReportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="mx-auto max-w-6xl">
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar currentPath="/evaluation-report" />
+
+      <main className="flex-1 p-8">
+        {/* <div className="mx-auto max-w-6xl"> */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Evaluation Reports</h1>
           <p className="mt-2 text-gray-600">
@@ -218,7 +222,10 @@ export default function EvaluationReportPage() {
             ))}
           </div>
         )}
-      </div>
+        {/* </div> */}
+
+      </main>
+
     </div >
   )
 }

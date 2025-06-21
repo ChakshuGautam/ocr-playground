@@ -152,7 +152,9 @@ export default function PromptFamiliesPage() {
                   filteredFamilies.map((family) => (
                     <TableRow key={family.id}>
                       <TableCell className="font-medium">{family.name}</TableCell>
-                      <TableCell>{family.description}</TableCell>
+                      <TableCell className="max-w-sm truncate" title={family.description}>
+                        {family.description}
+                      </TableCell>
                       {/* <TableCell>
                         <Badge variant="secondary">{family.version_count ?? 0}</Badge>
                       </TableCell> */}

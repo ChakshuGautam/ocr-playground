@@ -20,10 +20,9 @@ import { useEffect, useState, useRef } from "react"
 export default function CreateTestPage() {
   const navigation = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Tasks", href: "/tasks" },
     { name: "Datasets", href: "/datasets" },
-    { name: "Docs", href: "/docs" },
-    { name: "Community", href: "/community" },
+    { name: "Prompt Families", href: "/prompt-families" },
+    { name: "Evaluation Runs", href: "/evaluation-runs" },
   ]
 
   const [datasets, setDatasets] = useState<{ id: number; name: string }[]>([])
@@ -189,8 +188,8 @@ export default function CreateTestPage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/tasks" className="text-blue-600">
-                  Tasks
+                <BreadcrumbLink href="/evaluation-runs" className="text-blue-600">
+                  Evaluation Runs
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />

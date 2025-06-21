@@ -10,10 +10,10 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Evaluation Runs", href: "/evaluation-runs", icon: BarChart3 },
   { name: "Datasets", href: "/datasets", icon: Database },
-  { name: "Prompts", href: "/prompts", icon: MessageSquare },
+  // { name: "Prompts", href: "/prompts", icon: MessageSquare },
   { name: "Prompts Families", href: "/prompt-families", icon: MessageSquare },
   { name: "Create A/B Test", href: "/create-test", icon: MessageSquare },
-  { name: "Ground Truth", href: "/ground-truth", icon: Database },
+  // { name: "Ground Truth", href: "/ground-truth", icon: Database },
   { name: "Evaluation Report", href: "/evaluation-report", icon: BarChart3 }
 ]
 

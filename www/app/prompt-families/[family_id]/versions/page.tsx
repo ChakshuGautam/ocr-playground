@@ -12,9 +12,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 export default function PromptVersionsPage() {
   const router = useRouter()
   const params = useParams()
-  
+
   console.log("params:", params);
-     
+
   const familyId = params.family_id as string
 
   const [family, setFamily] = useState<any>(null)
@@ -107,26 +107,26 @@ export default function PromptVersionsPage() {
           // Send version_type for version number generation only
           version_type: newVersion.version_type.toLowerCase()
         };
-        
+
         console.log('Creating version with payload:', JSON.stringify(createData, null, 2));
-        
+
         res = await fetch(`/api/prompt-families/${familyId}/versions`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(createData),
         })
       }
-      
+
       const responseText = await res.text();
       console.log('Raw response:', responseText);
-      
+
       try {
         data = JSON.parse(responseText);
       } catch (e) {
         console.error('Failed to parse response as JSON:', e);
         data = { error: 'Invalid response format' };
       }
-      
+
       if (res.ok) {
         setShowModal(false)
         setEditVersion(null)
@@ -224,7 +224,9 @@ export default function PromptVersionsPage() {
                           {version.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>{version.changelog_message}</TableCell>
+                      <TableCell className="max-w-sm truncate" title={version.changelog_message}>
+                        {version.changelog_message}
+                      </TableCell>
                       <TableCell>
                         {version.created_at ? new Date(version.created_at).toLocaleDateString() : "-"}
                       </TableCell>
@@ -245,8 +247,8 @@ export default function PromptVersionsPage() {
                           {promoting === version.id
                             ? "Promoting..."
                             : version.status === "production"
-                            ? "Production"
-                            : "Promote"}
+                              ? "Production"
+                              : "Promote"}
                         </Button>
                       </TableCell>
                     </TableRow>
