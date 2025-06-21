@@ -446,6 +446,11 @@ async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dat
     if not dataset:
         raise ValueError("Dataset not found")
     
+    # Clear existing images from dataset if overwrite_existing is True
+    # if overwrite_existing:
+    #     dataset.images.clear()
+    #     logging.info(f"[CRUD] Cleared existing images from dataset {dataset_id}")
+    
     try:
         with open(csv_file_path, 'r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file)
@@ -462,40 +467,51 @@ async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dat
                         continue
                     
                     # Check if image already exists
-                    existing_image = await get_image_by_number(db, number)
+                    # existing_image = await get_image_by_number(db, number)
                     
-                    if existing_image:
-                        if overwrite_existing:
-                            # Update existing image
-                            update_data = ImageUpdate(
-                                reference_text=reference_text,
-                                url=url,
-                                local_path=local_image
-                            )
-                            await update_image(db, existing_image.id, update_data)
-                            updated_count += 1
-                        else:
-                            # Skip existing
-                            continue
-                    else:
-                        # Create new image
-                        image_data = ImageCreate(
-                            number=number,
-                            url=url,
-                            reference_text=reference_text,
-                            local_path=local_image
-                        )
-                        db_image = await create_image(db, image_data)
-                        dataset.images.append(db_image)
-                        imported_count += 1
-                    
+                    # if existing_image:
+                    #     if overwrite_existing:
+                    #         # Update existing image
+                    #         update_data = ImageUpdate(
+                    #             reference_text=reference_text,
+                    #             url=url,
+                    #             local_path=local_image
+                    #         )
+                    #         await update_image(db, existing_image.id, update_data)
+                    #         updated_count += 1
+                    #     else:
+                    #         # Skip existing
+                    #         continue
+                    # else:
+                    #     # Create new image
+                    #     image_data = ImageCreate(
+                    #         number=number,
+                    #         url=url,
+                    #         reference_text=reference_text,
+                    #         local_path=local_image
+                    #     )
+                    # Create new image
+                    image_data = ImageCreate(
+                        number=number,
+                        url=url,
+                        reference_text=reference_text,
+                        local_path=local_image
+                    )
+                    db_image = await create_image(db, image_data)
+                    dataset.images.append(db_image)
+                    imported_count += 1
                 except Exception as e:
                     errors.append(f"Row {row_num}: {str(e)}")
                     continue
         
-        dataset.image_count = imported_count
+        # Update dataset with correct image count and commit changes
+        dataset.image_count = len(dataset.images)
         dataset.status = DatasetStatus.VALIDATED
         dataset.updated_at = datetime.utcnow()
+        
+        # Commit all changes to the database
+        await db.commit()
+        await db.refresh(dataset)
 
         return {
             "imported_count": imported_count,
@@ -546,8 +562,31 @@ async def associate_image_with_dataset(db: AsyncSession, image_id: int, dataset_
         dataset.image_count = len(dataset.images)
         dataset.updated_at = datetime.utcnow()
         await db.commit()
+        await db.refresh(dataset)
     
     return True
+
+async def is_image_in_dataset(db: AsyncSession, image_id: int, dataset_id: int) -> bool:
+    """Check if an image is already associated with a dataset"""
+    result = await db.execute(
+        select(dataset_images).where(
+            and_(
+                dataset_images.c.image_id == image_id,
+                dataset_images.c.dataset_id == dataset_id
+            )
+        )
+    )
+    return result.scalar_one_or_none() is not None
+
+async def get_dataset_images(db: AsyncSession, dataset_id: int) -> List[Image]:
+    """Get all images associated with a dataset"""
+    result = await db.execute(
+        select(Image)
+        .join(dataset_images)
+        .where(dataset_images.c.dataset_id == dataset_id)
+        .order_by(Image.id)
+    )
+    return result.scalars().all()
 
 # New Dataset CRUD operations
 async def create_dataset(db: AsyncSession, dataset: DatasetCreate) -> Dataset:
