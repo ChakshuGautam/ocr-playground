@@ -85,6 +85,7 @@ class EvaluationBase(BaseModel):
 
 class EvaluationCreate(BaseModel):
     image_id: int
+    evaluation_run_id: Optional[int] = None
     prompt_version: str = "v1"
     force_reprocess: bool = False  # Force reprocessing even if already processed
 
@@ -345,7 +346,7 @@ class EvaluationRun(EvaluationRunBase):
 class EvaluationRunWithDetails(EvaluationRun):
     datasets: List[Dataset] = []
     prompt_configurations: List[PromptConfiguration] = []
-    evaluations: List['Evaluation'] = []
+    evaluations: List['EvaluationWithDetails'] = []
     comparison_results: Optional['ComparisonResults'] = None
 
 # Comparison and Analysis schemas

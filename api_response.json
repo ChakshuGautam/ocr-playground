@@ -1,0 +1,2850 @@
+{
+  "name": "Hindi OCR - Context-Aware vs Baseline",
+  "description": "Comparing baseline Hindi OCR prompt against context-aware prompt that leverages linguistic patterns and common Hindi word structures to improve accuracy on handwritten Devanagari text.",
+  "hypothesis": "Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text because the model will use surrounding words to disambiguate unclear characters.",
+  "dataset_ids": [
+    2
+  ],
+  "id": 2,
+  "status": "success",
+  "progress_percentage": 100,
+  "current_step": "Evaluation run completed",
+  "created_at": "2025-06-21T18:08:23.708192",
+  "updated_at": "2025-06-21T18:11:12.731533",
+  "completed_at": "2025-06-21T18:11:12.729532",
+  "datasets": [
+    {
+      "name": "Dummy dataset 6",
+      "description": "dummy desc",
+      "status": "validated",
+      "id": 2,
+      "image_count": 0,
+      "created_at": "2025-06-20T18:31:48.212381",
+      "updated_at": "2025-06-20T20:56:37.405649",
+      "last_used": null
+    }
+  ],
+  "prompt_configurations": [
+    {
+      "label": "Control (Baseline Hindi OCR)",
+      "family_id": 2,
+      "version": "1.0.0"
+    },
+    {
+      "label": "Control (Baseline Hindi OCR)",
+      "family_id": 2,
+      "version": "1.1.0"
+    }
+  ],
+  "evaluations": [
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0939\u092e \u0938\u092c \u092b\u0932 \u0930\u0916\u093e \u0917\u093e\u092f\u0947\u0964 \u0936\u092e\u093e. \u091b\u0924 \u092a\u0930 \u0924\u093e\u0932 \u092c\u091c\u093e\u0964",
+      "accuracy": 60.0,
+      "correct_words": 6,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 7,
+      "image_id": 1,
+      "created_at": "2025-06-21T18:08:23.958703",
+      "updated_at": "2025-06-21T18:08:32.889979",
+      "image": {
+        "number": "1",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_955139_11_42766918_20250217051749.jpg",
+        "local_path": "",
+        "reference_text": "\u0939\u092e \u0938\u092c \u092b\u0932 \u0916\u093e \u0917\u090f\u0964\n\u0936\u092e\u093e \u091b\u0924 \u092a\u0930 \u0924\u093e\u0932\u0940 \u092c\u091c\u093e\u0964",
+        "id": 1,
+        "created_at": "2025-06-20T18:36:36.973743",
+        "updated_at": "2025-06-20T18:36:36.973743"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0939\u092e",
+          "transcribed_word": "\u0939\u092e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 201,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 202,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u092b\u0932",
+          "transcribed_word": "\u092b\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 203,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u0916\u093e",
+          "transcribed_word": "\u0930\u0916\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0930\u0916\u093e' vs reference '\u0916\u093e' (different character).",
+          "word_position": 0,
+          "id": 204,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u0917\u090f\u0964",
+          "transcribed_word": "\u0917\u093e\u092f\u0947\u0964",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u093e\u092f\u0947\u0964' vs reference '\u0917\u090f\u0964' (different character).",
+          "word_position": 0,
+          "id": 205,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u0936\u092e\u093e",
+          "transcribed_word": "\u0936\u092e\u093e.",
+          "match": false,
+          "reason_diff": "Extra character: '.' in '\u0936\u092e\u093e.'",
+          "word_position": 0,
+          "id": 206,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u091b\u0924",
+          "transcribed_word": "\u091b\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 207,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 208,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u0924\u093e\u0932\u0940",
+          "transcribed_word": "\u0924\u093e\u0932",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0924\u093e\u0932' vs reference '\u0924\u093e\u0932\u0940' (missing '\u0940' matra).",
+          "word_position": 0,
+          "id": 209,
+          "evaluation_id": 7
+        },
+        {
+          "reference_word": "\u092c\u091c\u093e\u0964",
+          "transcribed_word": "\u092c\u091c\u093e\u0964",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 210,
+          "evaluation_id": 7
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0939\u092e \u0938\u092c \u092b\u0932 \u0930\u0916\u093e \u0917\u093e\u092f\u0947\u0964 \u0936\u092e\u093e. \u091b\u0924 \u092a\u0930 \u0924\u093e\u0932 \u092c\u091c\u093e\u0964",
+      "accuracy": 60.0,
+      "correct_words": 6,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 8,
+      "image_id": 1,
+      "created_at": "2025-06-21T18:08:32.944983",
+      "updated_at": "2025-06-21T18:08:40.031286",
+      "image": {
+        "number": "1",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_955139_11_42766918_20250217051749.jpg",
+        "local_path": "",
+        "reference_text": "\u0939\u092e \u0938\u092c \u092b\u0932 \u0916\u093e \u0917\u090f\u0964\n\u0936\u092e\u093e \u091b\u0924 \u092a\u0930 \u0924\u093e\u0932\u0940 \u092c\u091c\u093e\u0964",
+        "id": 1,
+        "created_at": "2025-06-20T18:36:36.973743",
+        "updated_at": "2025-06-20T18:36:36.973743"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0939\u092e",
+          "transcribed_word": "\u0939\u092e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 211,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 212,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u092b\u0932",
+          "transcribed_word": "\u092b\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 213,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u0916\u093e",
+          "transcribed_word": "\u0930\u0916\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0930\u0916\u093e' vs reference '\u0916\u093e' (different character).",
+          "word_position": 0,
+          "id": 214,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u0917\u090f\u0964",
+          "transcribed_word": "\u0917\u093e\u092f\u0947\u0964",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u093e\u092f\u0947\u0964' vs reference '\u0917\u090f\u0964' (different character).",
+          "word_position": 0,
+          "id": 215,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u0936\u092e\u093e",
+          "transcribed_word": "\u0936\u092e\u093e.",
+          "match": false,
+          "reason_diff": "Extra character: '.' in transcribed '\u0936\u092e\u093e.'",
+          "word_position": 0,
+          "id": 216,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u091b\u0924",
+          "transcribed_word": "\u091b\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 217,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 218,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u0924\u093e\u0932\u0940",
+          "transcribed_word": "\u0924\u093e\u0932",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0924\u093e\u0932' vs reference '\u0924\u093e\u0932\u0940' (missing '\u0908' matra).",
+          "word_position": 0,
+          "id": 219,
+          "evaluation_id": 8
+        },
+        {
+          "reference_word": "\u092c\u091c\u093e\u0964",
+          "transcribed_word": "\u092c\u091c\u093e\u0964",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 220,
+          "evaluation_id": 8
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u092f\u0939 \u0915\u092a \u092e\u0924 \u092d\u0930\u093e \u0915\u0930 \u091c\u092f \u092f\u0939 \u092a\u093e\u0928 \u092e\u0924 \u0916\u093e\u0928\u093e \u0924\u0947\u091c \u0939\u0935\u093e \u0915\u093e \u091d\u094b\u0915\u093e \u0906\u092f\u093e \u0915\u0932 \u0938\u092c \u0932\u094b\u0917 \u0916\u0941\u0936 \u0925\u0947",
+      "accuracy": 90.0,
+      "correct_words": 18,
+      "total_words": 20,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 9,
+      "image_id": 2,
+      "created_at": "2025-06-21T18:08:40.078273",
+      "updated_at": "2025-06-21T18:08:50.157131",
+      "image": {
+        "number": "2",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_15279_11_035931658_20250217044126.jpg",
+        "local_path": "",
+        "reference_text": "\u092f\u0939 \u0915\u092a \u092e\u0924 \u092d\u0930\u093e \u0915\u0930\n\u091c\u092f \u092f\u0939 \u092a\u093e\u0928 \u092e\u0924 \u0916\u093e\u0928\u093e\n\u0924\u0947\u091c\u093c \u0939\u0935\u093e \u0915\u093e \u091d\u094b\u0902\u0915\u093e \u0906\u092f\u093e\n\u0915\u0932 \u0938\u092c \u0932\u094b\u0917 \u0916\u0941\u0936 \u0925\u0947",
+        "id": 2,
+        "created_at": "2025-06-20T18:36:37.152740",
+        "updated_at": "2025-06-20T18:36:37.152740"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 221,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0915\u092a",
+          "transcribed_word": "\u0915\u092a",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 222,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 223,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u092d\u0930\u093e",
+          "transcribed_word": "\u092d\u0930\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 224,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 225,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u091c\u092f",
+          "transcribed_word": "\u091c\u092f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 226,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 227,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u092a\u093e\u0928",
+          "transcribed_word": "\u092a\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 228,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 229,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0916\u093e\u0928\u093e",
+          "transcribed_word": "\u0916\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 230,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0924\u0947\u091c\u093c",
+          "transcribed_word": "\u0924\u0947\u091c",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0924\u0947\u091c' is missing the '\u093c' (nukta) found in '\u0924\u0947\u091c\u093c'.",
+          "word_position": 0,
+          "id": 231,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0939\u0935\u093e",
+          "transcribed_word": "\u0939\u0935\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 232,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0915\u093e",
+          "transcribed_word": "\u0915\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 233,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u091d\u094b\u0902\u0915\u093e",
+          "transcribed_word": "\u091d\u094b\u0915\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u091d\u094b\u0915\u093e' is missing the '\u0901' (chandrabindu) found in '\u091d\u094b\u0902\u0915\u093e'.",
+          "word_position": 0,
+          "id": 234,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0906\u092f\u093e",
+          "transcribed_word": "\u0906\u092f\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 235,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 236,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 237,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0932\u094b\u0917",
+          "transcribed_word": "\u0932\u094b\u0917",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 238,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0916\u0941\u0936",
+          "transcribed_word": "\u0916\u0941\u0936",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 239,
+          "evaluation_id": 9
+        },
+        {
+          "reference_word": "\u0925\u0947",
+          "transcribed_word": "\u0925\u0947",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 240,
+          "evaluation_id": 9
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u092f\u0939 \u0915\u092a \u092e\u0924 \u092d\u0930\u093e \u0915\u0930 \u091c\u092f \u092f\u0939 \u092a\u093e\u0928 \u092e\u0924 \u0916\u093e\u0928\u093e \u0924\u0947\u091c \u0939\u0935\u093e \u0915\u093e \u091d\u094b\u0915\u093e \u0906\u092f\u093e \u0915\u0932 \u0938\u092c \u0932\u094b\u0917 \u0916\u0941\u0936 \u0925\u0947",
+      "accuracy": 90.0,
+      "correct_words": 18,
+      "total_words": 20,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 10,
+      "image_id": 2,
+      "created_at": "2025-06-21T18:08:50.225611",
+      "updated_at": "2025-06-21T18:09:00.801458",
+      "image": {
+        "number": "2",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_15279_11_035931658_20250217044126.jpg",
+        "local_path": "",
+        "reference_text": "\u092f\u0939 \u0915\u092a \u092e\u0924 \u092d\u0930\u093e \u0915\u0930\n\u091c\u092f \u092f\u0939 \u092a\u093e\u0928 \u092e\u0924 \u0916\u093e\u0928\u093e\n\u0924\u0947\u091c\u093c \u0939\u0935\u093e \u0915\u093e \u091d\u094b\u0902\u0915\u093e \u0906\u092f\u093e\n\u0915\u0932 \u0938\u092c \u0932\u094b\u0917 \u0916\u0941\u0936 \u0925\u0947",
+        "id": 2,
+        "created_at": "2025-06-20T18:36:37.152740",
+        "updated_at": "2025-06-20T18:36:37.152740"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 241,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0915\u092a",
+          "transcribed_word": "\u0915\u092a",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 242,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 243,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u092d\u0930\u093e",
+          "transcribed_word": "\u092d\u0930\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 244,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 245,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u091c\u092f",
+          "transcribed_word": "\u091c\u092f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 246,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 247,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u092a\u093e\u0928",
+          "transcribed_word": "\u092a\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 248,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 249,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0916\u093e\u0928\u093e",
+          "transcribed_word": "\u0916\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 250,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0924\u0947\u091c\u093c",
+          "transcribed_word": "\u0924\u0947\u091c",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0924\u0947\u091c' is missing the '\u093c' (nukta) found in '\u0924\u0947\u091c\u093c'.",
+          "word_position": 0,
+          "id": 251,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0939\u0935\u093e",
+          "transcribed_word": "\u0939\u0935\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 252,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0915\u093e",
+          "transcribed_word": "\u0915\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 253,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u091d\u094b\u0902\u0915\u093e",
+          "transcribed_word": "\u091d\u094b\u0915\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u091d\u094b\u0915\u093e' is missing the '\u0902' (chandrabindu) found in '\u091d\u094b\u0902\u0915\u093e'.",
+          "word_position": 0,
+          "id": 254,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0906\u092f\u093e",
+          "transcribed_word": "\u0906\u092f\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 255,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 256,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 257,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0932\u094b\u0917",
+          "transcribed_word": "\u0932\u094b\u0917",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 258,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0916\u0941\u0936",
+          "transcribed_word": "\u0916\u0941\u0936",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 259,
+          "evaluation_id": 10
+        },
+        {
+          "reference_word": "\u0925\u0947",
+          "transcribed_word": "\u0925\u0947",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 260,
+          "evaluation_id": 10
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0921\u0930 \u0915\u0930 \u092e\u0924 \u0930\u0939\u093e \u0915\u0930 \u092f\u0939 \u0938\u092c \u0915\u092c \u0918\u091f\u093e \u0925\u093e \u091b\u093e\u092f\u093e \u0926\u093f\u0928 \u092d\u0930 \u0917\u093e\u0928\u093e \u0917\u093e\u0924\u0940 \u091a\u093e\u0915\u0942 \u0915\u094b \u0938\u093f\u0932 \u092a\u0930 \u0918\u093f\u0938",
+      "accuracy": 100.0,
+      "correct_words": 20,
+      "total_words": 20,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 11,
+      "image_id": 3,
+      "created_at": "2025-06-21T18:09:00.883495",
+      "updated_at": "2025-06-21T18:09:12.705766",
+      "image": {
+        "number": "3",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_15269_11_40446725_20250220073646.jpg",
+        "local_path": "",
+        "reference_text": "\u0921\u0930 \u0915\u0930 \u092e\u0924 \u0930\u0939\u093e \u0915\u0930\n\u092f\u0939 \u0938\u092c \u0915\u092c \u0918\u091f\u093e \u0925\u093e\n\u091b\u093e\u092f\u093e \u0926\u093f\u0928 \u092d\u0930 \u0917\u093e\u0928\u093e \u0917\u093e\u0924\u0940\n\u091a\u093e\u0915\u0942 \u0915\u094b \u0938\u093f\u0932 \u092a\u0930 \u0918\u093f\u0938",
+        "id": 3,
+        "created_at": "2025-06-20T18:36:37.191741",
+        "updated_at": "2025-06-20T18:36:37.191741"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0921\u0930",
+          "transcribed_word": "\u0921\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 261,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 262,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 263,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0930\u0939\u093e",
+          "transcribed_word": "\u0930\u0939\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 264,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 265,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 266,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 267,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0915\u092c",
+          "transcribed_word": "\u0915\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 268,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0918\u091f\u093e",
+          "transcribed_word": "\u0918\u091f\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 269,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0925\u093e",
+          "transcribed_word": "\u0925\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 270,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u091b\u093e\u092f\u093e",
+          "transcribed_word": "\u091b\u093e\u092f\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 271,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0926\u093f\u0928",
+          "transcribed_word": "\u0926\u093f\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 272,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u092d\u0930",
+          "transcribed_word": "\u092d\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 273,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0917\u093e\u0928\u093e",
+          "transcribed_word": "\u0917\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 274,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0917\u093e\u0924\u0940",
+          "transcribed_word": "\u0917\u093e\u0924\u0940",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 275,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u091a\u093e\u0915\u0942",
+          "transcribed_word": "\u091a\u093e\u0915\u0942",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 276,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0915\u094b",
+          "transcribed_word": "\u0915\u094b",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 277,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0938\u093f\u0932",
+          "transcribed_word": "\u0938\u093f\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 278,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 279,
+          "evaluation_id": 11
+        },
+        {
+          "reference_word": "\u0918\u093f\u0938",
+          "transcribed_word": "\u0918\u093f\u0938",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 280,
+          "evaluation_id": 11
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0921\u0930 \u0915\u0930 \u092e\u0924 \u0930\u0939\u093e \u0915\u0930 \u092f\u0939 \u0938\u092c \u0915\u092c \u0918\u091f\u093e \u0925\u093e \u091b\u093e\u092f\u093e \u0926\u093f\u0928 \u092d\u0930 \u0917\u093e\u0928\u093e \u0917\u093e\u0924\u0940 \u091a\u093e\u0915\u0942 \u0915\u094b \u0938\u093f\u0932 \u092a\u0930 \u0918\u093f\u0938",
+      "accuracy": 100.0,
+      "correct_words": 20,
+      "total_words": 20,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 12,
+      "image_id": 3,
+      "created_at": "2025-06-21T18:09:12.776779",
+      "updated_at": "2025-06-21T18:09:21.627620",
+      "image": {
+        "number": "3",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_15269_11_40446725_20250220073646.jpg",
+        "local_path": "",
+        "reference_text": "\u0921\u0930 \u0915\u0930 \u092e\u0924 \u0930\u0939\u093e \u0915\u0930\n\u092f\u0939 \u0938\u092c \u0915\u092c \u0918\u091f\u093e \u0925\u093e\n\u091b\u093e\u092f\u093e \u0926\u093f\u0928 \u092d\u0930 \u0917\u093e\u0928\u093e \u0917\u093e\u0924\u0940\n\u091a\u093e\u0915\u0942 \u0915\u094b \u0938\u093f\u0932 \u092a\u0930 \u0918\u093f\u0938",
+        "id": 3,
+        "created_at": "2025-06-20T18:36:37.191741",
+        "updated_at": "2025-06-20T18:36:37.191741"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0921\u0930",
+          "transcribed_word": "\u0921\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 281,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 282,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 283,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0930\u0939\u093e",
+          "transcribed_word": "\u0930\u0939\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 284,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 285,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 286,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 287,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0915\u092c",
+          "transcribed_word": "\u0915\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 288,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0918\u091f\u093e",
+          "transcribed_word": "\u0918\u091f\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 289,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0925\u093e",
+          "transcribed_word": "\u0925\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 290,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u091b\u093e\u092f\u093e",
+          "transcribed_word": "\u091b\u093e\u092f\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 291,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0926\u093f\u0928",
+          "transcribed_word": "\u0926\u093f\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 292,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u092d\u0930",
+          "transcribed_word": "\u092d\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 293,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0917\u093e\u0928\u093e",
+          "transcribed_word": "\u0917\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 294,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0917\u093e\u0924\u0940",
+          "transcribed_word": "\u0917\u093e\u0924\u0940",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 295,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u091a\u093e\u0915\u0942",
+          "transcribed_word": "\u091a\u093e\u0915\u0942",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 296,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0915\u094b",
+          "transcribed_word": "\u0915\u094b",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 297,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0938\u093f\u0932",
+          "transcribed_word": "\u0938\u093f\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 298,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 299,
+          "evaluation_id": 12
+        },
+        {
+          "reference_word": "\u0918\u093f\u0938",
+          "transcribed_word": "\u0918\u093f\u0938",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 300,
+          "evaluation_id": 12
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0938\u092c \u090f\u0915 \u0938\u093e\u0925 \u0935\u0928 \u0917\u092f\u0947\u0964 \u0939\u093e\u0930 \u092e\u0924 \u092e\u093e\u0928 \u0915\u093e\u092e \u0915\u0930",
+      "accuracy": 90.0,
+      "correct_words": 9,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 13,
+      "image_id": 4,
+      "created_at": "2025-06-21T18:09:21.713617",
+      "updated_at": "2025-06-21T18:09:30.318669",
+      "image": {
+        "number": "4",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_685780_11_41393074_20250219045755.jpg",
+        "local_path": "",
+        "reference_text": "\u0938\u092c \u090f\u0915 \u0938\u093e\u0925 \u0935\u0928 \u0917\u090f\n\u0939\u093e\u0930 \u092e\u0924 \u092e\u093e\u0928 \u0915\u093e\u092e \u0915\u0930",
+        "id": 4,
+        "created_at": "2025-06-20T18:36:37.235753",
+        "updated_at": "2025-06-20T18:36:37.235753"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 301,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u090f\u0915",
+          "transcribed_word": "\u090f\u0915",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 302,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u0938\u093e\u0925",
+          "transcribed_word": "\u0938\u093e\u0925",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 303,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u0935\u0928",
+          "transcribed_word": "\u0935\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 304,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u0917\u090f",
+          "transcribed_word": "\u0917\u092f\u0947\u0964",
+          "match": false,
+          "reason_diff": "Extra character: Transcribed '\u0917\u092f\u0947\u0964' has an extra '\u0964' at the end.",
+          "word_position": 0,
+          "id": 305,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u0939\u093e\u0930",
+          "transcribed_word": "\u0939\u093e\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 306,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 307,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u092e\u093e\u0928",
+          "transcribed_word": "\u092e\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 308,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u0915\u093e\u092e",
+          "transcribed_word": "\u0915\u093e\u092e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 309,
+          "evaluation_id": 13
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 310,
+          "evaluation_id": 13
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0938\u092c \u090f\u0915 \u0938\u093e\u0925 \u0935\u0928 \u0917\u092f\u0947\u0964 \u0939\u093e\u0930 \u092e\u0924 \u092e\u093e\u0928 \u0915\u093e\u092e \u0915\u0930",
+      "accuracy": 90.0,
+      "correct_words": 9,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 14,
+      "image_id": 4,
+      "created_at": "2025-06-21T18:09:30.363235",
+      "updated_at": "2025-06-21T18:09:39.344694",
+      "image": {
+        "number": "4",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_685780_11_41393074_20250219045755.jpg",
+        "local_path": "",
+        "reference_text": "\u0938\u092c \u090f\u0915 \u0938\u093e\u0925 \u0935\u0928 \u0917\u090f\n\u0939\u093e\u0930 \u092e\u0924 \u092e\u093e\u0928 \u0915\u093e\u092e \u0915\u0930",
+        "id": 4,
+        "created_at": "2025-06-20T18:36:37.235753",
+        "updated_at": "2025-06-20T18:36:37.235753"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 311,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u090f\u0915",
+          "transcribed_word": "\u090f\u0915",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 312,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u0938\u093e\u0925",
+          "transcribed_word": "\u0938\u093e\u0925",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 313,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u0935\u0928",
+          "transcribed_word": "\u0935\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 314,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u0917\u090f",
+          "transcribed_word": "\u0917\u092f\u0947\u0964",
+          "match": false,
+          "reason_diff": "Extra character: Transcribed '\u0917\u092f\u0947\u0964' has an extra '\u0964' at the end.",
+          "word_position": 0,
+          "id": 315,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u0939\u093e\u0930",
+          "transcribed_word": "\u0939\u093e\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 316,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 317,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u092e\u093e\u0928",
+          "transcribed_word": "\u092e\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 318,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u0915\u093e\u092e",
+          "transcribed_word": "\u0915\u093e\u092e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 319,
+          "evaluation_id": 14
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 320,
+          "evaluation_id": 14
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0915\u0932 \u0924\u0915 \u092f\u0939 \u0915\u093e\u092e \u0915\u0930 \u0905\u092c \u091c\u092f \u0915\u093e \u0915\u0939\u093e \u092e\u093e\u0928",
+      "accuracy": 100.0,
+      "correct_words": 10,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 15,
+      "image_id": 5,
+      "created_at": "2025-06-21T18:09:39.388430",
+      "updated_at": "2025-06-21T18:09:47.652126",
+      "image": {
+        "number": "5",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_994993_11_42645755_20250227050142.jpg",
+        "local_path": "",
+        "reference_text": "\u0915\u0932 \u0924\u0915 \u092f\u0939 \u0915\u093e\u092e \u0915\u0930\n\u0905\u092c \u091c\u092f \u0915\u093e \u0915\u0939\u093e \u092e\u093e\u0928",
+        "id": 5,
+        "created_at": "2025-06-20T18:36:37.284744",
+        "updated_at": "2025-06-20T18:36:37.284744"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 321,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u0924\u0915",
+          "transcribed_word": "\u0924\u0915",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 322,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 323,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u0915\u093e\u092e",
+          "transcribed_word": "\u0915\u093e\u092e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 324,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 325,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u0905\u092c",
+          "transcribed_word": "\u0905\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 326,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u091c\u092f",
+          "transcribed_word": "\u091c\u092f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 327,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u0915\u093e",
+          "transcribed_word": "\u0915\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 328,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u0915\u0939\u093e",
+          "transcribed_word": "\u0915\u0939\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 329,
+          "evaluation_id": 15
+        },
+        {
+          "reference_word": "\u092e\u093e\u0928",
+          "transcribed_word": "\u092e\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 330,
+          "evaluation_id": 15
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0915\u0932 \u0924\u0915 \u092f\u0939 \u0915\u093e\u092e \u0915\u0930 \u0905\u092c \u091c\u092f \u0915\u093e \u0915\u0939\u093e \u092e\u093e\u0928",
+      "accuracy": 100.0,
+      "correct_words": 10,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 16,
+      "image_id": 5,
+      "created_at": "2025-06-21T18:09:47.697124",
+      "updated_at": "2025-06-21T18:09:55.147463",
+      "image": {
+        "number": "5",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_994993_11_42645755_20250227050142.jpg",
+        "local_path": "",
+        "reference_text": "\u0915\u0932 \u0924\u0915 \u092f\u0939 \u0915\u093e\u092e \u0915\u0930\n\u0905\u092c \u091c\u092f \u0915\u093e \u0915\u0939\u093e \u092e\u093e\u0928",
+        "id": 5,
+        "created_at": "2025-06-20T18:36:37.284744",
+        "updated_at": "2025-06-20T18:36:37.284744"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 331,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u0924\u0915",
+          "transcribed_word": "\u0924\u0915",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 332,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u092f\u0939",
+          "transcribed_word": "\u092f\u0939",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 333,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u0915\u093e\u092e",
+          "transcribed_word": "\u0915\u093e\u092e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 334,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 335,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u0905\u092c",
+          "transcribed_word": "\u0905\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 336,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u091c\u092f",
+          "transcribed_word": "\u091c\u092f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 337,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u0915\u093e",
+          "transcribed_word": "\u0915\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 338,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u0915\u0939\u093e",
+          "transcribed_word": "\u0915\u0939\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 339,
+          "evaluation_id": 16
+        },
+        {
+          "reference_word": "\u092e\u093e\u0928",
+          "transcribed_word": "\u092e\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 340,
+          "evaluation_id": 16
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0915\u0932 \u0928\u0947\u0939\u092e \u0938\u092c \u0939\u093e\u0930 \u0917\u090f\u0964 \u0918\u0930 \u091a\u0932 \u0915\u0930 \u092c\u093e\u0924 \u0915\u0930\u093e\u0964 \u092e\u093e\u0924\u093e \u0915\u0947 \u0932\u093f\u090f \u0916\u093e\u0928\u093e \u0932\u0917\u093e \u092f\u0936 \u0930\u094b\u091c \u0917\u0940\u0924\u093e \u0939\u0948",
+      "accuracy": 73.68421052631578,
+      "correct_words": 14,
+      "total_words": 19,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 17,
+      "image_id": 6,
+      "created_at": "2025-06-21T18:09:55.194974",
+      "updated_at": "2025-06-21T18:10:05.938010",
+      "image": {
+        "number": "6",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_955101_11_38461332_20250219091939.jpg",
+        "local_path": "",
+        "reference_text": "\u0915\u0932 \u0939\u092e \u0938\u092c \u0939\u093e\u0930 \u0917\u090f\n\u0918\u0930 \u091a\u0932 \u0915\u0930 \u092c\u093e\u0924 \u0915\u0930\n\u092e\u093e\u0924\u093e \u0915\u0947 \u0932\u093f\u090f \u0916\u093e\u0928\u093e \u0932\u0917\u093e\n\u092f\u0936 \u0930\u094b\u091c\u093c \u0917\u093e\u0924\u093e \u0939\u0948",
+        "id": 6,
+        "created_at": "2025-06-20T18:36:37.326752",
+        "updated_at": "2025-06-20T18:36:37.326752"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 341,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0939\u092e",
+          "transcribed_word": "\u0928\u0947\u0939\u092e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0928\u0947\u0939\u092e' vs reference '\u0939\u092e' (incorrect character).",
+          "word_position": 0,
+          "id": 342,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 343,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0939\u093e\u0930",
+          "transcribed_word": "\u0939\u093e\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 344,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0917\u090f",
+          "transcribed_word": "\u0917\u090f\u0964",
+          "match": false,
+          "reason_diff": "Extra character: '\u0964' at the end of the word.",
+          "word_position": 0,
+          "id": 345,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0918\u0930",
+          "transcribed_word": "\u0918\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 346,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u091a\u0932",
+          "transcribed_word": "\u091a\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 347,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 348,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u092c\u093e\u0924",
+          "transcribed_word": "\u092c\u093e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 349,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930\u093e\u0964",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0915\u0930\u093e\u0964' vs reference '\u0915\u0930' (incorrect matra).",
+          "word_position": 0,
+          "id": 350,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u092e\u093e\u0924\u093e",
+          "transcribed_word": "\u092e\u093e\u0924\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 351,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0915\u0947",
+          "transcribed_word": "\u0915\u0947",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 352,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0932\u093f\u090f",
+          "transcribed_word": "\u0932\u093f\u090f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 353,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0916\u093e\u0928\u093e",
+          "transcribed_word": "\u0916\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 354,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0932\u0917\u093e",
+          "transcribed_word": "\u0932\u0917\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 355,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u092f\u0936",
+          "transcribed_word": "\u092f\u0936",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 356,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0930\u094b\u091c\u093c",
+          "transcribed_word": "\u0930\u094b\u091c",
+          "match": false,
+          "reason_diff": "Missing matra: e.g., '\u093c' missing in '[\u0930\u094b\u091c]'.",
+          "word_position": 0,
+          "id": 357,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0917\u093e\u0924\u093e",
+          "transcribed_word": "\u0917\u0940\u0924\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u0940\u0924\u093e' vs reference '\u0917\u093e\u0924\u093e' (incorrect character).",
+          "word_position": 0,
+          "id": 358,
+          "evaluation_id": 17
+        },
+        {
+          "reference_word": "\u0939\u0948",
+          "transcribed_word": "\u0939\u0948",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 359,
+          "evaluation_id": 17
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0915\u0932 \u0928\u0947\u0939\u092e \u0938\u092c \u0939\u093e\u0930 \u0917\u090f\u0964 \u0918\u0930 \u091a\u0932 \u0915\u0930 \u092c\u093e\u0924 \u0915\u0930\u093e\u0964 \u092e\u093e\u0924\u093e \u0915\u0947 \u0932\u093f\u090f \u0916\u093e\u0928\u093e \u0932\u0917\u093e \u092f\u0936 \u0930\u094b\u091c \u0917\u0940\u0924\u093e \u0939\u0948",
+      "accuracy": 73.68421052631578,
+      "correct_words": 14,
+      "total_words": 19,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 18,
+      "image_id": 6,
+      "created_at": "2025-06-21T18:10:06.004291",
+      "updated_at": "2025-06-21T18:10:16.000081",
+      "image": {
+        "number": "6",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_955101_11_38461332_20250219091939.jpg",
+        "local_path": "",
+        "reference_text": "\u0915\u0932 \u0939\u092e \u0938\u092c \u0939\u093e\u0930 \u0917\u090f\n\u0918\u0930 \u091a\u0932 \u0915\u0930 \u092c\u093e\u0924 \u0915\u0930\n\u092e\u093e\u0924\u093e \u0915\u0947 \u0932\u093f\u090f \u0916\u093e\u0928\u093e \u0932\u0917\u093e\n\u092f\u0936 \u0930\u094b\u091c\u093c \u0917\u093e\u0924\u093e \u0939\u0948",
+        "id": 6,
+        "created_at": "2025-06-20T18:36:37.326752",
+        "updated_at": "2025-06-20T18:36:37.326752"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 360,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0939\u092e",
+          "transcribed_word": "\u0928\u0947\u0939\u092e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0928\u0947\u0939\u092e' vs reference '\u0939\u092e' (incorrect character).",
+          "word_position": 0,
+          "id": 361,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0938\u092c",
+          "transcribed_word": "\u0938\u092c",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 362,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0939\u093e\u0930",
+          "transcribed_word": "\u0939\u093e\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 363,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0917\u090f",
+          "transcribed_word": "\u0917\u090f\u0964",
+          "match": false,
+          "reason_diff": "Extra character: '\u0964' at the end of the word.",
+          "word_position": 0,
+          "id": 364,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0918\u0930",
+          "transcribed_word": "\u0918\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 365,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u091a\u0932",
+          "transcribed_word": "\u091a\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 366,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 367,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u092c\u093e\u0924",
+          "transcribed_word": "\u092c\u093e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 368,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930\u093e\u0964",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0915\u0930\u093e\u0964' vs reference '\u0915\u0930' (incorrect matra).",
+          "word_position": 0,
+          "id": 369,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u092e\u093e\u0924\u093e",
+          "transcribed_word": "\u092e\u093e\u0924\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 370,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0915\u0947",
+          "transcribed_word": "\u0915\u0947",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 371,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0932\u093f\u090f",
+          "transcribed_word": "\u0932\u093f\u090f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 372,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0916\u093e\u0928\u093e",
+          "transcribed_word": "\u0916\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 373,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0932\u0917\u093e",
+          "transcribed_word": "\u0932\u0917\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 374,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u092f\u0936",
+          "transcribed_word": "\u092f\u0936",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 375,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0930\u094b\u091c\u093c",
+          "transcribed_word": "\u0930\u094b\u091c",
+          "match": false,
+          "reason_diff": "Missing matra: e.g., '\u093c' missing in '[\u0930\u094b\u091c]'.",
+          "word_position": 0,
+          "id": 376,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0917\u093e\u0924\u093e",
+          "transcribed_word": "\u0917\u0940\u0924\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u0940\u0924\u093e' vs reference '\u0917\u093e\u0924\u093e' (incorrect character).",
+          "word_position": 0,
+          "id": 377,
+          "evaluation_id": 18
+        },
+        {
+          "reference_word": "\u0939\u0948",
+          "transcribed_word": "\u0939\u0948",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 378,
+          "evaluation_id": 18
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0939\u0930 \u092a\u0932 \u0932\u0921\u093c\u093e \u092e\u0924 \u0915\u0930 \u0909\u0938 \u0924\u091f \u092a\u0930 \u0928\u093e\u0935 \u0932\u093e\u0928\u093e \u092e\u0947\u091c \u092a\u0930 \u0938\u0924 \u0930\u0916 \u0926\u094b \u0930\u093e\u091c\u0942 \u092e\u0940\u0920\u093e \u092a\u093e\u0928 \u0932\u0947 \u0906\u092f\u093e",
+      "accuracy": 80.0,
+      "correct_words": 16,
+      "total_words": 20,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 19,
+      "image_id": 7,
+      "created_at": "2025-06-21T18:10:16.075606",
+      "updated_at": "2025-06-21T18:10:26.944031",
+      "image": {
+        "number": "7",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_723431_11_37564848_20250219085434.jpg",
+        "local_path": "",
+        "reference_text": "\u0939\u0930 \u092a\u0932 \u0932\u0921\u093c\u093e\u0908 \u092e\u0924 \u0915\u0930\n\u0909\u0938 \u0924\u091f \u092a\u0930 \u0928\u093e\u0935 \u0932\u093e\u0928\u093e\n\u092e\u0947\u091c\u093c \u092a\u0930 \u0916\u0924 \u0930\u0916 \u0926\u094b\n\u0930\u093e\u091c\u0942 \u092e\u0940\u0920\u093e \u092a\u093e\u0928 \u0932\u0947 \u0906\u0928\u093e",
+        "id": 7,
+        "created_at": "2025-06-20T18:36:37.372845",
+        "updated_at": "2025-06-20T18:36:37.372845"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0939\u0930",
+          "transcribed_word": "\u0939\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 379,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092a\u0932",
+          "transcribed_word": "\u092a\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 380,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0932\u0921\u093c\u093e\u0908",
+          "transcribed_word": "\u0932\u0921\u093c\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0932\u0921\u093c\u093e' vs reference '\u0932\u0921\u093c\u093e\u0908' (incorrect matra).",
+          "word_position": 0,
+          "id": 381,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 382,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 383,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0909\u0938",
+          "transcribed_word": "\u0909\u0938",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 384,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0924\u091f",
+          "transcribed_word": "\u0924\u091f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 385,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 386,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0928\u093e\u0935",
+          "transcribed_word": "\u0928\u093e\u0935",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 387,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0932\u093e\u0928\u093e",
+          "transcribed_word": "\u0932\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 388,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092e\u0947\u091c\u093c",
+          "transcribed_word": "\u092e\u0947\u091c",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u092e\u0947\u091c' vs reference '\u092e\u0947\u091c\u093c' (missing '\u093c').",
+          "word_position": 0,
+          "id": 389,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 390,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0916\u0924",
+          "transcribed_word": "\u0938\u0924",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0938\u0924' vs reference '\u0916\u0924' (different character).",
+          "word_position": 0,
+          "id": 391,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0930\u0916",
+          "transcribed_word": "\u0930\u0916",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 392,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0926\u094b",
+          "transcribed_word": "\u0926\u094b",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 393,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0930\u093e\u091c\u0942",
+          "transcribed_word": "\u0930\u093e\u091c\u0942",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 394,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092e\u0940\u0920\u093e",
+          "transcribed_word": "\u092e\u0940\u0920\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 395,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u092a\u093e\u0928",
+          "transcribed_word": "\u092a\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 396,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0932\u0947",
+          "transcribed_word": "\u0932\u0947",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 397,
+          "evaluation_id": 19
+        },
+        {
+          "reference_word": "\u0906\u0928\u093e",
+          "transcribed_word": "\u0906\u092f\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0906\u092f\u093e' vs reference '\u0906\u0928\u093e' (different matra).",
+          "word_position": 0,
+          "id": 398,
+          "evaluation_id": 19
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0939\u0930 \u092a\u0932 \u0932\u0921\u093c\u093e \u092e\u0924 \u0915\u0930 \u0909\u0938 \u0924\u091f \u092a\u0930 \u0928\u093e\u0935 \u0932\u093e\u0928\u093e \u092e\u0947\u091c \u092a\u0930 \u0938\u0924 \u0930\u0916 \u0926\u094b \u0930\u093e\u091c\u0942 \u092e\u0940\u0920\u093e \u092a\u093e\u0928 \u0932\u0947 \u0906\u092f\u093e",
+      "accuracy": 80.0,
+      "correct_words": 16,
+      "total_words": 20,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 20,
+      "image_id": 7,
+      "created_at": "2025-06-21T18:10:27.022088",
+      "updated_at": "2025-06-21T18:10:39.059312",
+      "image": {
+        "number": "7",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_723431_11_37564848_20250219085434.jpg",
+        "local_path": "",
+        "reference_text": "\u0939\u0930 \u092a\u0932 \u0932\u0921\u093c\u093e\u0908 \u092e\u0924 \u0915\u0930\n\u0909\u0938 \u0924\u091f \u092a\u0930 \u0928\u093e\u0935 \u0932\u093e\u0928\u093e\n\u092e\u0947\u091c\u093c \u092a\u0930 \u0916\u0924 \u0930\u0916 \u0926\u094b\n\u0930\u093e\u091c\u0942 \u092e\u0940\u0920\u093e \u092a\u093e\u0928 \u0932\u0947 \u0906\u0928\u093e",
+        "id": 7,
+        "created_at": "2025-06-20T18:36:37.372845",
+        "updated_at": "2025-06-20T18:36:37.372845"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0939\u0930",
+          "transcribed_word": "\u0939\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 399,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092a\u0932",
+          "transcribed_word": "\u092a\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 400,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0932\u0921\u093c\u093e\u0908",
+          "transcribed_word": "\u0932\u0921\u093c\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0932\u0921\u093c\u093e' vs reference '\u0932\u0921\u093c\u093e\u0908' (incorrect matra).",
+          "word_position": 0,
+          "id": 401,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 402,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 403,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0909\u0938",
+          "transcribed_word": "\u0909\u0938",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 404,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0924\u091f",
+          "transcribed_word": "\u0924\u091f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 405,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 406,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0928\u093e\u0935",
+          "transcribed_word": "\u0928\u093e\u0935",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 407,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0932\u093e\u0928\u093e",
+          "transcribed_word": "\u0932\u093e\u0928\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 408,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092e\u0947\u091c\u093c",
+          "transcribed_word": "\u092e\u0947\u091c",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u092e\u0947\u091c' vs reference '\u092e\u0947\u091c\u093c' (missing '\u093c').",
+          "word_position": 0,
+          "id": 409,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 410,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0916\u0924",
+          "transcribed_word": "\u0938\u0924",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0938\u0924' vs reference '\u0916\u0924' (different character).",
+          "word_position": 0,
+          "id": 411,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0930\u0916",
+          "transcribed_word": "\u0930\u0916",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 412,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0926\u094b",
+          "transcribed_word": "\u0926\u094b",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 413,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0930\u093e\u091c\u0942",
+          "transcribed_word": "\u0930\u093e\u091c\u0942",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 414,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092e\u0940\u0920\u093e",
+          "transcribed_word": "\u092e\u0940\u0920\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 415,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u092a\u093e\u0928",
+          "transcribed_word": "\u092a\u093e\u0928",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 416,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0932\u0947",
+          "transcribed_word": "\u0932\u0947",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 417,
+          "evaluation_id": 20
+        },
+        {
+          "reference_word": "\u0906\u0928\u093e",
+          "transcribed_word": "\u0906\u092f\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0906\u092f\u093e' vs reference '\u0906\u0928\u093e' (different matra).",
+          "word_position": 0,
+          "id": 418,
+          "evaluation_id": 20
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u091b\u0924 \u092a\u0930 \u092c\u093e\u0924 \u092e\u0924 \u0915\u0930 \u091c\u092f \u090f\u0915 \u0932\u093e\u0932 \u092e\u093e\u0932\u093e \u0930\u0916",
+      "accuracy": 100.0,
+      "correct_words": 10,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 21,
+      "image_id": 8,
+      "created_at": "2025-06-21T18:10:39.137035",
+      "updated_at": "2025-06-21T18:10:46.709390",
+      "image": {
+        "number": "8",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_1032124_11_41577773_20250221045534.jpg",
+        "local_path": "",
+        "reference_text": "\u091b\u0924 \u092a\u0930 \u092c\u093e\u0924 \u092e\u0924 \u0915\u0930\n\u091c\u092f \u090f\u0915 \u0932\u093e\u0932 \u092e\u093e\u0932\u093e \u0930\u0916",
+        "id": 8,
+        "created_at": "2025-06-20T18:36:37.418846",
+        "updated_at": "2025-06-20T18:36:37.418846"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u091b\u0924",
+          "transcribed_word": "\u091b\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 419,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 420,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u092c\u093e\u0924",
+          "transcribed_word": "\u092c\u093e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 421,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 422,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 423,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u091c\u092f",
+          "transcribed_word": "\u091c\u092f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 424,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u090f\u0915",
+          "transcribed_word": "\u090f\u0915",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 425,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u0932\u093e\u0932",
+          "transcribed_word": "\u0932\u093e\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 426,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u092e\u093e\u0932\u093e",
+          "transcribed_word": "\u092e\u093e\u0932\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 427,
+          "evaluation_id": 21
+        },
+        {
+          "reference_word": "\u0930\u0916",
+          "transcribed_word": "\u0930\u0916",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 428,
+          "evaluation_id": 21
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u091b\u0924 \u092a\u0930 \u092c\u093e\u0924 \u092e\u0924 \u0915\u0930 \u091c\u092f \u090f\u0915 \u0932\u093e\u0932 \u092e\u093e\u0932\u093e \u0930\u0916",
+      "accuracy": 100.0,
+      "correct_words": 10,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 22,
+      "image_id": 8,
+      "created_at": "2025-06-21T18:10:46.755385",
+      "updated_at": "2025-06-21T18:10:54.596964",
+      "image": {
+        "number": "8",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_1032124_11_41577773_20250221045534.jpg",
+        "local_path": "",
+        "reference_text": "\u091b\u0924 \u092a\u0930 \u092c\u093e\u0924 \u092e\u0924 \u0915\u0930\n\u091c\u092f \u090f\u0915 \u0932\u093e\u0932 \u092e\u093e\u0932\u093e \u0930\u0916",
+        "id": 8,
+        "created_at": "2025-06-20T18:36:37.418846",
+        "updated_at": "2025-06-20T18:36:37.418846"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u091b\u0924",
+          "transcribed_word": "\u091b\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 429,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 430,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u092c\u093e\u0924",
+          "transcribed_word": "\u092c\u093e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 431,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u092e\u0924",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 432,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u0915\u0930",
+          "transcribed_word": "\u0915\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 433,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u091c\u092f",
+          "transcribed_word": "\u091c\u092f",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 434,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u090f\u0915",
+          "transcribed_word": "\u090f\u0915",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 435,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u0932\u093e\u0932",
+          "transcribed_word": "\u0932\u093e\u0932",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 436,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u092e\u093e\u0932\u093e",
+          "transcribed_word": "\u092e\u093e\u0932\u093e",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 437,
+          "evaluation_id": 22
+        },
+        {
+          "reference_word": "\u0930\u0916",
+          "transcribed_word": "\u0930\u0916",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 438,
+          "evaluation_id": 22
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.0.0",
+      "ocr_output": "\u0915\u093e \u0928\u093f\u0936\u093e \u0905\u092c \u0917\u0940\u0924 \u0917\u093e\u0928 \u0915\u0930\u0940 \u0925\u093e\u0932 \u0938\u0930 \u092a\u0930 \u092e\u0924",
+      "accuracy": 10.0,
+      "correct_words": 1,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 23,
+      "image_id": 9,
+      "created_at": "2025-06-21T18:10:54.643965",
+      "updated_at": "2025-06-21T18:11:04.729872",
+      "image": {
+        "number": "9",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_733764_11_39311111_20250221085713.jpg",
+        "local_path": "",
+        "reference_text": "\u0907\u0938 \u0918\u093e\u0938 \u092a\u0930 \u092e\u0924 \u091a\u0932\n\u0915\u0932 \u0935\u0939 \u092f\u093e\u0924\u094d\u0930\u093e \u092a\u0930 \u0917\u092f\u093e",
+        "id": 9,
+        "created_at": "2025-06-20T18:36:37.458847",
+        "updated_at": "2025-06-20T18:36:37.458847"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0907\u0938",
+          "transcribed_word": "\u0915\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0915\u093e' vs reference '\u0907\u0938'.",
+          "word_position": 0,
+          "id": 439,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u0918\u093e\u0938",
+          "transcribed_word": "\u0928\u093f\u0936\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0928\u093f\u0936\u093e' vs reference '\u0918\u093e\u0938'.",
+          "word_position": 0,
+          "id": 440,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u0905\u092c",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0905\u092c' vs reference '\u092a\u0930'.",
+          "word_position": 0,
+          "id": 441,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u0917\u0940\u0924",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u0940\u0924' vs reference '\u092e\u0924'.",
+          "word_position": 0,
+          "id": 442,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u091a\u0932",
+          "transcribed_word": "\u0917\u093e\u0928",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u093e\u0928' vs reference '\u091a\u0932'.",
+          "word_position": 0,
+          "id": 443,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0930\u0940",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0915\u0930\u0940' vs reference '\u0915\u0932'.",
+          "word_position": 0,
+          "id": 444,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u0935\u0939",
+          "transcribed_word": "\u0925\u093e\u0932",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0925\u093e\u0932' vs reference '\u0935\u0939'.",
+          "word_position": 0,
+          "id": 445,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u092f\u093e\u0924\u094d\u0930\u093e",
+          "transcribed_word": "\u0938\u0930",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0938\u0930' vs reference '\u092f\u093e\u0924\u094d\u0930\u093e'.",
+          "word_position": 0,
+          "id": 446,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 447,
+          "evaluation_id": 23
+        },
+        {
+          "reference_word": "\u0917\u092f\u093e",
+          "transcribed_word": "\u092e\u0924",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u092e\u0924' vs reference '\u0917\u092f\u093e'.",
+          "word_position": 0,
+          "id": 448,
+          "evaluation_id": 23
+        }
+      ]
+    },
+    {
+      "prompt_version": "1.1.0",
+      "ocr_output": "\u0915\u093e \u0928\u093f\u0936\u093e \u0905\u092c \u0917\u0940\u0924 \u0917\u093e\u0928 \u0915\u0930\u0940 \u0925\u093e\u0932 \u0938\u0930 \u092a\u0930 \u092e\u0924",
+      "accuracy": 10.0,
+      "correct_words": 1,
+      "total_words": 10,
+      "processing_status": "success",
+      "error_message": null,
+      "progress_percentage": 0,
+      "current_step": null,
+      "estimated_completion": null,
+      "id": 24,
+      "image_id": 9,
+      "created_at": "2025-06-21T18:11:04.790878",
+      "updated_at": "2025-06-21T18:11:12.687483",
+      "image": {
+        "number": "9",
+        "url": "https://minio.nl.samagra.io/assessment-images/ap_733764_11_39311111_20250221085713.jpg",
+        "local_path": "",
+        "reference_text": "\u0907\u0938 \u0918\u093e\u0938 \u092a\u0930 \u092e\u0924 \u091a\u0932\n\u0915\u0932 \u0935\u0939 \u092f\u093e\u0924\u094d\u0930\u093e \u092a\u0930 \u0917\u092f\u093e",
+        "id": 9,
+        "created_at": "2025-06-20T18:36:37.458847",
+        "updated_at": "2025-06-20T18:36:37.458847"
+      },
+      "word_evaluations": [
+        {
+          "reference_word": "\u0907\u0938",
+          "transcribed_word": "\u0915\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0915\u093e' vs reference '\u0907\u0938' (different character).",
+          "word_position": 0,
+          "id": 449,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u0918\u093e\u0938",
+          "transcribed_word": "\u0928\u093f\u0936\u093e",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0928\u093f\u0936\u093e' vs reference '\u0918\u093e\u0938' (different character).",
+          "word_position": 0,
+          "id": 450,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u0905\u092c",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0905\u092c' vs reference '\u092a\u0930' (different character).",
+          "word_position": 0,
+          "id": 451,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u092e\u0924",
+          "transcribed_word": "\u0917\u0940\u0924",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u0940\u0924' vs reference '\u092e\u0924' (different character).",
+          "word_position": 0,
+          "id": 452,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u091a\u0932",
+          "transcribed_word": "\u0917\u093e\u0928",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0917\u093e\u0928' vs reference '\u091a\u0932' (different character).",
+          "word_position": 0,
+          "id": 453,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u0915\u0932",
+          "transcribed_word": "\u0915\u0930\u0940",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0915\u0930\u0940' vs reference '\u0915\u0932' (different character).",
+          "word_position": 0,
+          "id": 454,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u0935\u0939",
+          "transcribed_word": "\u0925\u093e\u0932",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0925\u093e\u0932' vs reference '\u0935\u0939' (different character).",
+          "word_position": 0,
+          "id": 455,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u092f\u093e\u0924\u094d\u0930\u093e",
+          "transcribed_word": "\u0938\u0930",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u0938\u0930' vs reference '\u092f\u093e\u0924\u094d\u0930\u093e' (different character).",
+          "word_position": 0,
+          "id": 456,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u092a\u0930",
+          "transcribed_word": "\u092a\u0930",
+          "match": true,
+          "reason_diff": "Exact match.",
+          "word_position": 0,
+          "id": 457,
+          "evaluation_id": 24
+        },
+        {
+          "reference_word": "\u0917\u092f\u093e",
+          "transcribed_word": "\u092e\u0924",
+          "match": false,
+          "reason_diff": "Spelling error: Transcribed '\u092e\u0924' vs reference '\u0917\u092f\u093e' (different character).",
+          "word_position": 0,
+          "id": 458,
+          "evaluation_id": 24
+        }
+      ]
+    }
+  ],
+  "comparison_results": null
+}

@@ -67,11 +67,7 @@ curl -X POST "http://localhost:8000/api/prompt-families" \
    - **Hypothesis**: `Adding context awareness and pattern recognition instructions will improve OCR accuracy by 15% on handwritten text because the model will use surrounding words to disambiguate unclear characters.`
    - **Dataset**: Select your dataset from the dropdown
    - **Prompt Family**: Select your prompt family from the dropdown
-
-3. **Version A (Control)**:
-   - **Label**: `Control (Baseline)`
-   - **Prompt**: `Please transcribe the handwritten text in this image accurately. Focus on readability and maintain the original formatting.`
-
+x
 4. **Version B (Variation)**:
    - **Label**: `Variation (Context-Aware)`
    - **Prompt**: `Transcribe the handwritten text in this image. Pay special attention to context clues and common handwriting patterns. If uncertain about a character, provide the most likely interpretation based on surrounding text.`

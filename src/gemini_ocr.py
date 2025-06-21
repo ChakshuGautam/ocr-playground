@@ -10,6 +10,7 @@ from google.genai import types
 from google.genai.errors import APIError
 from io import BytesIO
 from pydantic import BaseModel, Field
+import logging
 
 # Load environment variables
 load_dotenv()
@@ -32,13 +33,20 @@ class GeminiOCR:
             timeout: Timeout in seconds for API calls
         """
         self.timeout = timeout
+        
+        # Check for API key
+        api_key = os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            error_msg = "GOOGLE_API_KEY environment variable is not set"
+            logging.error(error_msg)
+            raise ValueError(error_msg)
+        
+        logging.info("Initializing Gemini client with API key...")
         self.client = genai.Client(
-            api_key=os.getenv("GOOGLE_API_KEY"),
+            api_key=api_key,
             http_options={"timeout": timeout * 1000}
         )
-        
-        if not os.getenv("GOOGLE_API_KEY"):
-            raise ValueError("GOOGLE_API_KEY environment variable is not set")
+        logging.info("Gemini client initialized successfully")
     
     def _process_image(self, image: Union[PIL.Image.Image, str, Path]) -> types.Part:
         """

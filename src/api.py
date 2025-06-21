@@ -58,7 +58,13 @@ def get_ocr_orchestrator():
     """Get OCR orchestrator instance, creating it if needed"""
     global ocr_orchestrator
     if ocr_orchestrator is None:
-        ocr_orchestrator = OcrOrchestrator()
+        try:
+            logging.info("Initializing OCR orchestrator...")
+            ocr_orchestrator = OcrOrchestrator()
+            logging.info("OCR orchestrator initialized successfully")
+        except Exception as e:
+            logging.error(f"Failed to initialize OCR orchestrator: {str(e)}")
+            raise
     return ocr_orchestrator
 
 # Startup and shutdown events
@@ -818,6 +824,8 @@ async def process_evaluation_run_background(run_id: int):
                             await crud.update_evaluation(db, db_evaluation.id, update_data)
                         else:
                             # Update with error
+                            error_msg = result.get('error', 'Unknown error')
+                            logging.error(f"OCR processing failed for image {image.number}: {error_msg}")
                             await crud.update_evaluation(
                                 db,
                                 db_evaluation.id,
@@ -825,13 +833,28 @@ async def process_evaluation_run_background(run_id: int):
                                     processing_status="failed",
                                     progress_percentage=0,
                                     current_step="Failed",
-                                    error_message=result.get('error', 'Unknown error')
+                                    error_message=error_msg
                                 )
                             )
                     
                     except Exception as e:
                         # Log error but continue with other evaluations
-                        print(f"Error processing image {image.id} with prompt {prompt_config.label}: {str(e)}")
+                        error_msg = f"Error processing image {image.id} with prompt {prompt_config.label}: {str(e)}"
+                        logging.error(error_msg)
+                        print(error_msg)
+                        
+                        # Update evaluation with error if it was created
+                        if 'db_evaluation' in locals():
+                            await crud.update_evaluation(
+                                db,
+                                db_evaluation.id,
+                                crud.EvaluationUpdate(
+                                    processing_status="failed",
+                                    progress_percentage=0,
+                                    current_step="Failed",
+                                    error_message=str(e)
+                                )
+                            )
                         continue
             
             # Mark run as completed
