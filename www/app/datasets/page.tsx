@@ -119,7 +119,11 @@ export default function DatasetsPage() {
                     <TableCell>{getStatusBadge(dataset.status)}</TableCell>
                     <TableCell className="text-gray-600">{dataset.created_at ? new Date(dataset.created_at).toLocaleDateString() : "-"}</TableCell>
                     <TableCell className="text-right">
-                      <Button variant="link" className="text-blue-600">
+                      <Button
+                        variant="link"
+                        className="text-blue-600"
+                        onClick={() => window.location.href = `/datasets/view/${dataset.id}`}
+                      >
                         View
                       </Button>
                       <Button

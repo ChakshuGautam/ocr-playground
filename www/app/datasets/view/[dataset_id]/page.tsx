@@ -1,0 +1,202 @@
+"use client"
+
+import { Sidebar } from "@/components/sidebar"
+import { useState, useEffect } from "react"
+import { Header } from "@/components/header"
+import { Label } from "@/components/ui/label"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useParams, useRouter } from "next/navigation"
+import { useRef } from "react"
+
+interface ImageEntry {
+    id: number;
+    number: string;
+    url: string;
+    local_path: string;
+    reference_text: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface Dataset {
+    id: number;
+    name: string;
+    description: string;
+    status: string;
+    image_count: number;
+    created_at: string;
+    updated_at: string;
+    last_used: string | null;
+    images: ImageEntry[];
+}
+
+
+export default function ViewDatasetPage() {
+    const params = useParams()
+    const dataset_id = params.dataset_id as string
+    const router = useRouter()
+
+    const [dataset, setDataset] = useState<Dataset | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [modalImage, setModalImage] = useState<string | null>(null);
+
+    const navigation = [
+        { name: "Dashboard", href: "/dashboard" },
+        { name: "Assessments", href: "/assessments" },
+        { name: "Datasets", href: "/datasets", active: true },
+        { name: "Reports", href: "/reports" },
+        { name: "Settings", href: "/settings" },
+    ]
+
+    useEffect(() => {
+        if (dataset_id) {
+            setLoading(true);
+            fetch(`/api/datasets/${dataset_id}`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Failed to fetch dataset');
+                    }
+                    return res.json()
+                })
+                .then(data => {
+                    if (data && !data.error) {
+                        setDataset(data);
+                    } else {
+                        setError(data.error || 'Failed to fetch dataset');
+                    }
+                })
+                .catch(err => {
+                    setError(err.message);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+    }, [dataset_id]);
+
+    return (
+        <div className="flex min-h-screen bg-gray-50">
+            <Sidebar currentPath="/datasets" />
+
+            <main className="flex-1 p-8">
+                {loading ? (
+                    <div className="text-center">Loading...</div>
+                ) : error ? (
+                    <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-lg">
+                        {error}
+                    </div>
+                ) : dataset ? (
+                    <>
+                        <div>
+                            <div className="mb-6">
+                                <button className="text-blue-600 mb-4" onClick={() => router.push("/datasets")}>
+                                    ← Back to Datasets
+                                </button>
+                                <div className="flex items-center gap-4 mb-4">
+                                    <h1 className="text-3xl font-bold text-gray-900">{dataset.name}</h1>
+                                    {dataset.status && (
+                                        <span
+                                            className={`inline-block px-3 py-1 text-sm font-semibold rounded-full
+                                                ${dataset.status === 'draft' ? 'bg-yellow-100 text-yellow-800' : ''}
+                                                ${dataset.status === 'validated' ? 'bg-green-100 text-green-800' : ''}
+                                            `}
+                                        >
+                                            {dataset.status.charAt(0).toUpperCase() + dataset.status.slice(1)}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="text-gray-500">{dataset.description}</div>
+                            </div>
+
+                            {/* <div className="rounded-lg bg-white p-6 shadow-sm">
+                                <div className="space-y-6">
+                                    <div>
+                                        <Label htmlFor="dataset-name" className="text-base font-medium">
+                                            Dataset Name
+                                        </Label>
+                                        <p className="mt-2 text-gray-800"></p>
+                                    </div>
+
+                                    <div>
+                                        <Label htmlFor="description" className="text-base font-medium">
+                                            Description
+                                        </Label>
+                                        <p className="mt-2 text-gray-800">{dataset.description}</p>
+                                    </div>
+
+                                    <div>
+                                        <Label htmlFor="status" className="text-base font-medium">
+                                            Status
+                                        </Label>
+                                        <p className="mt-2 text-gray-800 capitalize">{dataset.status}</p>
+                                    </div>
+                                </div>
+                            </div> */}
+                        </div>
+
+                        <div className="mt-8">
+                            <h2 className="text-2xl text-gray-900">Dataset Images</h2>
+                            <div className="mt-4 rounded-lg bg-white shadow-sm">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Image</TableHead>
+                                            <TableHead>Reference Text</TableHead>
+                                            <TableHead>URL</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {dataset.images && dataset.images.map((image) => (
+                                            <TableRow key={image.id}>
+                                                <TableCell>
+                                                    <button
+                                                        className="focus:outline-none"
+                                                        onClick={() => setModalImage(image.url)}
+                                                        title="Click to enlarge"
+                                                    >
+                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                        <img
+                                                            src={image.url}
+                                                            alt={`Image ${image.id}`}
+                                                            className="h-12 w-12 object-cover rounded-full border border-gray-200 shadow-sm hover:scale-105 transition-transform"
+                                                        />
+                                                    </button>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <p className="whitespace-pre-wrap">{image.reference_text}</p>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <a href={image.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
+                                                        {image.url}
+                                                    </a>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </div>
+                        {/* Modal for full image */}
+                        {modalImage && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setModalImage(null)}>
+                                <div className="bg-white rounded-lg shadow-lg max-w-3xl max-h-[90vh] flex flex-col items-center relative" onClick={e => e.stopPropagation()}>
+                                    <button
+                                        className="absolute top-2 right-2 text-gray hover:text-gray-600 text-2xl font-bold focus:outline-none"
+                                        onClick={() => setModalImage(null)}
+                                        aria-label="Close"
+                                    >
+                                        ×
+                                    </button>
+                                    <img src={modalImage} alt="Full" className="max-h-[70vh] max-w-full rounded mb-4" />
+                                </div>
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className="text-center text-gray-500">Dataset not found.</div>
+                )}
+            </main>
+        </div>
+    )
+}
