@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CheckCircle, XCircle, AlertCircle, TrendingUp, TrendingDown, ArrowLeft } from 'lucide-react'
+import { CheckCircle, XCircle, AlertCircle, ArrowLeft, ChevronDown, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import React from 'react'
 
 interface WordEvaluation {
     reference_word: string
@@ -93,7 +92,8 @@ export default function EvaluationReportPage() {
     const [evaluationRun, setEvaluationRun] = useState<EvaluationRun | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
-    const [selectedImageId, setSelectedImageId] = useState<number | null>(null)
+    const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+    const [modalImage, setModalImage] = useState<string | null>(null)
 
     useEffect(() => {
         const fetchEvaluationRun = async () => {
@@ -115,6 +115,17 @@ export default function EvaluationReportPage() {
             fetchEvaluationRun()
         }
     }, [evaluationRunId])
+
+    const toggleRowExpansion = (imageId: number, promptVersion: string) => {
+        const key = `${imageId}-${promptVersion}`
+        const newExpandedRows = new Set(expandedRows)
+        if (newExpandedRows.has(key)) {
+            newExpandedRows.delete(key)
+        } else {
+            newExpandedRows.add(key)
+        }
+        setExpandedRows(newExpandedRows)
+    }
 
     if (loading) {
         return (
@@ -176,11 +187,6 @@ export default function EvaluationReportPage() {
     const uniqueImages = Array.from(new Set(evaluationRun.evaluations.map(e => e.image_id)))
         .map(imageId => evaluationRun.evaluations.find(e => e.image_id === imageId)?.image)
         .filter(Boolean) as Image[]
-
-    // Get evaluations for selected image
-    const selectedImageEvaluations = selectedImageId
-        ? evaluationRun.evaluations.filter(e => e.image_id === selectedImageId)
-        : []
 
     return (
         <div className="min-h-screen bg-gray-50 p-8">
@@ -256,208 +262,213 @@ export default function EvaluationReportPage() {
                     ))}
                 </div>
 
-                {/* Detailed Analysis */}
-                <Tabs defaultValue="overview" className="space-y-6">
-                    <TabsList>
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="images">Image Analysis</TabsTrigger>
-                        <TabsTrigger value="word-level">Word-Level Analysis</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="overview" className="space-y-6">
-                        {/* Dataset Information */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Datasets Used</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    {evaluationRun.datasets.map((dataset) => (
-                                        <div key={dataset.id} className="flex justify-between items-center p-4 border rounded-lg">
-                                            <div>
-                                                <h4 className="font-semibold">{dataset.name}</h4>
-                                                <p className="text-sm text-gray-600">{dataset.description}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <Badge variant="outline">{dataset.status}</Badge>
-                                                <p className="text-sm text-gray-500 mt-1">{dataset.image_count} images</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                {/* Dataset Information */}
+                <Card className="mb-8">
+                    <CardHeader>
+                        <CardTitle>Datasets Used</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            {evaluationRun.datasets.map((dataset) => (
+                                <div key={dataset.id} className="flex justify-between items-center p-4 border rounded-lg">
+                                    <div>
+                                        <h4 className="font-semibold">{dataset.name}</h4>
+                                        <p className="text-sm text-gray-600">{dataset.description}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <Badge variant="outline">{dataset.status}</Badge>
+                                        <p className="text-sm text-gray-500 mt-1">{dataset.image_count} images</p>
+                                    </div>
                                 </div>
-                            </CardContent>
-                        </Card>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                        {/* Prompt Configurations */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Prompt Configurations</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    {evaluationRun.prompt_configurations.map((config, index) => (
-                                        <div key={index} className="p-4 border rounded-lg">
-                                            <h4 className="font-semibold">{config.label}</h4>
-                                            <p className="text-sm text-gray-600">Version {config.version}</p>
-                                        </div>
-                                    ))}
+                {/* Prompt Configurations */}
+                <Card className="mb-8">
+                    <CardHeader>
+                        <CardTitle>Prompt Configurations</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            {evaluationRun.prompt_configurations.map((config, index) => (
+                                <div key={index} className="p-4 border rounded-lg">
+                                    <h4 className="font-semibold">{config.label}</h4>
+                                    <p className="text-sm text-gray-600">Version {config.version}</p>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                    <TabsContent value="images" className="space-y-6">
-                        {/* Image Selection */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Select Image for Detailed Analysis</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {uniqueImages.map((image) => (
-                                        <div
-                                            key={image.id}
-                                            className={`p-4 border rounded-lg cursor-pointer transition-colors ${selectedImageId === image.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                                                }`}
-                                            onClick={() => setSelectedImageId(image.id)}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <Avatar className="h-12 w-12">
-                                                    <AvatarFallback className="bg-gray-100">
-                                                        {image.number}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                                <div>
-                                                    <h4 className="font-semibold">Image {image.number}</h4>
-                                                    <p className="text-sm text-gray-600 truncate">
-                                                        {image.reference_text.substring(0, 50)}...
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Selected Image Analysis */}
-                        {selectedImageId && (
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Image {uniqueImages.find(img => img.id === selectedImageId)?.number} Analysis</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-6">
-                                        {selectedImageEvaluations.map((evaluation) => {
-                                            const promptConfig = evaluationRun.prompt_configurations.find(
-                                                pc => pc.version === evaluation.prompt_version
-                                            )
-
-                                            return (
-                                                <div key={evaluation.id} className="p-6 border rounded-lg">
-                                                    <div className="flex justify-between items-start mb-4">
-                                                        <div>
-                                                            <h4 className="font-semibold">{promptConfig?.label || `Version ${evaluation.prompt_version}`}</h4>
-                                                            <p className="text-sm text-gray-600">Accuracy: {evaluation.accuracy}%</p>
+                {/* Evaluation Results Table */}
+                <div className="mt-8">
+                    <h2 className="text-2xl text-gray-900 mb-4">Evaluation Results</h2>
+                    <div className="rounded-lg bg-white shadow-sm">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Image</TableHead>
+                                    <TableHead>Reference Text</TableHead>
+                                    <TableHead>OCR Output</TableHead>
+                                    <TableHead>Correct Words</TableHead>
+                                    <TableHead>Accuracy</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead>Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {uniqueImages.map((image) => {
+                                    const imageEvaluations = evaluationRun.evaluations.filter(e => e.image_id === image.id)
+                                    
+                                    return imageEvaluations.map((evaluation) => {
+                                        const promptConfig = evaluationRun.prompt_configurations.find(
+                                            pc => pc.version === evaluation.prompt_version
+                                        )
+                                        const isExpanded = expandedRows.has(`${image.id}-${evaluation.prompt_version}`)
+                                        
+                                        return (
+                                            <React.Fragment key={`${image.id}-${evaluation.prompt_version}`}>
+                                                <TableRow>
+                                                    <TableCell className="relative">
+                                                        <div className="absolute left-0 top-0 bottom-0 w-6 flex items-center justify-center border-r border-gray-200">
+                                                            <span className="text-xs font-mono text-black transform -rotate-90 whitespace-nowrap">
+                                                                {evaluation.prompt_version}
+                                                            </span>
                                                         </div>
-                                                        <Badge variant={evaluation.accuracy >= 90 ? 'default' : evaluation.accuracy >= 70 ? 'secondary' : 'destructive'}>
-                                                            {evaluation.accuracy >= 90 ? 'Excellent' : evaluation.accuracy >= 70 ? 'Good' : 'Needs Improvement'}
+                                                        <div className="pl-8">
+                                                            <button
+                                                                className="focus:outline-none"
+                                                                onClick={() => setModalImage(image.url)}
+                                                                title="Click to enlarge"
+                                                            >
+                                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                                <img
+                                                                    src={image.url}
+                                                                    alt={`Image ${image.number}`}
+                                                                    className="h-12 w-12 object-cover rounded-full border border-gray-200 shadow-sm hover:scale-105 transition-transform"
+                                                                />
+                                                            </button>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <p className="whitespace-pre-wrap text-sm">{image.reference_text}</p>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <p className="whitespace-pre-wrap text-sm">{evaluation.ocr_output}</p>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <span className="text-sm font-medium">
+                                                            {evaluation.correct_words}/{evaluation.total_words}
+                                                        </span>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-sm font-medium">{evaluation.accuracy}%</span>
+                                                            <Badge 
+                                                                variant={evaluation.accuracy >= 90 ? 'default' : evaluation.accuracy >= 70 ? 'secondary' : 'destructive'}
+                                                                className="text-xs"
+                                                            >
+                                                                {evaluation.accuracy >= 90 ? 'Excellent' : evaluation.accuracy >= 70 ? 'Good' : 'Needs Improvement'}
+                                                            </Badge>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Badge 
+                                                            variant={evaluation.processing_status === 'success' ? 'default' : 'secondary'}
+                                                            className="text-xs"
+                                                        >
+                                                            {evaluation.processing_status}
                                                         </Badge>
-                                                    </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <button
+                                                            onClick={() => toggleRowExpansion(image.id, evaluation.prompt_version)}
+                                                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                                                            title="Toggle word-level analysis"
+                                                        >
+                                                            {isExpanded ? (
+                                                                <ChevronDown className="h-4 w-4" />
+                                                            ) : (
+                                                                <ChevronRight className="h-4 w-4" />
+                                                            )}
+                                                        </button>
+                                                    </TableCell>
+                                                </TableRow>
+                                                
+                                                {/* Expanded Word-Level Analysis */}
+                                                {isExpanded && (
+                                                    <TableRow>
+                                                        <TableCell colSpan={7} className="p-0">
+                                                            <div className="bg-gray-50 p-4">
+                                                                <h4 className="font-semibold text-lg mb-4">
+                                                                    Word-Level Analysis - Image {image.number} ({promptConfig?.label || `Version ${evaluation.prompt_version}`})
+                                                                </h4>
+                                                                <Table>
+                                                                    <TableHeader>
+                                                                        <TableRow>
+                                                                            {/* <TableHead>Position</TableHead> */}
+                                                                            <TableHead>Reference Word</TableHead>
+                                                                            <TableHead>Transcribed Word</TableHead>
+                                                                            <TableHead>Status</TableHead>
+                                                                            <TableHead>Difference</TableHead>
+                                                                        </TableRow>
+                                                                    </TableHeader>
+                                                                    <TableBody>
+                                                                        {evaluation.word_evaluations.map((wordEval) => (
+                                                                            <TableRow key={wordEval.id}>
+                                                                                {/* <TableCell className="font-mono text-sm">{wordEval.word_position}</TableCell> */}
+                                                                                <TableCell className="font-medium">{wordEval.reference_word}</TableCell>
+                                                                                <TableCell className="font-medium">{wordEval.transcribed_word}</TableCell>
+                                                                                <TableCell>
+                                                                                    {wordEval.match ? (
+                                                                                        <div className="flex items-center gap-2 text-green-600">
+                                                                                            <CheckCircle className="h-4 w-4" />
+                                                                                            <span className="text-sm">Match</span>
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <div className="flex items-center gap-2 text-red-600">
+                                                                                            <XCircle className="h-4 w-4" />
+                                                                                            <span className="text-sm">Mismatch</span>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </TableCell>
+                                                                                <TableCell className="text-sm text-gray-600 max-w-xs">
+                                                                                    {wordEval.reason_diff}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                        ))}
+                                                                    </TableBody>
+                                                                </Table>
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )}
+                                            </React.Fragment>
+                                        )
+                                    })
+                                })}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
 
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                                        <div>
-                                                            <h5 className="font-medium text-gray-700 mb-2">Reference Text</h5>
-                                                            <p className="text-sm bg-gray-50 p-3 rounded border">{evaluation.image.reference_text}</p>
-                                                        </div>
-                                                        <div>
-                                                            <h5 className="font-medium text-gray-700 mb-2">OCR Output</h5>
-                                                            <p className="text-sm bg-blue-50 p-3 rounded border">{evaluation.ocr_output}</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex items-center gap-4 text-sm">
-                                                        <span>Correct: {evaluation.correct_words}/{evaluation.total_words} words</span>
-                                                        <span>Processing: {evaluation.processing_status}</span>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </TabsContent>
-
-                    <TabsContent value="word-level" className="space-y-6">
-                        {selectedImageId ? (
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Word-Level Analysis - Image {uniqueImages.find(img => img.id === selectedImageId)?.number}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-6">
-                                        {selectedImageEvaluations.map((evaluation) => {
-                                            const promptConfig = evaluationRun.prompt_configurations.find(
-                                                pc => pc.version === evaluation.prompt_version
-                                            )
-
-                                            return (
-                                                <div key={evaluation.id} className="space-y-4">
-                                                    <h4 className="font-semibold text-lg">{promptConfig?.label || `Version ${evaluation.prompt_version}`}</h4>
-
-                                                    <Table>
-                                                        <TableHeader>
-                                                            <TableRow>
-                                                                <TableHead>Position</TableHead>
-                                                                <TableHead>Reference Word</TableHead>
-                                                                <TableHead>Transcribed Word</TableHead>
-                                                                <TableHead>Status</TableHead>
-                                                                <TableHead>Difference</TableHead>
-                                                            </TableRow>
-                                                        </TableHeader>
-                                                        <TableBody>
-                                                            {evaluation.word_evaluations.map((wordEval) => (
-                                                                <TableRow key={wordEval.id}>
-                                                                    <TableCell className="font-mono text-sm">{wordEval.word_position}</TableCell>
-                                                                    <TableCell className="font-medium">{wordEval.reference_word}</TableCell>
-                                                                    <TableCell className="font-medium">{wordEval.transcribed_word}</TableCell>
-                                                                    <TableCell>
-                                                                        {wordEval.match ? (
-                                                                            <div className="flex items-center gap-2 text-green-600">
-                                                                                <CheckCircle className="h-4 w-4" />
-                                                                                <span className="text-sm">Match</span>
-                                                                            </div>
-                                                                        ) : (
-                                                                            <div className="flex items-center gap-2 text-red-600">
-                                                                                <XCircle className="h-4 w-4" />
-                                                                                <span className="text-sm">Mismatch</span>
-                                                                            </div>
-                                                                        )}
-                                                                    </TableCell>
-                                                                    <TableCell className="text-sm text-gray-600 max-w-xs">
-                                                                        {wordEval.reason_diff}
-                                                                    </TableCell>
-                                                                </TableRow>
-                                                            ))}
-                                                        </TableBody>
-                                                    </Table>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ) : (
-                            <Card>
-                                <CardContent className="p-8 text-center">
-                                    <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                                    <p className="text-gray-600">Please select an image from the Images tab to view word-level analysis</p>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </TabsContent>
-                </Tabs>
+                {/* Modal for full image */}
+                {modalImage && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setModalImage(null)}>
+                        <div className="bg-white rounded-lg shadow-lg max-w-3xl max-h-[90vh] flex flex-col items-center relative" onClick={e => e.stopPropagation()}>
+                            <button
+                                className="absolute top-2 right-2 text-gray-500 hover:text-gray-600 text-2xl font-bold focus:outline-none"
+                                onClick={() => setModalImage(null)}
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <img src={modalImage} alt="Full" className="max-h-[70vh] max-w-full rounded mb-4" />
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )
