@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { UserNav } from "@/components/user-nav"
 
 interface EvaluationRun {
   id: number
@@ -142,8 +143,9 @@ export default function DashboardPage() {
       <Sidebar currentPath="/dashboard" />
 
       <main className="flex-1 p-8">
-        <div className="mb-8">
+        <div className="mb-8 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <UserNav />
         </div>
 
         <div className="space-y-8">
