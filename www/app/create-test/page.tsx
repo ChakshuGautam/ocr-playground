@@ -335,20 +335,27 @@ export default function CreateTestPage() {
                       <Select value={selectedVersionA} onValueChange={setSelectedVersionA} disabled={versions.length === 0}>
                         <SelectTrigger className="mt-2">
                           <SelectValue placeholder={loading ? "Loading..." : "Select version A"} />
-                          <div className="flex items-center gap-1">
-                            <ChevronUp className="h-4 w-4" />
-                            <ChevronDown className="h-4 w-4" />
-                          </div>
                         </SelectTrigger>
-                        <SelectContent className="max-w-xs md:max-w-md lg:max-w-lg">
+                        <SelectContent 
+                          position="popper" 
+                          className="max-w-[300px] max-h-[200px] overflow-y-auto"
+                          sideOffset={4}
+                        >
                           {versions.length === 0 && !loading && (
-                            <div className="px-2 py-1">No versions found</div>
+                            <div className="px-2 py-1 text-sm text-gray-500">No versions found</div>
                           )}
                           {versions.map((version) => (
-                            <SelectItem key={version.id} value={String(version.id)} className="max-w-xs md:max-w-md lg:max-w-lg">
-                              <span className="truncate">
-                                {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
-                              </span>
+                            <SelectItem key={version.id} value={String(version.id)} className="p-3">
+                              <div className="flex flex-col w-full min-w-0">
+                                <span className="font-medium text-sm mb-1 truncate">
+                                  {version.version}
+                                </span>
+                                {version.changelog_message && (
+                                  <span className="text-xs text-gray-600 line-clamp-2 break-words whitespace-normal">
+                                    {version.changelog_message}
+                                  </span>
+                                )}
+                              </div>
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -375,20 +382,27 @@ export default function CreateTestPage() {
                       <Select value={selectedVersionB} onValueChange={setSelectedVersionB} disabled={versions.length === 0}>
                         <SelectTrigger className="mt-2">
                           <SelectValue placeholder={loading ? "Loading..." : "Select version B"} />
-                          <div className="flex items-center gap-1">
-                            <ChevronUp className="h-4 w-4" />
-                            <ChevronDown className="h-4 w-4" />
-                          </div>
                         </SelectTrigger>
-                        <SelectContent className="max-w-xs md:max-w-md lg:max-w-lg">
+                        <SelectContent 
+                          position="popper" 
+                          className="max-w-[300px] max-h-[200px] overflow-y-auto"
+                          sideOffset={4}
+                        >
                           {versions.length === 0 && !loading && (
-                            <div className="px-2 py-1">No versions found</div>
+                            <div className="px-2 py-1 text-sm text-gray-500">No versions found</div>
                           )}
                           {versions.map((version) => (
-                            <SelectItem key={version.id} value={String(version.id)} className="max-w-xs md:max-w-md lg:max-w-lg">
-                              <span className="truncate">
-                                {version.version} {version.changelog_message ? `- ${version.changelog_message}` : ""}
-                              </span>
+                            <SelectItem key={version.id} value={String(version.id)} className="p-3">
+                              <div className="flex flex-col w-full min-w-0">
+                                <span className="font-medium text-sm mb-1 truncate">
+                                  {version.version}
+                                </span>
+                                {version.changelog_message && (
+                                  <span className="text-xs text-gray-600 line-clamp-2 break-words whitespace-normal">
+                                    {version.changelog_message}
+                                  </span>
+                                )}
+                              </div>
                             </SelectItem>
                           ))}
                         </SelectContent>
