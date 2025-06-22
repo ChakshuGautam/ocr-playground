@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 
 const BACKEND_URL = 'http://localhost:8000/api/prompt-families';
 
-export async function GET(_req: NextRequest, context: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
   const { id } = context.params;
   try {
-    const res = await fetch(`${BACKEND_URL}/${id}/versions`);
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const res = await fetch(`${BACKEND_URL}/${id}/versions?user_id=${userId}`);
     if (!res.ok) {
       return NextResponse.json({ error: 'Failed to fetch prompt versions' }, { status: res.status });
     }
@@ -19,15 +25,21 @@ export async function GET(_req: NextRequest, context: { params: { id: string } }
 export async function POST(req: NextRequest, context: { params: { id: string } }) {
   const { id } = context.params;
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     
-    // Ensure all fields are lowercase and properly formatted, with safe defaults
     const requestData = {
+      ...body,
       family_id: Number(id),
+      user_id: userId,
       prompt_text: body.prompt_text?.trim() || "",
       changelog_message: body.changelog_message?.trim() || "",
-      version_type: (body.version_type || "patch").toLowerCase(),  // fallback to patch if not provided
-      status: (body.status || "draft").toLowerCase()               // fallback to draft if not provided
+      version_type: (body.version_type || "patch").toLowerCase(),
+      status: (body.status || "draft").toLowerCase()
     };
     
     console.log('Sending to backend:', requestData);
@@ -40,7 +52,7 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
     
     if (!res.ok) {
       const err = await res.json();
-      console.error('Backend error:', err);  // Log the error for debugging
+      console.error('Backend error:', err);
       return NextResponse.json({ error: err.detail || 'Failed to create prompt version' }, { status: res.status });
     }
     const data = await res.json();
