@@ -7,48 +7,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 
-// const activeEvaluations = [
-//   {
-//     name: "Evaluation 1",
-//     dataset: "Dataset A",
-//     status: "In Progress",
-//     createdAt: "2024-01-15",
-//   },
-//   {
-//     name: "Evaluation 2",
-//     dataset: "Dataset B",
-//     status: "Completed",
-//     createdAt: "2024-01-10",
-//   },
-//   {
-//     name: "Evaluation 3",
-//     dataset: "Dataset C",
-//     status: "Pending",
-//     createdAt: "2024-01-05",
-//   },
-// ]
-
-// const recentResults = [
-//   {
-//     name: "Evaluation 2",
-//     dataset: "Dataset B",
-//     result: "95%",
-//     createdAt: "2024-01-10",
-//   },
-//   {
-//     name: "Evaluation 1",
-//     dataset: "Dataset A",
-//     result: "88%",
-//     createdAt: "2024-01-15",
-//   },
-//   {
-//     name: "Evaluation 3",
-//     dataset: "Dataset C",
-//     result: "76%",
-//     createdAt: "2024-01-05",
-//   },
-// ]
-
 function getStatusBadge(status: string) {
   switch (status) {
     case "draft":

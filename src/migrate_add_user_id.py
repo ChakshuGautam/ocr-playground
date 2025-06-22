@@ -39,4 +39,4 @@ async def migrate_add_user_id():
         print("\nMigration completed!")
 
 if __name__ == "__main__":
-    asyncio.run(migrate_add_user_id()) 
+    asyncio.run(migrate_add_user_id())

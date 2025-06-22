@@ -610,8 +610,12 @@ async def get_dataset(db: AsyncSession, dataset_id: int) -> Optional[Dataset]:
     )
     return result.scalar_one_or_none()
 
-async def get_datasets(db: AsyncSession) -> List[Dataset]:
-    result = await db.execute(select(Dataset).order_by(Dataset.created_at.desc()))
+async def get_datasets(db: AsyncSession, user_id: str) -> List[Dataset]:
+    result = await db.execute(
+        select(Dataset)
+        .where(Dataset.user_id == user_id)
+        .order_by(Dataset.created_at.desc())
+    )
     return result.scalars().all()
 
 async def update_dataset(db: AsyncSession, dataset_id: int, dataset_update: DatasetUpdate) -> Optional[Dataset]:
@@ -722,8 +726,12 @@ async def get_prompt_family(db: AsyncSession, family_id: int) -> Optional[Prompt
     )
     return result.scalar_one_or_none()
 
-async def get_prompt_families(db: AsyncSession) -> List[PromptFamily]:
-    result = await db.execute(select(PromptFamily).order_by(PromptFamily.created_at.desc()))
+async def get_prompt_families(db: AsyncSession, user_id: str) -> List[PromptFamily]:
+    result = await db.execute(
+        select(PromptFamily)
+        .where(PromptFamily.user_id == user_id)
+        .order_by(PromptFamily.created_at.desc())
+    )
     return result.scalars().all()
 
 async def update_prompt_family(db: AsyncSession, family_id: int, family_update: PromptFamilyCreate) -> Optional[PromptFamily]:
@@ -743,9 +751,16 @@ async def update_prompt_family(db: AsyncSession, family_id: int, family_update: 
     return db_family
 
 # Prompt Version CRUD operations
-async def get_prompt_versions(db: AsyncSession, family_id: int) -> List[PromptVersion]:
+async def get_prompt_versions(db: AsyncSession, family_id: int, user_id: str) -> List[PromptVersion]:
     result = await db.execute(
-        select(PromptVersion).where(PromptVersion.family_id == family_id).order_by(PromptVersion.created_at.desc())
+        select(PromptVersion)
+        .where(
+            and_(
+                PromptVersion.family_id == family_id,
+                PromptVersion.user_id == user_id
+            )
+        )
+        .order_by(PromptVersion.created_at.desc())
     )
     return result.scalars().all()
 
@@ -868,7 +883,8 @@ async def create_evaluation_run(db: AsyncSession, run: EvaluationRunCreate) -> E
         db_run = EvaluationRun(
             name=run.name,
             description=run.description,
-            hypothesis=run.hypothesis
+            hypothesis=run.hypothesis,
+            user_id=run.user_id
         )
         db.add(db_run)
         # await db.flush()  # Get the ID
@@ -932,9 +948,10 @@ async def create_evaluation_run(db: AsyncSession, run: EvaluationRunCreate) -> E
         logging.exception(f"[CRUD] Exception in create_evaluation_run: {str(e)}")
         raise
 
-async def get_evaluation_runs(db: AsyncSession) -> List[EvaluationRun]:
+async def get_evaluation_runs(db: AsyncSession, user_id: str) -> List[EvaluationRun]:
     result = await db.execute(
         select(EvaluationRun)
+        .where(EvaluationRun.user_id == user_id)
         .options(
             selectinload(EvaluationRun.datasets),
             selectinload(EvaluationRun.prompt_configurations)

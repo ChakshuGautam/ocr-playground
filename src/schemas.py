@@ -240,6 +240,7 @@ class DatasetBase(BaseModel):
     name: str
     description: Optional[str] = None
     status: DatasetStatus = DatasetStatus.DRAFT
+    user_id: str # Clerk user ID
 
 class DatasetCreate(DatasetBase):
     pass
@@ -267,6 +268,7 @@ class PromptFamilyBase(BaseModel):
     name: str
     description: Optional[str] = None
     tags: List[str] = []
+    user_id: str
 
 class PromptFamilyCreate(PromptFamilyBase):
     pass
@@ -285,6 +287,7 @@ class PromptVersionBase(BaseModel):
     prompt_text: str
     changelog_message: str
     status: PromptStatus = PromptStatus.DRAFT
+    user_id: str
 
 class PromptVersionCreate(BaseModel):
     family_id: int
@@ -293,6 +296,7 @@ class PromptVersionCreate(BaseModel):
     version_type: VersionType
     version: Optional[str] = None
     status: PromptStatus = PromptStatus.DRAFT
+    user_id: str
 
 class PromptVersionUpdate(BaseModel):
     prompt_text: Optional[str] = None
@@ -317,6 +321,7 @@ class EvaluationRunBase(BaseModel):
     description: Optional[str] = None
     hypothesis: str
     dataset_ids: List[int]
+    user_id: str
 
 class EvaluationRunCreate(EvaluationRunBase):
     prompt_configurations: List['PromptConfiguration']

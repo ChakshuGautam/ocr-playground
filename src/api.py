@@ -884,9 +884,12 @@ async def process_evaluation_run_background(run_id: int):
 
 # Dataset endpoints
 @app.get("/api/datasets", response_model=List[Dataset])
-async def get_datasets(db: AsyncSession = Depends(get_db)):
-    """Get all evaluation datasets"""
-    return await crud.get_datasets(db)
+async def get_datasets(
+    user_id: str,
+    db: AsyncSession = Depends(get_db)
+    ):
+    """Get all evaluation datasets for a user"""
+    return await crud.get_datasets(db, user_id=user_id)
 
 @app.get("/api/datasets/{dataset_id}", response_model=DatasetWithImages)
 async def get_dataset(dataset_id: int, db: AsyncSession = Depends(get_db)):
@@ -937,9 +940,9 @@ async def upload_dataset_files(
 
 # Prompt Family endpoints
 @app.get("/api/prompt-families", response_model=List[PromptFamily])
-async def get_prompt_families(db: AsyncSession = Depends(get_db)):
-    """Get all prompt families"""
-    return await crud.get_prompt_families(db)
+async def get_prompt_families(user_id: str, db: AsyncSession = Depends(get_db)):
+    """Get all prompt families for a user"""
+    return await crud.get_prompt_families(db, user_id=user_id)
 
 @app.get("/api/prompt-families/{family_id}", response_model=PromptFamilyWithVersions)
 async def get_prompt_family(family_id: int, db: AsyncSession = Depends(get_db)):
@@ -972,9 +975,9 @@ async def create_prompt_family(family: PromptFamilyCreate, db: AsyncSession = De
 
 # Prompt Version endpoints
 @app.get("/api/prompt-families/{family_id}/versions", response_model=List[PromptVersion])
-async def get_prompt_versions(family_id: int, db: AsyncSession = Depends(get_db)):
+async def get_prompt_versions(family_id: int, user_id: str, db: AsyncSession = Depends(get_db)):
     """Get all versions for a prompt family"""
-    return await crud.get_prompt_versions(db, family_id)
+    return await crud.get_prompt_versions(db, family_id, user_id)
 
 @app.post("/api/prompt-families/{family_id}/versions", response_model=PromptVersion)
 async def create_prompt_version(
@@ -1026,9 +1029,9 @@ async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get
 
 # Evaluation Run endpoints
 @app.get("/api/evaluation-runs", response_model=List[EvaluationRunSchema])
-async def get_evaluation_runs(db: AsyncSession = Depends(get_db)):
-    """Get all evaluation runs"""
-    return await crud.get_evaluation_runs(db)
+async def get_evaluation_runs(user_id: str, db: AsyncSession = Depends(get_db)):
+    """Get all evaluation runs for a user"""
+    return await crud.get_evaluation_runs(db, user_id=user_id)
 
 @app.get("/api/evaluation-runs/{run_id}", response_model=EvaluationRunWithDetails)
 async def get_evaluation_run(run_id: int, db: AsyncSession = Depends(get_db)):
@@ -1080,7 +1083,8 @@ async def create_evaluation_run(
             created_at = db_run.created_at,
             updated_at = db_run.updated_at,
             completed_at = db_run.completed_at,
-            dataset_ids=[d.id for d in db_run.datasets]
+            dataset_ids=[d.id for d in db_run.datasets],
+            user_id=db_run.user_id
         )
     except Exception as e:
         logging.exception(f"[API] Exception in create_evaluation_run: {str(e)}")
