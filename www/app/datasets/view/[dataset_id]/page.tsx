@@ -2,8 +2,6 @@
 
 import { Sidebar } from "@/components/sidebar"
 import { useState, useEffect } from "react"
-import { Header } from "@/components/header"
-import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useParams, useRouter } from "next/navigation"
 import { useRef } from "react"
@@ -187,7 +185,8 @@ export default function ViewDatasetPage() {
                                         <TableRow>
                                             <TableHead>Image</TableHead>
                                             <TableHead>Reference Text</TableHead>
-                                            <TableHead>URL</TableHead>
+                                            <TableHead>Human Evaluation</TableHead>
+                                            {/* <TableHead>URL</TableHead> */}
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -214,10 +213,13 @@ export default function ViewDatasetPage() {
                                                     <p className="whitespace-pre-wrap">{image.reference_text}</p>
                                                 </TableCell>
                                                 <TableCell>
+                                                    <p className="whitespace-pre-wrap">{image.reference_text}</p>
+                                                </TableCell>
+                                                {/* <TableCell>
                                                     <a href={image.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
                                                         {image.url}
                                                     </a>
-                                                </TableCell>
+                                                </TableCell> */}
                                             </TableRow>
                                         ))}
                                     </TableBody>

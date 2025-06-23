@@ -14,7 +14,8 @@ const navigation = [
   { name: "Prompts Families", href: "/prompt-families", icon: MessageSquare },
   { name: "Create A/B Test", href: "/create-test", icon: MessageSquare },
   // { name: "Ground Truth", href: "/ground-truth", icon: Database },
-  { name: "Evaluation Report", href: "/evaluation-report", icon: BarChart3 }
+  { name: "Evaluation Report", href: "/evaluation-report", icon: BarChart3 },
+  { name: "Docs", href: "/docs", icon: FileText },
 ]
 
 export function Sidebar({ currentPath }: SidebarProps) {

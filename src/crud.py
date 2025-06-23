@@ -17,7 +17,7 @@ from .database import (
 )
 from .schemas import (
     ImageCreate, ImageUpdate, EvaluationCreate, EvaluationUpdate,
-    PromptTemplateCreate,
+    PromptTemplateCreate, PromptTemplateUpdate, WordEvaluationCreate,
     ImageFilter, PaginationParams,
     DatasetCreate, DatasetUpdate, PromptFamilyCreate,
     PromptVersionCreate, PromptVersionUpdate, EvaluationRunCreate,
