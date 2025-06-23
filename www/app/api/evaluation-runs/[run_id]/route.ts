@@ -8,7 +8,7 @@ export async function GET(_request: NextRequest, { params }: { params: { run_id:
     }
 
     try {
-        const response = await fetch(`http://localhost:8000/api/evaluation-runs/${run_id}`);
+        const response = await fetch(`${process.env.BACKEND_URL}/api/evaluation-runs/${run_id}`);
         
         if (!response.ok) {
             const error = await response.json();

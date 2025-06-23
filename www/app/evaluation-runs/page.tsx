@@ -8,6 +8,15 @@ import { Badge } from "@/components/ui/badge"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
+interface EvaluationRun {
+  id: number
+  name: string
+  description: string;
+  status: string;
+  progress_percentage: number;
+  created_at: string;
+}
+
 export default function EvaluationRunsListPage() {
   const router = useRouter()
   const navigation = [
@@ -17,7 +26,8 @@ export default function EvaluationRunsListPage() {
     { name: "Create A/B Test", href: "/create-test" },
   ]
 
-  const [runs, setRuns] = useState<any[]>([])
+  
+  const [runs, setRuns] = useState<EvaluationRun[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -127,7 +137,7 @@ export default function EvaluationRunsListPage() {
                           <Button
                             variant="link"
                             className="text-blue-600"
-                            onClick={() => router.push(`/evaluation-runs/${run.id}`)}
+                            onClick={() => router.push(`/evaluation-report/${run.id}`)}
                           >
                             View Report
                           </Button>}

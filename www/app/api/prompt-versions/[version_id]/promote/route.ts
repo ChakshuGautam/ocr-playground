@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-versions';
 
 export async function POST(req: NextRequest, { params }: { params: { version_id: string } }) {
   try {
     console.log('Promoting version:', params.version_id);
     
-    const res = await fetch(`${BACKEND_URL}/${params.version_id}/promote`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-versions/${params.version_id}/promote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     });

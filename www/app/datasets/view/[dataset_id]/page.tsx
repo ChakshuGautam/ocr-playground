@@ -40,6 +40,8 @@ export default function ViewDatasetPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [modalImage, setModalImage] = useState<string | null>(null);
+    const triggerRef = useRef<HTMLButtonElement | null>(null);
+    const modalRef = useRef<HTMLDivElement | null>(null);
 
     const navigation = [
         { name: "Dashboard", href: "/dashboard" },
@@ -74,6 +76,48 @@ export default function ViewDatasetPage() {
                 });
         }
     }, [dataset_id]);
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setModalImage(null)
+            }
+        }
+
+        if (modalImage) {
+            document.addEventListener('keydown', handleKeyDown)
+            const focusableElements = modalRef.current?.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            )
+            const firstElement = focusableElements?.[0] as HTMLElement | undefined
+            const lastElement = focusableElements?.[focusableElements.length - 1] as HTMLElement | undefined
+
+            const handleTabKeyPress = (e: KeyboardEvent) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            lastElement?.focus()
+                            e.preventDefault()
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            firstElement?.focus()
+                            e.preventDefault()
+                        }
+                    }
+                }
+            }
+
+            modalRef.current?.addEventListener('keydown', handleTabKeyPress)
+            firstElement?.focus()
+
+            return () => {
+                document.removeEventListener('keydown', handleKeyDown)
+                modalRef.current?.removeEventListener('keydown', handleTabKeyPress)
+                triggerRef.current?.focus()
+            }
+        }
+    }, [modalImage])
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -152,7 +196,10 @@ export default function ViewDatasetPage() {
                                                 <TableCell>
                                                     <button
                                                         className="focus:outline-none"
-                                                        onClick={() => setModalImage(image.url)}
+                                                        onClick={(e) => {
+                                                            setModalImage(image.url)
+                                                            triggerRef.current = e.currentTarget
+                                                        }}
                                                         title="Click to enlarge"
                                                     >
                                                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -179,10 +226,18 @@ export default function ViewDatasetPage() {
                         </div>
                         {/* Modal for full image */}
                         {modalImage && (
-                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setModalImage(null)}>
+                            <div
+                                ref={modalRef}
+                                className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+                                onClick={() => setModalImage(null)}
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby="modal-title"
+                            >
                                 <div className="bg-white rounded-lg shadow-lg max-w-3xl max-h-[90vh] flex flex-col items-center relative" onClick={e => e.stopPropagation()}>
+                                    <h2 id="modal-title" className="sr-only">Enlarged image</h2>
                                     <button
-                                        className="absolute top-2 right-2 text-gray hover:text-gray-600 text-2xl font-bold focus:outline-none"
+                                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-600 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         onClick={() => setModalImage(null)}
                                         aria-label="Close"
                                     >

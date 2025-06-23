@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-families';
 
 export async function GET(req: NextRequest, context: { params: { id: string } }) {
   const { id } = context.params;
@@ -11,7 +10,7 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const res = await fetch(`${BACKEND_URL}/${id}/versions?user_id=${userId}`);
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-families/${id}/versions?user_id=${userId}`);
     if (!res.ok) {
       return NextResponse.json({ error: 'Failed to fetch prompt versions' }, { status: res.status });
     }
@@ -44,7 +43,7 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
     
     console.log('Sending to backend:', requestData);
     
-    const res = await fetch(`${BACKEND_URL}/${id}/versions`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-families/${id}/versions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestData),

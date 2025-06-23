@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-templates';
-
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const body = await req.json();
-    const res = await fetch(`${BACKEND_URL}/${params.id}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-templates/${params.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

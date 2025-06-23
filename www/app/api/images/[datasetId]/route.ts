@@ -23,7 +23,7 @@ export async function POST(request: Request,  context: { params: { dataset_id: s
     backendFormData.append('file', file);
     backendFormData.append('overwrite_existing', overwriteExisting.toString());
 
-    const response = await fetch(`http://localhost:8000/api/images/${dataset_id}/import-csv`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/images/${dataset_id}/import-csv`, {
       method: 'POST',
       body: backendFormData,
     });

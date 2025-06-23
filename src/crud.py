@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import func, and_, or_, delete
+from sqlalchemy import func, and_, delete
 from sqlalchemy.orm import selectinload
 from typing import List, Optional, Dict, Any
 import json
@@ -13,11 +13,11 @@ import logging
 
 from .database import (
     Image, Evaluation, WordEvaluation, PromptTemplate,
-    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey, evaluation_run_datasets
+    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey, evaluation_run_datasets, dataset_images
 )
 from .schemas import (
     ImageCreate, ImageUpdate, EvaluationCreate, EvaluationUpdate,
-    PromptTemplateCreate, PromptTemplateUpdate, WordEvaluationCreate,
+    PromptTemplateCreate,
     ImageFilter, PaginationParams,
     DatasetCreate, DatasetUpdate, PromptFamilyCreate,
     PromptVersionCreate, PromptVersionUpdate, EvaluationRunCreate,
@@ -895,7 +895,7 @@ async def create_evaluation_run(db: AsyncSession, run: EvaluationRunCreate) -> E
         for dataset_id in run.dataset_ids:
             logging.info(f"[CRUD] Adding dataset_id: {dataset_id} to run {db_run.id}")
             dataset = await get_dataset(db, dataset_id)
-            logging.info(f"[Crud]!!Dataset Found")
+            logging.info("[Crud]!!Dataset Found")
             if dataset:
                 await db.execute(
                     evaluation_run_datasets.insert().values(

@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-templates';
 
 export async function GET() {
   try {
-    const res = await fetch(BACKEND_URL);
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-templates`);
     if (!res.ok) {
       return NextResponse.json({ error: 'Failed to fetch prompts' }, { status: res.status });
     }
@@ -18,7 +17,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const res = await fetch(BACKEND_URL, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-templates`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

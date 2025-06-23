@@ -6,9 +6,9 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   // Get the headers
   const headerPayload = headers();
-  const svix_id = headerPayload.get("svix-id");
-  const svix_timestamp = headerPayload.get("svix-timestamp");
-  const svix_signature = headerPayload.get("svix-signature");
+  const svix_id = (await headerPayload).get("svix-id");
+  const svix_timestamp = (await headerPayload).get("svix-timestamp");
+  const svix_signature = (await headerPayload).get("svix-signature");
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     
     // Example: Send user data to your backend
     try {
-      await fetch('http://localhost:8000/api/users', {
+      await fetch(`${process.env.BACKEND_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     
     // You can clean up user data from your backend here
     try {
-      await fetch(`http://localhost:8000/api/users/${id}`, {
+      await fetch(`${process.env.BACKEND_URL}/api/users/${id}`, {
         method: 'DELETE',
       });
     } catch (error) {

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-families';
-
 export async function GET() {
   try {
     const { userId } = await auth();
@@ -10,7 +8,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const res = await fetch(`${BACKEND_URL}?user_id=${userId}`);
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-families?user_id=${userId}`);
     if (!res.ok) {
       return NextResponse.json({ error: 'Failed to fetch prompt families' }, { status: res.status });
     }
@@ -31,7 +29,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const payload = { ...body, user_id: userId };
     
-    const res = await fetch(BACKEND_URL, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-families`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

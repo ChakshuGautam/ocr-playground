@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
-const baseUrl = 'http://localhost:8000'
-
 // create a new dataset
 export async function POST(request: Request) {
   try {
@@ -20,7 +18,7 @@ export async function POST(request: Request) {
       user_id: userId
     };
     
-    const response = await fetch('http://localhost:8000/api/datasets', {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/datasets`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +47,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const response = await fetch(`http://localhost:8000/api/datasets?user_id=${userId}`);
+    const response = await fetch(`${process.env.BACKEND_URL}/api/datasets?user_id=${userId}`);
     
     if (!response.ok) {
       const error = await response.json();

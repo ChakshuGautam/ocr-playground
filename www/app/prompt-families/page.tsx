@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,6 +11,7 @@ import { Search } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 
 export default function PromptFamiliesPage() {
+  const router = useRouter()
   const [families, setFamilies] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -167,7 +169,7 @@ export default function PromptFamiliesPage() {
                         <Button
                           variant="secondary"
                           className="text-blue-600"
-                          onClick={() => window.location.href = `/prompt-families/${family.id}/versions`}
+                          onClick={() => router.push(`/prompt-families/${family.id}/versions`)}
                         >
                           Manage Versions
                         </Button>

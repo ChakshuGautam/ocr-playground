@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-families';
-
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const body = await req.json();
     // Only send name and description to backend
     const payload = { name: body.name, description: body.description };
-    const res = await fetch(`${BACKEND_URL}/${params.id}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-families/${params.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -25,7 +23,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const res = await fetch(`${BACKEND_URL}/${params.id}`);
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-families/${params.id}`);
     if (!res.ok) {
       return NextResponse.json({ error: 'Failed to fetch prompt family' }, { status: res.status });
     }

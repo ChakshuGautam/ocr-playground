@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     uploadFormData.append('images_zip', imagesZip);
     uploadFormData.append('reference_csv', referenceCsv);
 
-    const response = await fetch(`http://localhost:8000/api/datasets/${datasetId}/upload`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/datasets/${datasetId}/upload`, {
       method: 'POST',
       body: uploadFormData,
     });

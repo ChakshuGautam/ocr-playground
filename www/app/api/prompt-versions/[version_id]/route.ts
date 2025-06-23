@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/prompt-versions';
-
 export async function PUT(req: NextRequest, { params }: { params: { version_id: string } }) {
   try {
     const body = await req.json();
@@ -15,7 +13,7 @@ export async function PUT(req: NextRequest, { params }: { params: { version_id: 
     
     console.log('Updating version with data:', requestData);
     
-    const res = await fetch(`${BACKEND_URL}/${params.version_id}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/prompt-versions/${params.version_id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestData),

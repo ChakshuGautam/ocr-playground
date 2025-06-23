@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   if (!id) {
     return NextResponse.json({ error: 'Missing id' }, { status: 400 });
   }
-  const backendUrl = `http://localhost:8000/api/datasets/${id}`;
+  const backendUrl = `${process.env.BACKEND_URL}/api/datasets/${id}`;
   try {
     const res = await fetch(backendUrl);
     if (!res.ok) {

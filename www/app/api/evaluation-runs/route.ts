@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
-const BACKEND_URL = 'http://localhost:8000/api/evaluation-runs';
 
 // Create a new evaluation run
 export async function POST(req: NextRequest) {
@@ -14,7 +13,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const payload = { ...body, user_id: userId };
     
-    const res = await fetch(BACKEND_URL, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/evaluation-runs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -40,7 +39,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
   
-      const res = await fetch(`${BACKEND_URL}?user_id=${userId}`);
+      const res = await fetch(`${process.env.BACKEND_URL}/api/evaluation-runs?user_id=${userId}`);
   
       if (!res.ok) {
         const error = await res.json();
