@@ -201,7 +201,7 @@ async def import_images_csv_to_dataset(
     db: AsyncSession = Depends(get_db)
 ):
     """Import images from CSV file and associate them with a dataset"""
-    logging.info(f"Hit /api/images/{dataset_id}/import-csv with dataset_id={dataset_id}")
+    # logging.info(f"Hit /api/images/{dataset_id}/import-csv with dataset_id={dataset_id}")
     # First check if dataset exists
     dataset = await crud.get_dataset(db, dataset_id)
     if not dataset:
@@ -635,7 +635,7 @@ async def process_evaluation_background(evaluation_id: int):
             start_time = time.time()
             result = await orchestrator.process_single_evaluation(
                 evaluation.image.url,
-                evaluation.image.reference_text,
+                evaluation.image.human_evaluation_text,
                 evaluation.image.number
             )
             end_time = time.time()
@@ -814,7 +814,7 @@ async def process_evaluation_run_background(run_id: int):
                         start_time = time.time()
                         result = await orchestrator.process_single_evaluation(
                             image.url,
-                            image.reference_text,
+                            image.human_evaluation_text,
                             image.number
                         )
                         end_time = time.time()

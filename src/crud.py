@@ -469,6 +469,7 @@ async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dat
                     number = row.get('#', '').strip()
                     url = row.get('Link', '').strip()
                     reference_text = row.get('Text', '').strip()
+                    human_evaluation_text = row.get('Human Evaluation Text', '').strip()
                     local_image = row.get('Local Image', '').strip()
                     
                     if not number or not reference_text:
@@ -504,6 +505,7 @@ async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dat
                         number=number,
                         url=url,
                         reference_text=reference_text,
+                        human_evaluation_text=human_evaluation_text,
                         local_path=local_image
                     )
                     db_image = await create_image(db, image_data)

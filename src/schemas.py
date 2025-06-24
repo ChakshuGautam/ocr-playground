@@ -50,6 +50,7 @@ class ImageBase(BaseModel):
     url: str
     local_path: Optional[str] = None
     reference_text: str
+    human_evaluation_text: str
 
 class ImageCreate(ImageBase):
     pass

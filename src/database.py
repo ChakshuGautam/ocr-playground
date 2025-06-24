@@ -129,6 +129,7 @@ class Image(Base):
     url = Column(String)
     local_path = Column(String)
     reference_text = Column(Text)
+    human_evaluation_text = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     user_id = Column(String, index=True)  # Clerk user ID
