@@ -10,6 +10,7 @@ import tempfile
 from pathlib import Path
 from datetime import datetime
 import logging
+import time
 
 from .database import get_db, init_db, EvaluationRun as EvaluationRunDB, async_session
 from .schemas import (
@@ -27,7 +28,7 @@ from .schemas import (
     PromptVersion, PromptVersionCreate, PromptVersionUpdate,
     EvaluationRun as EvaluationRunSchema, EvaluationRunCreate, EvaluationRunUpdate, EvaluationRunWithDetails,
     ComparisonResults, LiveProgressUpdate, PerformanceTrend,
-    APIKey, APIKeyCreate, APIUsageStats,
+    APIKey, APIKeyCreate, APIUsageStats, APILog,
     ProcessingStatus, DatasetStatus, PromptStatus
 )
 from . import crud
@@ -631,11 +632,14 @@ async def process_evaluation_background(evaluation_id: int):
                 )
             )
             
+            start_time = time.time()
             result = await orchestrator.process_single_evaluation(
                 evaluation.image.url,
                 evaluation.image.reference_text,
                 evaluation.image.number
             )
+            end_time = time.time()
+            latency_ms = int((end_time - start_time) * 1000)
             
             # Update progress: analyzing results
             await crud.update_evaluation(
@@ -673,6 +677,23 @@ async def process_evaluation_background(evaluation_id: int):
                 )
                 
                 await crud.update_evaluation(db, evaluation_id, update_data)
+
+                # Add API log entry
+                try:
+                    if evaluation.image:
+                        log_entry = crud.APILogCreate(
+                            image_url=evaluation.image.url,
+                            ocr_output=evaluation_data.get('full_text', ''),
+                            prompt_version=evaluation.prompt_version,
+                            user_id=evaluation.image.user_id,
+                            log_metadata={
+                                "tokens_used": result.get('tokens_used', 0),  # Placeholder, orchestrator needs to return this
+                                "latency_ms": latency_ms
+                            }
+                        )
+                        await crud.create_api_log(db, log_entry)
+                except Exception as e:
+                    logging.error(f"Failed to create API log for evaluation {evaluation_id}: {str(e)}")
             else:
                 # Update with error
                 await crud.update_evaluation(
@@ -790,11 +811,14 @@ async def process_evaluation_run_background(run_id: int):
                         await db.commit()
                         
                         # Process the evaluation
+                        start_time = time.time()
                         result = await orchestrator.process_single_evaluation(
                             image.url,
                             image.reference_text,
                             image.number
                         )
+                        end_time = time.time()
+                        latency_ms = int((end_time - start_time) * 1000)
                         
                         if result.get('success'):
                             # Update evaluation with results
@@ -822,6 +846,22 @@ async def process_evaluation_run_background(run_id: int):
                             )
                             
                             await crud.update_evaluation(db, db_evaluation.id, update_data)
+
+                            # Add API log entry
+                            try:
+                                log_entry = crud.APILogCreate(
+                                    image_url=image.url,
+                                    ocr_output=evaluation_data.get('full_text', ''),
+                                    prompt_version=prompt_config.prompt_version.version,
+                                    user_id=evaluation_run.user_id,
+                                    log_metadata={
+                                        "tokens_used": result.get('tokens_used', 0),  # Placeholder, orchestrator needs to return this
+                                        "latency_ms": latency_ms
+                                    }
+                                )
+                                await crud.create_api_log(db, log_entry)
+                            except Exception as e:
+                                logging.error(f"Failed to create API log for evaluation {db_evaluation.id} in run {run_id}: {str(e)}")
                         else:
                             # Update with error
                             error_msg = result.get('error', 'Unknown error')
@@ -1138,6 +1178,17 @@ async def get_performance_trends(
 async def get_regression_alerts(db: AsyncSession = Depends(get_db)):
     """Get active regression alerts"""
     return await crud.get_regression_alerts(db)
+
+# API Log endpoint
+@app.get("/api/api-logs", response_model=List[APILog])
+async def get_api_logs(
+    user_id: str,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    db: AsyncSession = Depends(get_db)
+):
+    """Get API logs for the current user"""
+    return await crud.get_api_logs_for_user(db, user_id=user_id, skip=skip, limit=limit)
 
 # API Key Management endpoints
 @app.get("/api/api-keys", response_model=List[APIKey])

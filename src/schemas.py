@@ -427,4 +427,21 @@ class APIUsageStats(BaseModel):
     calls_today: int
     calls_this_month: int
     error_rate: float
-    avg_response_time_ms: int 
+    avg_response_time_ms: int
+
+class APILogBase(BaseModel):
+    image_url: Optional[str] = None
+    ocr_output: Optional[str] = None
+    prompt_version: Optional[str] = None
+    user_id: Optional[str] = None
+    log_metadata: Optional[Dict[str, Any]] = None
+
+class APILogCreate(APILogBase):
+    pass
+
+class APILog(APILogBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True 

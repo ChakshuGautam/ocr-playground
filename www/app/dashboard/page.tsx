@@ -28,6 +28,21 @@ interface Dataset {
   updated_at: string
 }
 
+interface ApiLog {
+  id: number;
+  image_url: string;
+  ocr_output: string;
+  prompt_version: string;
+  user_id: string;
+  created_at: string;
+  log_metadata: {
+    accuracy: number;
+    latency_ms?: number;
+    status?: 'success' | 'failed';
+    [key: string]: any;
+  };
+}
+
 const dummyAPIData = [
   {
     imageURL: 'https://minio.nl.samagra.io/assessment-images/ap_955139_11_42766918_20250217051749.jpg',
@@ -114,6 +129,7 @@ function getStatusBadge(status: string) {
 export default function DashboardPage() {
   const [datasets, setDatasets] = useState<Dataset[]>([])
   const [evaluationRuns, setEvaluationRuns] = useState<EvaluationRun[]>([])
+  const [apiLogs, setApiLogs] = useState<ApiLog[]>([])
   const [loading, setLoading] = useState(true)
   const [modalImage, setModalImage] = useState<string | null>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
@@ -133,10 +149,19 @@ export default function DashboardPage() {
         const evaluationsData = await evaluationsResponse.json()
         const evaluationsArray = Array.isArray(evaluationsData) ? evaluationsData : (evaluationsData?.data || [])
         setEvaluationRuns(evaluationsArray)
+
+        // Fetch API logs
+        const apiLogsResponse = await fetch("/api/api-logs");
+        const apiLogsData = await apiLogsResponse.json();
+        const apiLogsArray = Array.isArray(apiLogsData) ? apiLogsData : (apiLogsData?.data || []);
+        setApiLogs(apiLogsArray);
+        console.log(apiLogsArray[0])
+        console.log(apiLogsArray[1])
       } catch (error) {
         console.error('Error fetching data:', error)
         setDatasets([])
         setEvaluationRuns([])
+        setApiLogs([]);
       } finally {
         setLoading(false)
       }
@@ -305,7 +330,7 @@ export default function DashboardPage() {
             <div className="rounded-lg bg-white p-6 shadow-sm">
               <h2 className="mb-6 text-xl font-semibold text-gray-900">API Logs</h2>
 
-              {allEvaluations.length === 0 ? (
+              {apiLogs.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   No logs to be shown
                 </div>
@@ -318,51 +343,59 @@ export default function DashboardPage() {
                       <TableHead>Created At</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Latency</TableHead>
-                      <TableHead>Additional Info</TableHead>
+                      <TableHead>Tokens Used</TableHead>
+                      {/* <TableHead>Additional Info</TableHead> */}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {dummyAPIData.map((log, idx) => (
-                      <TableRow key={idx}>
+                    {apiLogs.map((log) => (
+                      <TableRow key={log.id}>
                         <TableCell>
                           <button
                             className="focus:outline-none"
                             onClick={e => {
-                              setModalImage(log.imageURL)
+                              setModalImage(log.image_url)
                               triggerRef.current = e.currentTarget
                             }}
                             title="Click to enlarge"
                           >
                             <img
-                              src={log.imageURL}
+                              src={log.image_url}
                               alt="OCR"
                               className="h-12 w-12 object-cover rounded-full border border-gray-200 shadow-sm hover:scale-105 transition-transform"
                             />
                           </button>
                         </TableCell>
                         <TableCell className="whitespace-pre-line max-w-xs break-words">
-                          {log.ocr_text || <span className="text-gray-400 italic">No OCR text</span>}
+                          {log.ocr_output || <span className="text-gray-400 italic">No OCR text</span>}
                         </TableCell>
                         <TableCell className="text-gray-600">
-                          {log.metadata.assessed_at ? new Date(log.metadata.assessed_at).toLocaleDateString() : '-'}
+                          {log.created_at ? new Date(log.created_at).toLocaleDateString() : '-'}
                         </TableCell>
                         <TableCell className="text-gray-600">
-                          {log.metadata.status === 'success' ? (
+                          {log.log_metadata.status === 'success' ? (
                             <Badge variant="secondary" className="bg-green-100 text-green-800">Completed</Badge>
-                          ) : log.metadata.status === 'failed' ? (
+                          ) : log.log_metadata.status === 'failed' ? (
                             <Badge variant="secondary" className="bg-red-100 text-red-800">Failed</Badge>
                           ) : (
-                            <Badge variant="secondary">{log.metadata.status}</Badge>
+                            <Badge variant="secondary">{log.log_metadata.status || 'Unknown'}</Badge>
                           )}
                         </TableCell>
                         <TableCell className="text-gray-600">
-                          {log.metadata.latency || '-'}
+                          {log.log_metadata.latency_ms ? `${log.log_metadata.latency_ms}ms` : '-'}
                         </TableCell>
                         <TableCell className="text-gray-600">
-                          <div>School ID: {log.metadata.school_id}</div>
-                          <div>Student ID: {log.metadata.student_id}</div>
-                          <div>Class ID: {log.metadata.class_id}</div>
+                          {log.log_metadata.tokens_used ? log.log_metadata.tokens_used : '-'}
                         </TableCell>
+                        {/* <TableCell className="text-gray-600">
+                          <div>Accuracy: {log.log_metadata.accuracy.toFixed(2)}%</div>
+                          <div>Prompt: {log.prompt_version}</div>
+                          {Object.entries(log.log_metadata)
+                            .filter(([key]) => !['accuracy', 'latency_ms', 'status'].includes(key))
+                            .map(([key, value]) => (
+                              <div key={key}>{`${key}: ${value}`}</div>
+                            ))}
+                        </TableCell> */}
                       </TableRow>
                     ))}
                   </TableBody>

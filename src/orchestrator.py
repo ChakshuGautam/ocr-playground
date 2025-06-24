@@ -108,7 +108,8 @@ class OcrOrchestrator:
                     'correct_words': result.get('correct_words', 0),
                     'total_words': result.get('total_words', 0)
                 },
-                'local_image_path': local_image_path
+                'local_image_path': local_image_path,
+                'tokens_used': result.get('tokens_used', 0)
             }
             
         except Exception as e:

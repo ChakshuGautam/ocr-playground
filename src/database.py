@@ -196,6 +196,17 @@ class PromptTemplate(Base):
     description = Column(Text, nullable=True)
     user_id = Column(String, index=True)  # Clerk user ID
 
+class APILog(Base):
+    __tablename__ = "api_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    image_url = Column(Text)
+    ocr_output = Column(Text)
+    prompt_version = Column(Text)
+    user_id = Column(String, index=True)
+    log_metadata = Column(JSON)  # Store metadata as a JSON object
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 async def init_db():
     """Initialize the database and create all tables"""
     async with engine.begin() as conn:

@@ -243,12 +243,18 @@ Begin by transcribing the provided image, then proceed to the word-by-word evalu
             correct_words = sum(1 for eval in word_evaluations if eval.match)
             accuracy = (correct_words / total_words) * 100 if total_words > 0 else 0
             
+            # Get token usage
+            total_tokens = 0
+            if response.usage_metadata:
+                total_tokens = response.usage_metadata.total_token_count
+                
             return {
                 "full_text": full_text,
                 "evaluations": [eval.dict() for eval in word_evaluations],
                 "accuracy": accuracy,
                 "correct_words": correct_words,
-                "total_words": total_words
+                "total_words": total_words,
+                "tokens_used": total_tokens
             }
             
         except APIError as e:

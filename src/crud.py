@@ -13,7 +13,8 @@ import logging
 
 from .database import (
     Image, Evaluation, WordEvaluation, PromptTemplate,
-    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey, evaluation_run_datasets, dataset_images
+    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey, evaluation_run_datasets, dataset_images,
+    APILog
 )
 from .schemas import (
     ImageCreate, ImageUpdate, EvaluationCreate, EvaluationUpdate,
@@ -22,7 +23,7 @@ from .schemas import (
     DatasetCreate, DatasetUpdate, PromptFamilyCreate,
     PromptVersionCreate, PromptVersionUpdate, EvaluationRunCreate,
     VersionType, ProcessingStatus, DatasetStatus, PromptStatus,
-    APIKeyCreate
+    APIKeyCreate, APILogCreate
 )
 
 # Image CRUD operations
@@ -1121,6 +1122,24 @@ async def get_evaluation_comparison(db: AsyncSession, run_id: int) -> Optional[D
         "winner": winner,
         "confidence_level": confidence_level
     }
+
+# API Log CRUD operations
+async def create_api_log(db: AsyncSession, log: APILogCreate) -> APILog:
+    db_log = APILog(**log.dict())
+    db.add(db_log)
+    await db.commit()
+    await db.refresh(db_log)
+    return db_log
+
+async def get_api_logs_for_user(db: AsyncSession, user_id: str, skip: int = 0, limit: int = 100) -> List[APILog]:
+    result = await db.execute(
+        select(APILog)
+        .where(APILog.user_id == user_id)
+        .order_by(APILog.created_at.desc())
+        .offset(skip)
+        .limit(limit)
+    )
+    return result.scalars().all()
 
 # API Key CRUD operations
 async def create_api_key(db: AsyncSession, key_data: APIKeyCreate) -> APIKey:
