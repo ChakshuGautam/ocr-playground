@@ -8,6 +8,7 @@ import csv
 import json
 import os
 import tempfile
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any
@@ -47,6 +48,42 @@ class CSVEvaluationProcessor:
         except Exception as e:
             logger.error(f"Failed to initialize Gemini OCR: {e}")
             raise
+    
+    def _clean_word(self, word: str) -> str:
+        """Remove dots, poorna virams, and normalize spaces."""
+        return re.sub(r"[।.]", "", word).strip()
+    
+    def _split_words(self, text: str) -> List[str]:
+        """Remove newlines, normalize spaces, and split by space."""
+        words = text.replace("\n", " ").split()
+        return [self._clean_word(w) for w in words if self._clean_word(w)]
+    
+    def _calculate_word_accuracy(self, human_text: str, ocr_text: str) -> Dict[str, Any]:
+        """
+        Calculate word-by-word accuracy between human evaluation text and OCR text.
+        
+        Args:
+            human_text: Human evaluation text (ground truth)
+            ocr_text: Text extracted by OCR
+            
+        Returns:
+            Dictionary with accuracy metrics
+        """
+        human_words = self._split_words(human_text)
+        ocr_words = self._split_words(ocr_text)
+        
+        # Compare word by word (up to the length of the shorter one)
+        correct = sum(h == o for h, o in zip(human_words, ocr_words))
+        total = len(human_words)
+        accuracy = correct / total * 100 if total else 0
+        
+        return {
+            "correct_words": correct,
+            "total_words": total,
+            "accuracy": accuracy,
+            "human_words": human_words,
+            "ocr_words": ocr_words
+        }
     
     def _download_image(self, image_url: str) -> Image.Image:
         """
@@ -93,7 +130,13 @@ class CSVEvaluationProcessor:
             "total_correct_words": 0,
             "average_accuracy": 0.0,
             "processing_timestamp": datetime.now().strftime("%Y%m%d_%H%M%S"),
-            "individual_results": []
+            "individual_results": [],
+            "word_comparison_stats": {
+                "total_words": 0,
+                "total_correct_words": 0,
+                "average_accuracy": 0.0,
+                "per_file_summary": []
+            }
         }
         
         try:
@@ -122,16 +165,44 @@ class CSVEvaluationProcessor:
                         
                         if result:
                             overall_stats["successful_evaluations"] += 1
+                            
+                            # Gemini OCR metrics
+                            gemini_accuracy = result["evaluation"]["metrics"]["accuracy"]
+                            gemini_total_words = result["evaluation"]["metrics"]["total_words"]
+                            gemini_correct_words = result["evaluation"]["metrics"]["correct_words"]
+                            
+                            # Word comparison metrics
+                            word_comp = self._calculate_word_accuracy(
+                                human_evaluation_text, 
+                                result["evaluation"]["full_text"]
+                            )
+                            
                             overall_stats["individual_results"].append({
                                 "image_number": image_number,
-                                "accuracy": result["evaluation"]["metrics"]["accuracy"],
-                                "total_words": result["evaluation"]["metrics"]["total_words"],
-                                "correct_words": result["evaluation"]["metrics"]["correct_words"]
+                                "gemini_accuracy": gemini_accuracy,
+                                "gemini_total_words": gemini_total_words,
+                                "gemini_correct_words": gemini_correct_words,
+                                "word_comparison_accuracy": word_comp["accuracy"],
+                                "word_comparison_total_words": word_comp["total_words"],
+                                "word_comparison_correct_words": word_comp["correct_words"]
                             })
                             
-                            # Update overall statistics
-                            overall_stats["total_words"] += result["evaluation"]["metrics"]["total_words"]
-                            overall_stats["total_correct_words"] += result["evaluation"]["metrics"]["correct_words"]
+                            # Update Gemini OCR overall statistics
+                            overall_stats["total_words"] += gemini_total_words
+                            overall_stats["total_correct_words"] += gemini_correct_words
+                            
+                            # Update word comparison overall statistics
+                            overall_stats["word_comparison_stats"]["total_words"] += word_comp["total_words"]
+                            overall_stats["word_comparison_stats"]["total_correct_words"] += word_comp["correct_words"]
+                            
+                            # Add to per-file summary for word comparison
+                            overall_stats["word_comparison_stats"]["per_file_summary"].append({
+                                "file": f"image_{image_number}.json",
+                                "correct": word_comp["correct_words"],
+                                "total": word_comp["total_words"],
+                                "accuracy": word_comp["accuracy"]
+                            })
+                            
                         else:
                             overall_stats["failed_evaluations"] += 1
                         
@@ -143,18 +214,27 @@ class CSVEvaluationProcessor:
                         overall_stats["total_images"] += 1
                         continue
                 
-                # Calculate average accuracy
+                # Calculate average accuracies
                 if overall_stats["successful_evaluations"] > 0:
+                    # Gemini OCR average accuracy
                     overall_stats["average_accuracy"] = (
                         overall_stats["total_correct_words"] / overall_stats["total_words"]
                     ) * 100
+                    
+                    # Word comparison average accuracy
+                    if overall_stats["word_comparison_stats"]["total_words"] > 0:
+                        overall_stats["word_comparison_stats"]["average_accuracy"] = (
+                            overall_stats["word_comparison_stats"]["total_correct_words"] / 
+                            overall_stats["word_comparison_stats"]["total_words"]
+                        ) * 100
                 
                 # Save overall statistics
                 self._save_overall_stats(overall_stats)
                 
                 logger.info(f"Processing completed. Success: {overall_stats['successful_evaluations']}, "
                            f"Failed: {overall_stats['failed_evaluations']}, "
-                           f"Avg Accuracy: {overall_stats['average_accuracy']:.2f}%")
+                           f"Gemini Avg Accuracy: {overall_stats['average_accuracy']:.2f}%, "
+                           f"Word Comparison Avg Accuracy: {overall_stats['word_comparison_stats']['average_accuracy']:.2f}%")
                 
                 return overall_stats
                 
@@ -223,7 +303,7 @@ class CSVEvaluationProcessor:
             self._save_individual_result(image_number, result)
             
             logger.info(f"Image {image_number} processed successfully. "
-                       f"Accuracy: {result['evaluation']['metrics']['accuracy']:.2f}%")
+                       f"Gemini Accuracy: {result['evaluation']['metrics']['accuracy']:.2f}%")
             
             return result
             
@@ -267,17 +347,25 @@ def main():
         overall_stats = processor.process_csv()
         
         # Print summary
-        print("\n" + "="*50)
+        print("\n" + "="*60)
         print("EVALUATION SUMMARY")
-        print("="*50)
+        print("="*60)
         print(f"Total Images Processed: {overall_stats['total_images']}")
         print(f"Successful Evaluations: {overall_stats['successful_evaluations']}")
         print(f"Failed Evaluations: {overall_stats['failed_evaluations']}")
-        print(f"Total Words: {overall_stats['total_words']}")
-        print(f"Total Correct Words: {overall_stats['total_correct_words']}")
-        print(f"Average Accuracy: {overall_stats['average_accuracy']:.2f}%")
+        print()
+        print("GEMINI OCR METRICS:")
+        print(f"  Total Words: {overall_stats['total_words']}")
+        print(f"  Total Correct Words: {overall_stats['total_correct_words']}")
+        print(f"  Average Accuracy: {overall_stats['average_accuracy']:.2f}%")
+        print()
+        print("WORD COMPARISON METRICS:")
+        print(f"  Total Words: {overall_stats['word_comparison_stats']['total_words']}")
+        print(f"  Total Correct Words: {overall_stats['word_comparison_stats']['total_correct_words']}")
+        print(f"  Average Accuracy: {overall_stats['word_comparison_stats']['average_accuracy']:.2f}%")
+        print()
         print(f"Results saved in: {output_dir}/")
-        print("="*50)
+        print("="*60)
         
     except Exception as e:
         logger.error(f"Failed to process CSV: {e}")
