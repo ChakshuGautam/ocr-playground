@@ -59,6 +59,7 @@ class ImageUpdate(BaseModel):
     reference_text: Optional[str] = None
     url: Optional[str] = None
     local_path: Optional[str] = None
+    human_evaluation_text: Optional[str] = None
 
 class Image(ImageBase):
     id: int

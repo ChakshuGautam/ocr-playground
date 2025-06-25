@@ -14,6 +14,7 @@ interface ImageEntry {
     url: string;
     local_path: string;
     reference_text: string;
+    human_evaluation_text: string;
     created_at: string;
     updated_at: string;
     user_id: string;
@@ -45,6 +46,9 @@ export default function ViewDatasetPage() {
     const [modalImage, setModalImage] = useState<string | null>(null);
     const triggerRef = useRef<HTMLButtonElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
+    const [editing, setEditing] = useState<{ imageId: number; field: "reference_text" | "human_evaluation_text" } | null>(null);
+    const [editValue, setEditValue] = useState<string>("");
+    const [saving, setSaving] = useState(false);
 
     const navigation = [
         { name: "Dashboard", href: "/dashboard" },
@@ -144,6 +148,37 @@ export default function ViewDatasetPage() {
         }
     };
 
+    // Inline save handler
+    const handleInlineSave = async (imageId: number, field: "reference_text" | "human_evaluation_text", value: string) => {
+        setSaving(true);
+        try {
+            const res = await fetch(`/api/datasets/${dataset_id}/images/${imageId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ [field]: value }),
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                alert(err.error || "Failed to update");
+            } else {
+                // Update local state
+                setDataset((prev) =>
+                    prev
+                        ? {
+                            ...prev,
+                            images: prev.images.map((img) =>
+                                img.id === imageId ? { ...img, [field]: value } : img
+                            ),
+                        }
+                        : prev
+                );
+            }
+        } finally {
+            setSaving(false);
+            setEditing(null);
+        }
+    };
+
     return (
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar currentPath="/datasets" />
@@ -236,11 +271,61 @@ export default function ViewDatasetPage() {
                                                         />
                                                     </button>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <p className="whitespace-pre-wrap">{image.reference_text}</p>
+                                                {/* Reference Text cell with inline editing */}
+                                                <TableCell
+                                                    onDoubleClick={() => {
+                                                        setEditing({ imageId: image.id, field: "reference_text" });
+                                                        setEditValue(image.reference_text);
+                                                    }}
+                                                >
+                                                    {editing && editing.imageId === image.id && editing.field === "reference_text" ? (
+                                                        <input
+                                                            type="text"
+                                                            value={editValue}
+                                                            autoFocus
+                                                            disabled={saving}
+                                                            onChange={(e) => setEditValue(e.target.value)}
+                                                            onBlur={() => handleInlineSave(image.id, "reference_text", editValue)}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === "Enter") {
+                                                                    e.currentTarget.blur();
+                                                                } else if (e.key === "Escape") {
+                                                                    setEditing(null);
+                                                                }
+                                                            }}
+                                                            className="w-full border rounded px-2 py-1"
+                                                        />
+                                                    ) : (
+                                                        <p className="whitespace-pre-wrap cursor-pointer" title="Double click to edit">{image.reference_text}</p>
+                                                    )}
                                                 </TableCell>
-                                                <TableCell>
-                                                    <p className="whitespace-pre-wrap">{image.reference_text}</p>
+                                                {/* Human Evaluation cell with inline editing */}
+                                                <TableCell
+                                                    onDoubleClick={() => {
+                                                        setEditing({ imageId: image.id, field: "human_evaluation_text" });
+                                                        setEditValue(image.human_evaluation_text);
+                                                    }}
+                                                >
+                                                    {editing && editing.imageId === image.id && editing.field === "human_evaluation_text" ? (
+                                                        <input
+                                                            type="text"
+                                                            value={editValue}
+                                                            autoFocus
+                                                            disabled={saving}
+                                                            onChange={(e) => setEditValue(e.target.value)}
+                                                            onBlur={() => handleInlineSave(image.id, "human_evaluation_text", editValue)}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === "Enter") {
+                                                                    e.currentTarget.blur();
+                                                                } else if (e.key === "Escape") {
+                                                                    setEditing(null);
+                                                                }
+                                                            }}
+                                                            className="w-full border rounded px-2 py-1"
+                                                        />
+                                                    ) : (
+                                                        <p className="whitespace-pre-wrap cursor-pointer" title="Double click to edit">{image.human_evaluation_text}</p>
+                                                    )}
                                                 </TableCell>
                                                 {/* Delete button, only show if user is owner */}
                                                 <TableCell>

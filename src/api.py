@@ -986,6 +986,24 @@ async def delete_image_from_dataset(dataset_id: int, image_id: int, db: AsyncSes
         raise HTTPException(status_code=404, detail="Image or dataset not found")
     return {"message": "Image deleted from dataset and removed from database"}
 
+@app.put("/api/datasets/{dataset_id}/images/{image_id}", response_model=Image)
+async def update_image_in_dataset(
+    dataset_id: int,
+    image_id: int,
+    image_update: ImageUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update reference_text and/or human_evaluation_text for an image in a dataset"""
+    # Check association
+    is_associated = await crud.is_image_in_dataset(db, image_id, dataset_id)
+    if not is_associated:
+        raise HTTPException(status_code=404, detail="Image not found in dataset")
+    # Update image
+    image = await crud.update_image(db, image_id, image_update)
+    if not image:
+        raise HTTPException(status_code=404, detail="Image not found")
+    return image
+
 # Prompt Family endpoints
 @app.get("/api/prompt-families", response_model=List[PromptFamily])
 async def get_prompt_families(user_id: str, db: AsyncSession = Depends(get_db)):
