@@ -50,6 +50,7 @@ export default function PromptVersionsPage() {
       const verData = await verRes.json()
       if (!verRes.ok) throw new Error(verData.error || "Failed to fetch versions")
       setVersions(verData)
+      console.log("Fetched versions issues:", (verData as any[]).map((v: any) => ({ id: v.id, issues: v.issues })));
     } catch (e: any) {
       setError(e.message || "Failed to fetch data")
     } finally {
@@ -204,6 +205,7 @@ export default function PromptVersionsPage() {
                   <TableHead>Version</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Changelog</TableHead>
+                  <TableHead>Issues</TableHead>
                   <TableHead>Created</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -226,6 +228,11 @@ export default function PromptVersionsPage() {
                       </TableCell>
                       <TableCell className="max-w-sm truncate" title={version.changelog_message}>
                         {version.changelog_message}
+                      </TableCell>
+                      <TableCell className="max-w-sm truncate" title={version.issues && version.issues.length > 0 ? version.issues.map((i: any) => i.issue).join(', ') : undefined}>
+                        {version.issues && version.issues.length > 0
+                          ? version.issues.map((i: any) => i.issue).join(', ')
+                          : <span className="text-gray-300">-</span>}
                       </TableCell>
                       <TableCell>
                         {version.created_at ? new Date(version.created_at).toLocaleDateString() : "-"}

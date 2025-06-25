@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, BackgroundTasks, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import asyncio
 import os
 import json
@@ -26,7 +26,7 @@ from .schemas import (
     Dataset, DatasetCreate, DatasetUpdate, DatasetWithImages,
     PromptFamily, PromptFamilyCreate, PromptFamilyWithVersions,
     PromptVersion, PromptVersionCreate, PromptVersionUpdate,
-    EvaluationRun as EvaluationRunSchema, EvaluationRunCreate, EvaluationRunUpdate, EvaluationRunWithDetails,
+    EvaluationRun as EvaluationRunSchema, EvaluationRunCreate, EvaluationRunWithDetails,
     ComparisonResults, LiveProgressUpdate, PerformanceTrend,
     APIKey, APIKeyCreate, APIUsageStats, APILog,
     ProcessingStatus, DatasetStatus, PromptStatus
@@ -1043,7 +1043,24 @@ async def create_prompt_family(family: PromptFamilyCreate, db: AsyncSession = De
 @app.get("/api/prompt-families/{family_id}/versions", response_model=List[PromptVersion])
 async def get_prompt_versions(family_id: int, user_id: str, db: AsyncSession = Depends(get_db)):
     """Get all versions for a prompt family"""
-    return await crud.get_prompt_versions(db, family_id, user_id)
+    versions = await crud.get_prompt_versions(db, family_id, user_id)
+    result = []
+    for v in versions:
+        # Parse issues
+        if isinstance(v.issues, str):
+            try:
+                issues = json.loads(v.issues)
+            except Exception:
+                issues = []
+        elif isinstance(v.issues, list):
+            issues = v.issues
+        else:
+            issues = []
+        # Convert ORM to Pydantic, overriding issues
+        pv = PromptVersion.from_orm(v)
+        pv.issues = issues
+        result.append(pv)
+    return result
 
 @app.post("/api/prompt-families/{family_id}/versions", response_model=PromptVersion)
 async def create_prompt_version(
@@ -1092,6 +1109,22 @@ async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get
     if not result:
         raise HTTPException(status_code=404, detail="Prompt version not found")
     return {"message": "Prompt version promoted to production"}
+
+@app.patch("/api/prompt-versions/{version_id}/issues", response_model=PromptVersion)
+async def patch_prompt_version_issues(
+    version_id: int,
+    issues: List[Dict[str, Any]],
+    db: AsyncSession = Depends(get_db)
+):
+    """Update only the issues field of a prompt version"""
+    existing_version = await crud.get_prompt_version(db, version_id)
+    if not existing_version:
+        raise HTTPException(status_code=404, detail="Prompt version not found")
+    version_update = PromptVersionUpdate(issues=issues)
+    updated_version = await crud.update_prompt_version(db, version_id, version_update)
+    if not updated_version:
+        raise HTTPException(status_code=500, detail="Failed to update prompt version issues")
+    return updated_version
 
 # Evaluation Run endpoints
 @app.get("/api/evaluation-runs", response_model=List[EvaluationRunSchema])

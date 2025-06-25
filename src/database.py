@@ -71,6 +71,7 @@ class PromptVersion(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     last_evaluation_accuracy = Column(Float, nullable=True)
     user_id = Column(String, index=True)  # Clerk user ID
+    issues = Column(Text, default='[]')
     
     # Relationships
     family = relationship("PromptFamily", back_populates="versions")

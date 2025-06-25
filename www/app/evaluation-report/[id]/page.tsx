@@ -94,6 +94,9 @@ export default function EvaluationReportPage() {
     const [error, setError] = useState<string | null>(null)
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
     const [modalImage, setModalImage] = useState<string | null>(null)
+    const [issuesState, setIssuesState] = useState<Record<string, string>>({});
+    const [savingIssue, setSavingIssue] = useState<string | null>(null);
+    const [issueError, setIssueError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchEvaluationRun = async () => {
@@ -125,6 +128,57 @@ export default function EvaluationReportPage() {
             newExpandedRows.add(key)
         }
         setExpandedRows(newExpandedRows)
+    }
+
+    function getPromptVersionConfig(version: string) {
+        return evaluationRun?.prompt_configurations.find(pc => pc.version === version);
+    }
+    function getPromptVersionId(version: string) {
+        // Try to get it from evaluations (not ideal, but works if all evaluations for a version have the same id)
+        const evalForVersion = evaluationRun?.evaluations.find(e => e.prompt_version === version);
+        // Use only 'id' as fallback, since 'prompt_version_id' does not exist
+        return evalForVersion?.id;
+    }
+    function getIssuesForPromptVersion(version: string) {
+        // Try to get issues from the prompt configuration for this version
+        const config = evaluationRun?.prompt_configurations.find(pc => pc.version === version);
+        // @ts-ignore
+        return config?.issues || [];
+    }
+
+    async function handleIssueChange(imageId: number, promptVersion: string, newIssue: string) {
+        const key = `${imageId}-${promptVersion}`;
+        setIssuesState(prev => ({ ...prev, [key]: newIssue }));
+        setSavingIssue(key);
+        setIssueError(null);
+        const versionId = getPromptVersionId(promptVersion);
+        if (!versionId) {
+            setIssueError('Prompt version ID not found');
+            setSavingIssue(null);
+            return;
+        }
+        let issuesArr = getIssuesForPromptVersion(promptVersion) || [];
+        issuesArr = issuesArr.filter((item: any) => item.image_id !== imageId);
+        if (newIssue.trim()) {
+            issuesArr.push({ image_id: imageId, issue: newIssue });
+        }
+        try {
+            const res = await fetch(`/api/prompt-versions/${versionId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ issues: issuesArr }),
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                setIssueError(err.error || 'Failed to update issues');
+            } else {
+                // Optionally, refetch or update local state
+            }
+        } catch (e) {
+            setIssueError('Network error');
+        } finally {
+            setSavingIssue(null);
+        }
     }
 
     if (loading) {
@@ -321,13 +375,13 @@ export default function EvaluationReportPage() {
                             <TableBody>
                                 {uniqueImages.map((image) => {
                                     const imageEvaluations = evaluationRun.evaluations.filter(e => e.image_id === image.id)
-                                    
+
                                     return imageEvaluations.map((evaluation) => {
                                         const promptConfig = evaluationRun.prompt_configurations.find(
                                             pc => pc.version === evaluation.prompt_version
                                         )
                                         const isExpanded = expandedRows.has(`${image.id}-${evaluation.prompt_version}`)
-                                        
+
                                         return (
                                             <React.Fragment key={`${image.id}-${evaluation.prompt_version}`}>
                                                 <TableRow>
@@ -366,7 +420,7 @@ export default function EvaluationReportPage() {
                                                     <TableCell>
                                                         <div className="flex items-center gap-2">
                                                             <span className="text-sm font-medium">{evaluation.accuracy}%</span>
-                                                            <Badge 
+                                                            <Badge
                                                                 variant={evaluation.accuracy >= 90 ? 'default' : evaluation.accuracy >= 70 ? 'secondary' : 'destructive'}
                                                                 className="text-xs"
                                                             >
@@ -375,7 +429,7 @@ export default function EvaluationReportPage() {
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge 
+                                                        <Badge
                                                             variant={evaluation.processing_status === 'success' ? 'default' : 'secondary'}
                                                             className="text-xs"
                                                         >
@@ -396,7 +450,7 @@ export default function EvaluationReportPage() {
                                                         </button>
                                                     </TableCell>
                                                 </TableRow>
-                                                
+
                                                 {/* Expanded Word-Level Analysis */}
                                                 {isExpanded && (
                                                     <TableRow>
@@ -441,6 +495,20 @@ export default function EvaluationReportPage() {
                                                                         ))}
                                                                     </TableBody>
                                                                 </Table>
+                                                                <div className="mt-4">
+                                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Issues for this image and prompt version:</label>
+                                                                    <textarea
+                                                                        className="w-full border rounded p-2 text-sm"
+                                                                        rows={2}
+                                                                        value={issuesState[`${image.id}-${evaluation.prompt_version}`] !== undefined ? issuesState[`${image.id}-${evaluation.prompt_version}`] : getIssuesForPromptVersion(evaluation.prompt_version).find((item: any) => item.image_id === image.id)?.issue || ''}
+                                                                        onChange={e => setIssuesState(prev => ({ ...prev, [`${image.id}-${evaluation.prompt_version}`]: e.target.value }))}
+                                                                        onBlur={e => handleIssueChange(image.id, evaluation.prompt_version, e.target.value)}
+                                                                        disabled={savingIssue === `${image.id}-${evaluation.prompt_version}`}
+                                                                        placeholder="Describe any issues noticed for this image and prompt version..."
+                                                                    />
+                                                                    {savingIssue === `${image.id}-${evaluation.prompt_version}` && <span className="text-xs text-gray-500">Saving...</span>}
+                                                                    {issueError && <span className="text-xs text-red-500">{issueError}</span>}
+                                                                </div>
                                                             </div>
                                                         </TableCell>
                                                     </TableRow>

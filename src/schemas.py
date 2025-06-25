@@ -290,6 +290,7 @@ class PromptVersionBase(BaseModel):
     changelog_message: str
     status: PromptStatus = PromptStatus.DRAFT
     user_id: str
+    issues: Optional[Any] = []
 
 class PromptVersionCreate(BaseModel):
     family_id: int
@@ -299,11 +300,13 @@ class PromptVersionCreate(BaseModel):
     version: Optional[str] = None
     status: PromptStatus = PromptStatus.DRAFT
     user_id: str
+    issues: Optional[Any] = []
 
 class PromptVersionUpdate(BaseModel):
     prompt_text: Optional[str] = None
     changelog_message: Optional[str] = None
     status: Optional[PromptStatus] = None
+    issues: Optional[Any] = None
 
 class PromptVersion(PromptVersionBase):
     id: int
