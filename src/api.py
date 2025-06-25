@@ -978,6 +978,14 @@ async def upload_dataset_files(
     result = await crud.process_dataset_upload(db, dataset_id, images_zip, reference_csv)
     return result
 
+@app.delete("/api/datasets/{dataset_id}/images/{image_id}")
+async def delete_image_from_dataset(dataset_id: int, image_id: int, db: AsyncSession = Depends(get_db)):
+    """Delete an image from a dataset, including the association and the image itself."""
+    success = await crud.delete_image_from_dataset(db, dataset_id, image_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Image or dataset not found")
+    return {"message": "Image deleted from dataset and removed from database"}
+
 # Prompt Family endpoints
 @app.get("/api/prompt-families", response_model=List[PromptFamily])
 async def get_prompt_families(user_id: str, db: AsyncSession = Depends(get_db)):

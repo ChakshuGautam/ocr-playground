@@ -5,6 +5,8 @@ import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useParams, useRouter } from "next/navigation"
 import { useRef } from "react"
+import { useUser } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 
 interface ImageEntry {
     id: number;
@@ -14,6 +16,7 @@ interface ImageEntry {
     reference_text: string;
     created_at: string;
     updated_at: string;
+    user_id: string;
 }
 
 interface Dataset {
@@ -26,6 +29,7 @@ interface Dataset {
     updated_at: string;
     last_used: string | null;
     images: ImageEntry[];
+    user_id: string;
 }
 
 
@@ -33,6 +37,7 @@ export default function ViewDatasetPage() {
     const params = useParams()
     const dataset_id = params.dataset_id as string
     const router = useRouter()
+    const { user } = useUser();
 
     const [dataset, setDataset] = useState<Dataset | null>(null);
     const [loading, setLoading] = useState(true);
@@ -116,6 +121,28 @@ export default function ViewDatasetPage() {
             }
         }
     }, [modalImage])
+
+    const handleDeleteImage = async (imageId: number) => {
+        if (!dataset) return;
+        if (!user) return;
+        if (dataset.user_id !== user.id) {
+            alert("You are not authorized to delete images from this dataset.");
+            return;
+        }
+        const res = await fetch(`/api/datasets/${dataset.id}/images/${imageId}`, {
+            method: 'DELETE',
+        });
+        if (res.ok) {
+            setDataset({
+                ...dataset,
+                images: dataset.images.filter(img => img.id !== imageId),
+                image_count: dataset.image_count - 1,
+            });
+        } else {
+            const err = await res.json();
+            alert(err.error || 'Failed to delete image');
+        }
+    };
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -215,11 +242,16 @@ export default function ViewDatasetPage() {
                                                 <TableCell>
                                                     <p className="whitespace-pre-wrap">{image.reference_text}</p>
                                                 </TableCell>
-                                                {/* <TableCell>
-                                                    <a href={image.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
-                                                        {image.url}
-                                                    </a>
-                                                </TableCell> */}
+                                                {/* Delete button, only show if user is owner */}
+                                                <TableCell>
+                                                    <Button
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        onClick={() => handleDeleteImage(image.id)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

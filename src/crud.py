@@ -1227,4 +1227,31 @@ async def get_evaluation_run_progress(db: AsyncSession, run_id: int) -> Optional
         "prompt_progress": {},  # Would track progress per prompt
         "current_image": run.current_step,
         "log_entries": []
-    } 
+    }
+
+async def delete_image_from_dataset(db: AsyncSession, dataset_id: int, image_id: int) -> bool:
+    """Remove an image from a dataset, delete the association, and delete the image itself."""
+    from .database import dataset_images
+    # Remove association from dataset_images table
+    await db.execute(
+        delete(dataset_images).where(
+            (dataset_images.c.dataset_id == dataset_id) & (dataset_images.c.image_id == image_id)
+        )
+    )
+    # Remove image from dataset.images relationship (if loaded)
+    dataset_result = await db.execute(select(Dataset).options(selectinload(Dataset.images)).where(Dataset.id == dataset_id))
+    dataset = dataset_result.scalar_one_or_none()
+    if dataset:
+        dataset.images = [img for img in dataset.images if img.id != image_id]
+        dataset.image_count = len(dataset.images)
+        dataset.updated_at = datetime.utcnow()
+        await db.commit()
+        await db.refresh(dataset)
+    # Delete the image itself
+    result = await db.execute(select(Image).where(Image.id == image_id))
+    db_image = result.scalar_one_or_none()
+    if db_image:
+        await db.delete(db_image)
+        await db.commit()
+        return True
+    return False 
