@@ -812,6 +812,12 @@ async def create_prompt_version(db: AsyncSession, version_data: PromptVersionCre
     # Convert Pydantic model to dict and exclude version_type
     version_dict = version_data.dict(exclude={'version_type'})
     
+    # Ensure issues is always a JSON string
+    import json
+    issues = version_dict.get("issues", [])
+    if not isinstance(issues, str):
+        version_dict["issues"] = json.dumps(issues)
+    
     # Create the version instance with only the fields that exist in the model
     db_version = PromptVersion(**version_dict)
     db.add(db_version)
@@ -828,6 +834,10 @@ async def update_prompt_version(db: AsyncSession, version_id: int, version_updat
     if db_version:
         # Update only the fields that are provided
         update_data = version_update.dict(exclude_unset=True)
+        # Ensure issues is always a JSON string
+        if "issues" in update_data and not isinstance(update_data["issues"], str):
+            import json
+            update_data["issues"] = json.dumps(update_data["issues"])
         for field, value in update_data.items():
             setattr(db_version, field, value)
         
