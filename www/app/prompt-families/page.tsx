@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Search } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { UserNav } from "@/components/user-nav"
 
 export default function PromptFamiliesPage() {
   const router = useRouter()
@@ -108,11 +109,14 @@ export default function PromptFamiliesPage() {
       <Sidebar currentPath="/prompt-families" />
 
       <main className="flex-1 p-8">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">Prompt Families</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700" onClick={openCreateModal}>
-            New Family
-          </Button>
+          <div className="flex items-center gap-4">
+            <Button className="bg-blue-600 hover:bg-blue-700" onClick={openCreateModal}>
+              New Family
+            </Button>
+            <UserNav />
+          </div>
         </div>
 
         <div className="rounded-lg bg-white p-6 shadow-sm">

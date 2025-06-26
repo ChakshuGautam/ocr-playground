@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import { UserNav } from "@/components/user-nav"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface EvaluationRun {
   id: number
@@ -134,6 +135,10 @@ export default function DashboardPage() {
   const [modalImage, setModalImage] = useState<string | null>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const modalRef = useRef<HTMLDivElement | null>(null)
+  
+  // Pagination state for API logs
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
 
   useEffect(() => {
     const fetchData = async () => {
@@ -247,6 +252,53 @@ export default function DashboardPage() {
     }
   }
 
+  // Calculate pagination values
+  const totalPages = Math.ceil(apiLogs.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentApiLogs = apiLogs.slice(startIndex, endIndex)
+
+  // Pagination handlers
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)))
+  }
+
+  const goToPreviousPage = () => {
+    goToPage(currentPage - 1)
+  }
+
+  const goToNextPage = () => {
+    goToPage(currentPage + 1)
+  }
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = []
+    const maxVisiblePages = 5
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is small
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      // Show pages around current page
+      let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
+      let end = Math.min(totalPages, start + maxVisiblePages - 1)
+      
+      // Adjust if we're near the end
+      if (end - start < maxVisiblePages - 1) {
+        start = Math.max(1, end - maxVisiblePages + 1)
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i)
+      }
+    }
+    
+    return pages
+  }
+
   if (loading) {
     return (
       <div className="flex min-h-screen bg-gray-50">
@@ -328,78 +380,122 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-8">
             <div className="rounded-lg bg-white p-6 shadow-sm">
-              <h2 className="mb-6 text-xl font-semibold text-gray-900">API Logs</h2>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">API Logs</h2>
+                <div className="text-sm text-gray-600">
+                  Showing {startIndex + 1}-{Math.min(endIndex, apiLogs.length)} of {apiLogs.length} logs
+                </div>
+              </div>
 
               {apiLogs.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   No logs to be shown
                 </div>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Image</TableHead>
-                      <TableHead>OCR Text</TableHead>
-                      <TableHead>Created At</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Latency</TableHead>
-                      <TableHead>Tokens Used</TableHead>
-                      {/* <TableHead>Additional Info</TableHead> */}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {apiLogs.map((log) => (
-                      <TableRow key={log.id}>
-                        <TableCell>
-                          <button
-                            className="focus:outline-none"
-                            onClick={e => {
-                              setModalImage(log.image_url)
-                              triggerRef.current = e.currentTarget
-                            }}
-                            title="Click to enlarge"
-                          >
-                            <img
-                              src={log.image_url}
-                              alt="OCR"
-                              className="h-12 w-12 object-cover rounded-full border border-gray-200 shadow-sm hover:scale-105 transition-transform"
-                            />
-                          </button>
-                        </TableCell>
-                        <TableCell className="whitespace-pre-line max-w-xs break-words">
-                          {log.ocr_output || <span className="text-gray-400 italic">No OCR text</span>}
-                        </TableCell>
-                        <TableCell className="text-gray-600">
-                          {log.created_at ? new Date(log.created_at).toLocaleDateString() : '-'}
-                        </TableCell>
-                        <TableCell className="text-gray-600">
-                          {log.log_metadata.status === 'success' ? (
-                            <Badge variant="secondary" className="bg-green-100 text-green-800">Completed</Badge>
-                          ) : log.log_metadata.status === 'failed' ? (
-                            <Badge variant="secondary" className="bg-red-100 text-red-800">Failed</Badge>
-                          ) : (
-                            <Badge variant="secondary">{log.log_metadata.status || 'Unknown'}</Badge>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-gray-600">
-                          {log.log_metadata.latency_ms ? `${log.log_metadata.latency_ms}ms` : '-'}
-                        </TableCell>
-                        <TableCell className="text-gray-600">
-                          {log.log_metadata.tokens_used ? log.log_metadata.tokens_used : '-'}
-                        </TableCell>
-                        {/* <TableCell className="text-gray-600">
-                          <div>Accuracy: {log.log_metadata.accuracy.toFixed(2)}%</div>
-                          <div>Prompt: {log.prompt_version}</div>
-                          {Object.entries(log.log_metadata)
-                            .filter(([key]) => !['accuracy', 'latency_ms', 'status'].includes(key))
-                            .map(([key, value]) => (
-                              <div key={key}>{`${key}: ${value}`}</div>
-                            ))}
-                        </TableCell> */}
+                <>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Image</TableHead>
+                        <TableHead>OCR Text</TableHead>
+                        <TableHead>Created At</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Latency</TableHead>
+                        <TableHead>Tokens Used</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {currentApiLogs.map((log) => (
+                        <TableRow key={log.id}>
+                          <TableCell>
+                            <button
+                              className="focus:outline-none"
+                              onClick={e => {
+                                setModalImage(log.image_url)
+                                triggerRef.current = e.currentTarget
+                              }}
+                              title="Click to enlarge"
+                            >
+                              <img
+                                src={log.image_url}
+                                alt="OCR"
+                                className="h-12 w-12 object-cover rounded-full border border-gray-200 shadow-sm hover:scale-105 transition-transform"
+                              />
+                            </button>
+                          </TableCell>
+                          <TableCell className="whitespace-pre-line max-w-xs break-words">
+                            {log.ocr_output || <span className="text-gray-400 italic">No OCR text</span>}
+                          </TableCell>
+                          <TableCell className="text-gray-600">
+                            {log.created_at ? new Date(log.created_at).toLocaleDateString() : '-'}
+                          </TableCell>
+                          <TableCell className="text-gray-600">
+                            {log.log_metadata.status === 'success' ? (
+                              <Badge variant="secondary" className="bg-green-100 text-green-800">Completed</Badge>
+                            ) : log.log_metadata.status === 'failed' ? (
+                              <Badge variant="secondary" className="bg-red-100 text-red-800">Failed</Badge>
+                            ) : (
+                              <Badge variant="secondary">{log.log_metadata.status || 'Unknown'}</Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-gray-600">
+                            {log.log_metadata.latency_ms ? `${log.log_metadata.latency_ms}ms` : '-'}
+                          </TableCell>
+                          <TableCell className="text-gray-600">
+                            {log.log_metadata.tokens_used ? log.log_metadata.tokens_used : '-'}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-between mt-6">
+                      <div className="text-sm text-gray-700">
+                        Page {currentPage} of {totalPages}
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={goToPreviousPage}
+                          disabled={currentPage === 1}
+                          className="flex items-center space-x-1"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                          <span>Previous</span>
+                        </Button>
+                        
+                        <div className="flex items-center space-x-1">
+                          {getPageNumbers().map((pageNum) => (
+                            <Button
+                              key={pageNum}
+                              variant={pageNum === currentPage ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => goToPage(pageNum)}
+                              className="w-8 h-8 p-0"
+                            >
+                              {pageNum}
+                            </Button>
+                          ))}
+                        </div>
+                        
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={goToNextPage}
+                          disabled={currentPage === totalPages}
+                          className="flex items-center space-x-1"
+                        >
+                          <span>Next</span>
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
               {modalImage && (
                 <div

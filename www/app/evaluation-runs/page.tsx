@@ -66,7 +66,7 @@ export default function EvaluationRunsListPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="EvalAI" navigation={navigation} />
+      <Header title="AI" navigation={navigation} />
 
       <main className="mx-auto max-w-7xl px-6 py-8">
         <div className="mb-8 flex items-center justify-between">

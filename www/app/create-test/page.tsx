@@ -175,7 +175,7 @@ export default function CreateTestPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="EvalAI" navigation={navigation} />
+      <Header title="AI" navigation={navigation} />
 
       <main className="mx-auto max-w-4xl px-6 py-8">
         <div className="mb-6">

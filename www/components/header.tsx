@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Search, Bell } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { UserNav } from "@/components/user-nav"
 
 interface HeaderProps {
   title: string
@@ -51,9 +51,7 @@ export function Header({ title, navigation, showSearch }: HeaderProps) {
             <Bell className="h-4 w-4" />
           </Button>
 
-          <Avatar>
-            <AvatarFallback className="bg-gray-900 text-white">S</AvatarFallback>
-          </Avatar>
+          <UserNav />
         </div>
       </div>
     </header>
