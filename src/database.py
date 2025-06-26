@@ -38,6 +38,7 @@ class Dataset(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     last_used = Column(DateTime, nullable=True)
+    user_id = Column(String, index=True)  # Clerk user ID
     
     # Relationships
     images = relationship("Image", secondary=dataset_images, back_populates="datasets")
@@ -52,6 +53,7 @@ class PromptFamily(Base):
     tags = Column(JSON)  # Store as JSON array
     production_version = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    user_id = Column(String, index=True)  # Clerk user ID
     
     # Relationships
     versions = relationship("PromptVersion", back_populates="family")
@@ -68,6 +70,8 @@ class PromptVersion(Base):
     author = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     last_evaluation_accuracy = Column(Float, nullable=True)
+    user_id = Column(String, index=True)  # Clerk user ID
+    issues = Column(Text, default='[]')
     
     # Relationships
     family = relationship("PromptFamily", back_populates="versions")
@@ -86,6 +90,7 @@ class EvaluationRun(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     completed_at = Column(DateTime, nullable=True)
+    user_id = Column(String, index=True)  # Clerk user ID
     
     # Relationships
     datasets = relationship("Dataset", secondary=evaluation_run_datasets, back_populates="evaluation_runs")
@@ -115,6 +120,7 @@ class APIKey(Base):
     last_used = Column(DateTime, nullable=True)
     usage_count = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
+    user_id = Column(String, index=True)  # Clerk user ID
 
 class Image(Base):
     __tablename__ = "images"
@@ -124,8 +130,10 @@ class Image(Base):
     url = Column(String)
     local_path = Column(String)
     reference_text = Column(Text)
+    human_evaluation_text = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    user_id = Column(String, index=True)  # Clerk user ID
     
     # Relationships
     evaluations = relationship("Evaluation", back_populates="image")
@@ -188,6 +196,18 @@ class PromptTemplate(Base):
     is_active = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     description = Column(Text, nullable=True)
+    user_id = Column(String, index=True)  # Clerk user ID
+
+class APILog(Base):
+    __tablename__ = "api_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    image_url = Column(Text)
+    ocr_output = Column(Text)
+    prompt_version = Column(Text)
+    user_id = Column(String, index=True)
+    log_metadata = Column(JSON)  # Store metadata as a JSON object
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 async def init_db():
     """Initialize the database and create all tables"""

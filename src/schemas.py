@@ -50,6 +50,7 @@ class ImageBase(BaseModel):
     url: str
     local_path: Optional[str] = None
     reference_text: str
+    human_evaluation_text: str
 
 class ImageCreate(ImageBase):
     pass
@@ -58,6 +59,7 @@ class ImageUpdate(BaseModel):
     reference_text: Optional[str] = None
     url: Optional[str] = None
     local_path: Optional[str] = None
+    human_evaluation_text: Optional[str] = None
 
 class Image(ImageBase):
     id: int
@@ -85,6 +87,7 @@ class EvaluationBase(BaseModel):
 
 class EvaluationCreate(BaseModel):
     image_id: int
+    evaluation_run_id: Optional[int] = None
     prompt_version: str = "v1"
     force_reprocess: bool = False  # Force reprocessing even if already processed
 
@@ -239,6 +242,7 @@ class DatasetBase(BaseModel):
     name: str
     description: Optional[str] = None
     status: DatasetStatus = DatasetStatus.DRAFT
+    user_id: str # Clerk user ID
 
 class DatasetCreate(DatasetBase):
     pass
@@ -266,6 +270,7 @@ class PromptFamilyBase(BaseModel):
     name: str
     description: Optional[str] = None
     tags: List[str] = []
+    user_id: str
 
 class PromptFamilyCreate(PromptFamilyBase):
     pass
@@ -284,18 +289,24 @@ class PromptVersionBase(BaseModel):
     prompt_text: str
     changelog_message: str
     status: PromptStatus = PromptStatus.DRAFT
+    user_id: str
+    issues: Optional[Any] = []
 
 class PromptVersionCreate(BaseModel):
     family_id: int
     prompt_text: str
     changelog_message: str
     version_type: VersionType
+    version: Optional[str] = None
     status: PromptStatus = PromptStatus.DRAFT
+    user_id: str
+    issues: Optional[Any] = []
 
 class PromptVersionUpdate(BaseModel):
     prompt_text: Optional[str] = None
     changelog_message: Optional[str] = None
     status: Optional[PromptStatus] = None
+    issues: Optional[Any] = None
 
 class PromptVersion(PromptVersionBase):
     id: int
@@ -315,6 +326,7 @@ class EvaluationRunBase(BaseModel):
     description: Optional[str] = None
     hypothesis: str
     dataset_ids: List[int]
+    user_id: str
 
 class EvaluationRunCreate(EvaluationRunBase):
     prompt_configurations: List['PromptConfiguration']
@@ -344,7 +356,7 @@ class EvaluationRun(EvaluationRunBase):
 class EvaluationRunWithDetails(EvaluationRun):
     datasets: List[Dataset] = []
     prompt_configurations: List[PromptConfiguration] = []
-    evaluations: List['Evaluation'] = []
+    evaluations: List['EvaluationWithDetails'] = []
     comparison_results: Optional['ComparisonResults'] = None
 
 # Comparison and Analysis schemas
@@ -420,4 +432,21 @@ class APIUsageStats(BaseModel):
     calls_today: int
     calls_this_month: int
     error_rate: float
-    avg_response_time_ms: int 
+    avg_response_time_ms: int
+
+class APILogBase(BaseModel):
+    image_url: Optional[str] = None
+    ocr_output: Optional[str] = None
+    prompt_version: Optional[str] = None
+    user_id: Optional[str] = None
+    log_metadata: Optional[Dict[str, Any]] = None
+
+class APILogCreate(APILogBase):
+    pass
+
+class APILog(APILogBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True 

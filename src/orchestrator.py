@@ -36,7 +36,13 @@ class OcrOrchestrator:
             directory.mkdir(parents=True, exist_ok=True)
         
         # Initialize OCR
-        self.ocr = GeminiOCR()
+        try:
+            logging.info("Initializing GeminiOCR...")
+            self.ocr = GeminiOCR()
+            logging.info("GeminiOCR initialized successfully")
+        except Exception as e:
+            logging.error(f"Failed to initialize GeminiOCR: {str(e)}")
+            raise
         
         logging.info("Initialized OcrOrchestrator")
     
@@ -102,7 +108,8 @@ class OcrOrchestrator:
                     'correct_words': result.get('correct_words', 0),
                     'total_words': result.get('total_words', 0)
                 },
-                'local_image_path': local_image_path
+                'local_image_path': local_image_path,
+                'tokens_used': result.get('tokens_used', 0)
             }
             
         except Exception as e:

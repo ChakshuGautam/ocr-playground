@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, delete
 from sqlalchemy.orm import selectinload
 from typing import List, Optional, Dict, Any
 import json
@@ -9,10 +9,12 @@ import os
 import zipfile
 import tempfile
 from datetime import datetime, timedelta
+import logging
 
 from .database import (
     Image, Evaluation, WordEvaluation, PromptTemplate,
-    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey
+    Dataset, PromptFamily, PromptVersion, EvaluationRun, EvaluationRunPrompt, APIKey, evaluation_run_datasets, dataset_images,
+    APILog
 )
 from .schemas import (
     ImageCreate, ImageUpdate, EvaluationCreate, EvaluationUpdate,
@@ -21,7 +23,7 @@ from .schemas import (
     DatasetCreate, DatasetUpdate, PromptFamilyCreate,
     PromptVersionCreate, PromptVersionUpdate, EvaluationRunCreate,
     VersionType, ProcessingStatus, DatasetStatus, PromptStatus,
-    APIKeyCreate
+    APIKeyCreate, APILogCreate
 )
 
 # Image CRUD operations
@@ -146,6 +148,7 @@ async def create_evaluation(db: AsyncSession, evaluation: EvaluationCreate) -> E
     
     db_evaluation = Evaluation(
         image_id=evaluation.image_id,
+        evaluation_run_id=evaluation.evaluation_run_id,
         prompt_version=evaluation.prompt_version,
         processing_status="pending"
     )
@@ -221,20 +224,27 @@ async def update_evaluation(
         if word_evaluations_data is not None:
             # Delete existing word evaluations
             await db.execute(
-                select(WordEvaluation).where(WordEvaluation.evaluation_id == evaluation_id)
+                delete(WordEvaluation).where(WordEvaluation.evaluation_id == evaluation_id)
             )
             
             # Create new word evaluations
             for word_eval_data in word_evaluations_data:
+                # Convert WordEvaluationCreate to dict if it's not already
+                if hasattr(word_eval_data, 'dict'):
+                    word_eval_dict = word_eval_data.dict()
+                else:
+                    word_eval_dict = word_eval_data
+                
                 word_eval = WordEvaluation(
                     evaluation_id=evaluation_id,
-                    **word_eval_data.dict()
+                    **word_eval_dict
                 )
                 db.add(word_eval)
             
             # Also store as JSON for quick access
             db_evaluation.word_evaluations_json = json.dumps([
-                word_eval.dict() for word_eval in word_evaluations_data
+                word_eval_data.dict() if hasattr(word_eval_data, 'dict') else word_eval_data 
+                for word_eval_data in word_evaluations_data
             ])
         
         await db.commit()
@@ -436,6 +446,159 @@ async def import_csv_data(db: AsyncSession, csv_file_path: str, overwrite_existi
             "message": "Import failed"
         }
 
+async def import_csv_data_into_dataset(db: AsyncSession, csv_file_path: str, dataset_id: int, overwrite_existing: bool = False) -> Dict[str, Any]:
+    """Import data from CSV file into the database"""
+    imported_count = 0
+    updated_count = 0
+    errors = []
+    dataset = await get_dataset(db, dataset_id)
+    if not dataset:
+        raise ValueError("Dataset not found")
+    
+    # Clear existing images from dataset if overwrite_existing is True
+    # if overwrite_existing:
+    #     dataset.images.clear()
+    #     logging.info(f"[CRUD] Cleared existing images from dataset {dataset_id}")
+    
+    try:
+        with open(csv_file_path, 'r', encoding='utf-8') as file:
+            csv_reader = csv.DictReader(file)
+            for row_num, row in enumerate(csv_reader, start=2):  # Start at 2 for header
+                try:
+                    # Extract required fields
+                    number = row.get('#', '').strip()
+                    url = row.get('Link', '').strip()
+                    reference_text = row.get('Text', '').strip()
+                    human_evaluation_text = row.get('Human Evaluation Text', '').strip()
+                    local_image = row.get('Local Image', '').strip()
+                    
+                    if not number or not reference_text:
+                        errors.append(f"Row {row_num}: Missing required fields (# or Text)")
+                        continue
+                    
+                    # Check if image already exists
+                    # existing_image = await get_image_by_number(db, number)
+                    
+                    # if existing_image:
+                    #     if overwrite_existing:
+                    #         # Update existing image
+                    #         update_data = ImageUpdate(
+                    #             reference_text=reference_text,
+                    #             url=url,
+                    #             local_path=local_image
+                    #         )
+                    #         await update_image(db, existing_image.id, update_data)
+                    #         updated_count += 1
+                    #     else:
+                    #         # Skip existing
+                    #         continue
+                    # else:
+                    #     # Create new image
+                    #     image_data = ImageCreate(
+                    #         number=number,
+                    #         url=url,
+                    #         reference_text=reference_text,
+                    #         local_path=local_image
+                    #     )
+                    # Create new image
+                    image_data = ImageCreate(
+                        number=number,
+                        url=url,
+                        reference_text=reference_text,
+                        human_evaluation_text=human_evaluation_text,
+                        local_path=local_image
+                    )
+                    db_image = await create_image(db, image_data)
+                    dataset.images.append(db_image)
+                    imported_count += 1
+                except Exception as e:
+                    errors.append(f"Row {row_num}: {str(e)}")
+                    continue
+        
+        # Update dataset with correct image count and commit changes
+        dataset.image_count = len(dataset.images)
+        dataset.status = DatasetStatus.VALIDATED
+        dataset.updated_at = datetime.utcnow()
+        
+        # Commit all changes to the database
+        await db.commit()
+        await db.refresh(dataset)
+
+        return {
+            "imported_count": imported_count,
+            "updated_count": updated_count,
+            "errors": errors,
+            "message": f"Import completed. {imported_count} new images, {updated_count} updated."
+        }
+    
+    except FileNotFoundError:
+        return {
+            "imported_count": 0,
+            "updated_count": 0,
+            "errors": [f"CSV file not found: {csv_file_path}"],
+            "message": "Import failed - file not found"
+        }
+    except Exception as e:
+        return {
+            "imported_count": 0,
+            "updated_count": 0,
+            "errors": [f"Import error: {str(e)}"],
+            "message": "Import failed"
+        }
+
+async def get_latest_imported_images(db: AsyncSession, count: int) -> List[int]:
+    """Get IDs of the most recently imported images"""
+    result = await db.execute(
+        select(Image.id)
+        .order_by(Image.created_at.desc())
+        .limit(count)
+    )
+    return [row[0] for row in result.fetchall()]
+
+async def associate_image_with_dataset(db: AsyncSession, image_id: int, dataset_id: int) -> bool:
+    """Associate an image with a dataset"""
+    # Get the image and dataset
+    image_result = await db.execute(select(Image).where(Image.id == image_id))
+    dataset_result = await db.execute(select(Dataset).where(Dataset.id == dataset_id))
+    
+    image = image_result.scalar_one_or_none()
+    dataset = dataset_result.scalar_one_or_none()
+    
+    if not image or not dataset:
+        return False
+    
+    # Add image to dataset's images collection
+    if image not in dataset.images:
+        dataset.images.append(image)
+        dataset.image_count = len(dataset.images)
+        dataset.updated_at = datetime.utcnow()
+        await db.commit()
+        await db.refresh(dataset)
+    
+    return True
+
+async def is_image_in_dataset(db: AsyncSession, image_id: int, dataset_id: int) -> bool:
+    """Check if an image is already associated with a dataset"""
+    result = await db.execute(
+        select(dataset_images).where(
+            and_(
+                dataset_images.c.image_id == image_id,
+                dataset_images.c.dataset_id == dataset_id
+            )
+        )
+    )
+    return result.scalar_one_or_none() is not None
+
+async def get_dataset_images(db: AsyncSession, dataset_id: int) -> List[Image]:
+    """Get all images associated with a dataset"""
+    result = await db.execute(
+        select(Image)
+        .join(dataset_images)
+        .where(dataset_images.c.dataset_id == dataset_id)
+        .order_by(Image.id)
+    )
+    return result.scalars().all()
+
 # New Dataset CRUD operations
 async def create_dataset(db: AsyncSession, dataset: DatasetCreate) -> Dataset:
     db_dataset = Dataset(**dataset.dict())
@@ -450,8 +613,12 @@ async def get_dataset(db: AsyncSession, dataset_id: int) -> Optional[Dataset]:
     )
     return result.scalar_one_or_none()
 
-async def get_datasets(db: AsyncSession) -> List[Dataset]:
-    result = await db.execute(select(Dataset).order_by(Dataset.created_at.desc()))
+async def get_datasets(db: AsyncSession, user_id: str) -> List[Dataset]:
+    result = await db.execute(
+        select(Dataset)
+        .where(Dataset.user_id == user_id)
+        .order_by(Dataset.created_at.desc())
+    )
     return result.scalars().all()
 
 async def update_dataset(db: AsyncSession, dataset_id: int, dataset_update: DatasetUpdate) -> Optional[Dataset]:
@@ -562,16 +729,50 @@ async def get_prompt_family(db: AsyncSession, family_id: int) -> Optional[Prompt
     )
     return result.scalar_one_or_none()
 
-async def get_prompt_families(db: AsyncSession) -> List[PromptFamily]:
-    result = await db.execute(select(PromptFamily).order_by(PromptFamily.created_at.desc()))
-    return result.scalars().all()
-
-# Prompt Version CRUD operations
-async def get_prompt_versions(db: AsyncSession, family_id: int) -> List[PromptVersion]:
+async def get_prompt_families(db: AsyncSession, user_id: str) -> List[PromptFamily]:
     result = await db.execute(
-        select(PromptVersion).where(PromptVersion.family_id == family_id).order_by(PromptVersion.created_at.desc())
+        select(PromptFamily)
+        .where(PromptFamily.user_id == user_id)
+        .order_by(PromptFamily.created_at.desc())
     )
     return result.scalars().all()
+
+async def update_prompt_family(db: AsyncSession, family_id: int, family_update: PromptFamilyCreate) -> Optional[PromptFamily]:
+    """Update an existing prompt family"""
+    result = await db.execute(select(PromptFamily).where(PromptFamily.id == family_id))
+    db_family = result.scalar_one_or_none()
+    
+    if db_family:
+        # Update the fields
+        update_data = family_update.dict(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(db_family, field, value)
+        
+        await db.commit()
+        await db.refresh(db_family)
+    
+    return db_family
+
+# Prompt Version CRUD operations
+async def get_prompt_versions(db: AsyncSession, family_id: int, user_id: str) -> List[PromptVersion]:
+    result = await db.execute(
+        select(PromptVersion)
+        .where(
+            and_(
+                PromptVersion.family_id == family_id,
+                PromptVersion.user_id == user_id
+            )
+        )
+        .order_by(PromptVersion.created_at.desc())
+    )
+    return result.scalars().all()
+
+async def get_prompt_version(db: AsyncSession, version_id: int) -> Optional[PromptVersion]:
+    """Get a specific prompt version by ID"""
+    result = await db.execute(
+        select(PromptVersion).where(PromptVersion.id == version_id)
+    )
+    return result.scalar_one_or_none()
 
 async def generate_next_version(db: AsyncSession, family_id: int, version_type: VersionType) -> str:
     """Generate the next semantic version number"""
@@ -606,19 +807,37 @@ async def generate_next_version(db: AsyncSession, family_id: int, version_type: 
     
     return f"{major}.{minor}.{patch}"
 
-async def create_prompt_version(db: AsyncSession, version: PromptVersionCreate) -> PromptVersion:
-    db_version = PromptVersion(**version.dict())
+async def create_prompt_version(db: AsyncSession, version_data: PromptVersionCreate) -> PromptVersion:
+    """Create a new prompt version"""
+    # Convert Pydantic model to dict and exclude version_type
+    version_dict = version_data.dict(exclude={'version_type'})
+    
+    # Ensure issues is always a JSON string
+    import json
+    issues = version_dict.get("issues", [])
+    if not isinstance(issues, str):
+        version_dict["issues"] = json.dumps(issues)
+    
+    # Create the version instance with only the fields that exist in the model
+    db_version = PromptVersion(**version_dict)
     db.add(db_version)
     await db.commit()
     await db.refresh(db_version)
     return db_version
 
 async def update_prompt_version(db: AsyncSession, version_id: int, version_update: PromptVersionUpdate) -> Optional[PromptVersion]:
+    """Update an existing prompt version"""
+    # Get the existing version
     result = await db.execute(select(PromptVersion).where(PromptVersion.id == version_id))
     db_version = result.scalar_one_or_none()
     
     if db_version:
+        # Update only the fields that are provided
         update_data = version_update.dict(exclude_unset=True)
+        # Ensure issues is always a JSON string
+        if "issues" in update_data and not isinstance(update_data["issues"], str):
+            import json
+            update_data["issues"] = json.dumps(update_data["issues"])
         for field, value in update_data.items():
             setattr(db_version, field, value)
         
@@ -672,67 +891,122 @@ async def promote_prompt_version(db: AsyncSession, version_id: int) -> bool:
 
 # Evaluation Run CRUD operations
 async def create_evaluation_run(db: AsyncSession, run: EvaluationRunCreate) -> EvaluationRun:
-    db_run = EvaluationRun(
-        name=run.name,
-        description=run.description,
-        hypothesis=run.hypothesis
-    )
-    db.add(db_run)
-    await db.flush()  # Get the ID
-    
-    # Add datasets
-    for dataset_id in run.dataset_ids:
-        dataset = await get_dataset(db, dataset_id)
-        if dataset:
-            db_run.datasets.append(dataset)
-    
-    # Add prompt configurations
-    for config in run.prompt_configurations:
-        # Find the prompt version
-        version_result = await db.execute(
-            select(PromptVersion).where(
-                and_(
-                    PromptVersion.family_id == config.family_id,
-                    PromptVersion.version == config.version
+    logging.info("[CRUD] Entered create_evaluation_run")
+    try:
+        db_run = EvaluationRun(
+            name=run.name,
+            description=run.description,
+            hypothesis=run.hypothesis,
+            user_id=run.user_id
+        )
+        db.add(db_run)
+        # await db.flush()  # Get the ID
+        # await db.refresh(db_run)
+        logging.info(f"[CRUD] Created EvaluationRun object with id: {db_run.id}")
+        
+        # Append datasets BEFORE flush/refresh
+        for dataset_id in run.dataset_ids:
+            logging.info(f"[CRUD] Adding dataset_id: {dataset_id} to run {db_run.id}")
+            dataset = await get_dataset(db, dataset_id)
+            logging.info("[Crud]!!Dataset Found")
+            if dataset:
+                await db.execute(
+                    evaluation_run_datasets.insert().values(
+                        evaluation_run_id=db_run.id,
+                        dataset_id=dataset_id
+                    )
+                )
+                # await db_run.datasets.append(dataset)
+            else:
+                logging.warning(f"[CRUD] Dataset {dataset_id} not found when adding to run {db_run.id}")
+        await db.flush()  # Get the ID
+        await db.refresh(db_run)
+        
+        logging.info(f"[CRUD] Datasets Added to run {db_run.id}")
+        # Add prompt configurations
+        for config in run.prompt_configurations:
+            logging.info(f"[CRUD] Adding prompt config: family_id={config.family_id}, version={config.version}, label={config.label}")
+            # Find the prompt version
+            version_result = await db.execute(
+                select(PromptVersion).where(
+                    and_(
+                        PromptVersion.family_id == config.family_id,
+                        PromptVersion.version == config.version
+                    )
                 )
             )
-        )
-        version = version_result.scalar_one_or_none()
+            version = version_result.scalar_one_or_none()
+            
+            if version:
+                run_prompt = EvaluationRunPrompt(
+                    evaluation_run_id=db_run.id,
+                    prompt_version_id=version.id,
+                    label=config.label
+                )
+                db.add(run_prompt)
+                logging.info(f"[CRUD] Added EvaluationRunPrompt for version_id={version.id} to run {db_run.id}")
+            else:
+                logging.warning(f"[CRUD] PromptVersion not found for family_id={config.family_id}, version={config.version}")
         
-        if version:
-            run_prompt = EvaluationRunPrompt(
-                evaluation_run_id=db_run.id,
-                prompt_version_id=version.id,
-                label=config.label
-            )
-            db.add(run_prompt)
-    
-    await db.commit()
-    await db.refresh(db_run)
-    return db_run
+        await db.commit()
+        await db.refresh(db_run)
+        logging.info(f"[CRUD] Committed and refreshed EvaluationRun with id: {db_run.id}")
+        # Eagerly load datasets relationship
+        result = await db.execute(
+            select(EvaluationRun).options(selectinload(EvaluationRun.datasets)).where(EvaluationRun.id == db_run.id)
+        )
+        db_run_loaded = result.scalar_one()
+        return db_run_loaded
+    except Exception as e:
+        logging.exception(f"[CRUD] Exception in create_evaluation_run: {str(e)}")
+        raise
 
-async def get_evaluation_runs(db: AsyncSession) -> List[EvaluationRun]:
+async def get_evaluation_runs(db: AsyncSession, user_id: str) -> List[EvaluationRun]:
     result = await db.execute(
         select(EvaluationRun)
+        .where(EvaluationRun.user_id == user_id)
         .options(
             selectinload(EvaluationRun.datasets),
             selectinload(EvaluationRun.prompt_configurations)
         )
         .order_by(EvaluationRun.created_at.desc())
     )
-    return result.scalars().all()
+    runs = result.scalars().all()
+    
+    # Add dataset_ids to each run for Pydantic schema compatibility
+    for run in runs:
+        run.dataset_ids = [dataset.id for dataset in run.datasets]
+    
+    return runs
 
 async def get_evaluation_run(db: AsyncSession, run_id: int) -> Optional[EvaluationRun]:
     result = await db.execute(
         select(EvaluationRun)
         .options(
-            selectinload(EvaluationRun.datasets),
-            selectinload(EvaluationRun.prompt_configurations),
-            selectinload(EvaluationRun.evaluations)
+            selectinload(EvaluationRun.datasets).selectinload(Dataset.images),
+            selectinload(EvaluationRun.prompt_configurations).selectinload(EvaluationRunPrompt.prompt_version),
+            selectinload(EvaluationRun.evaluations).selectinload(Evaluation.word_evaluations),
+            selectinload(EvaluationRun.evaluations).selectinload(Evaluation.image)
         )
         .where(EvaluationRun.id == run_id)
     )
-    return result.scalar_one_or_none()
+    run = result.scalar_one_or_none()
+    
+    if run:
+        # Add dataset_ids to the run for Pydantic schema compatibility
+        run.dataset_ids = [dataset.id for dataset in run.datasets]
+        
+        # Format prompt_configurations to match the schema
+        for prompt_config in run.prompt_configurations:
+            # Add family_id and version fields that the schema expects
+            if prompt_config.prompt_version:
+                prompt_config.family_id = prompt_config.prompt_version.family_id
+                prompt_config.version = prompt_config.prompt_version.version
+            else:
+                prompt_config.family_id = None
+                prompt_config.version = None
+    
+    return run
 
 async def get_evaluation_comparison(db: AsyncSession, run_id: int) -> Optional[Dict[str, Any]]:
     """Generate comparison results for an evaluation run"""
@@ -740,15 +1014,144 @@ async def get_evaluation_comparison(db: AsyncSession, run_id: int) -> Optional[D
     if not run or run.status != ProcessingStatus.SUCCESS:
         return None
     
-    # This would be implemented to analyze the evaluations and generate comparison data
-    # For now, return a placeholder structure
+    # Group evaluations by prompt version
+    evaluations_by_version = {}
+    for evaluation in run.evaluations:
+        if evaluation.prompt_version not in evaluations_by_version:
+            evaluations_by_version[evaluation.prompt_version] = []
+        evaluations_by_version[evaluation.prompt_version].append(evaluation)
+    
+    # Calculate summary metrics for each prompt version
+    summary_metrics = []
+    for prompt_version, evaluations in evaluations_by_version.items():
+        if not evaluations:
+            continue
+            
+        # Find the prompt configuration for this version
+        prompt_config = None
+        for config in run.prompt_configurations:
+            if config.version == prompt_version:
+                prompt_config = config
+                break
+        
+        # Calculate metrics
+        total_accuracy = sum(eval.accuracy or 0 for eval in evaluations)
+        avg_accuracy = total_accuracy / len(evaluations) if evaluations else 0
+        
+        total_correct_words = sum(eval.correct_words or 0 for eval in evaluations)
+        total_words = sum(eval.total_words or 0 for eval in evaluations)
+        character_error_rate = 1 - (total_correct_words / total_words) if total_words > 0 else 0
+        
+        # Calculate average latency (placeholder - would need to be stored)
+        avg_latency_ms = 0
+        
+        # Estimate cost (placeholder - would need actual cost tracking)
+        estimated_cost_per_1k = 0.01  # Placeholder
+        
+        # Error breakdown (placeholder - would need detailed error analysis)
+        error_breakdown = {
+            "character_errors": 0,
+            "word_boundary_errors": 0,
+            "spacing_errors": 0
+        }
+        
+        summary_metrics.append({
+            "prompt_version": prompt_version,
+            "label": prompt_config.label if prompt_config else f"Version {prompt_version}",
+            "overall_accuracy": round(avg_accuracy, 2),
+            "character_error_rate": round(character_error_rate, 4),
+            "avg_latency_ms": avg_latency_ms,
+            "estimated_cost_per_1k": estimated_cost_per_1k,
+            "error_breakdown": error_breakdown
+        })
+    
+    # Generate word-level comparisons
+    word_comparisons = []
+    
+    # Group evaluations by image_id to compare same images across versions
+    evaluations_by_image = {}
+    for evaluation in run.evaluations:
+        if evaluation.image_id not in evaluations_by_image:
+            evaluations_by_image[evaluation.image_id] = {}
+        evaluations_by_image[evaluation.image_id][evaluation.prompt_version] = evaluation
+    
+    # Compare evaluations for the same image across different versions
+    for image_id, version_evaluations in evaluations_by_image.items():
+        if len(version_evaluations) < 2:
+            continue  # Need at least 2 versions to compare
+            
+        # Get the image info
+        image = None
+        for dataset in run.datasets:
+            for img in dataset.images:
+                if img.id == image_id:
+                    image = img
+                    break
+            if image:
+                break
+        
+        # Compare word-level results (simplified - would need actual word-level data)
+        # For now, create a basic comparison based on overall accuracy
+        versions = list(version_evaluations.keys())
+        if len(versions) >= 2:
+            eval1 = version_evaluations[versions[0]]
+            eval2 = version_evaluations[versions[1]]
+            
+            # Determine which performed better
+            if eval1.accuracy > eval2.accuracy:
+                winner = versions[0]
+                status = "improved"
+            elif eval2.accuracy > eval1.accuracy:
+                winner = versions[1]
+                status = "improved"
+            else:
+                winner = "tie"
+                status = "match"
+            
+            word_comparisons.append({
+                "image_filename": f"image_{image.number}" if image else f"image_{image_id}",
+                "word_index": 0,  # Placeholder
+                "reference_word": "overall_performance",
+                "control_output": f"{eval1.accuracy}% accuracy",
+                "variation_output": f"{eval2.accuracy}% accuracy",
+                "status": status,
+                "error_type": None
+            })
+    
+    # Determine overall winner
+    if summary_metrics:
+        best_metric = max(summary_metrics, key=lambda x: x["overall_accuracy"])
+        winner = best_metric["label"]
+        confidence_level = 0.95 if len(summary_metrics) > 1 else 0.5
+    else:
+        winner = None
+        confidence_level = None
+    
     return {
         "evaluation_run_id": run_id,
-        "summary_metrics": [],
-        "word_comparisons": [],
-        "winner": None,
-        "confidence_level": None
+        "summary_metrics": summary_metrics,
+        "word_comparisons": word_comparisons,
+        "winner": winner,
+        "confidence_level": confidence_level
     }
+
+# API Log CRUD operations
+async def create_api_log(db: AsyncSession, log: APILogCreate) -> APILog:
+    db_log = APILog(**log.dict())
+    db.add(db_log)
+    await db.commit()
+    await db.refresh(db_log)
+    return db_log
+
+async def get_api_logs_for_user(db: AsyncSession, user_id: str, skip: int = 0, limit: int = 100) -> List[APILog]:
+    result = await db.execute(
+        select(APILog)
+        .where(APILog.user_id == user_id)
+        .order_by(APILog.created_at.desc())
+        .offset(skip)
+        .limit(limit)
+    )
+    return result.scalars().all()
 
 # API Key CRUD operations
 async def create_api_key(db: AsyncSession, key_data: APIKeyCreate) -> APIKey:
@@ -834,4 +1237,31 @@ async def get_evaluation_run_progress(db: AsyncSession, run_id: int) -> Optional
         "prompt_progress": {},  # Would track progress per prompt
         "current_image": run.current_step,
         "log_entries": []
-    } 
+    }
+
+async def delete_image_from_dataset(db: AsyncSession, dataset_id: int, image_id: int) -> bool:
+    """Remove an image from a dataset, delete the association, and delete the image itself."""
+    from .database import dataset_images
+    # Remove association from dataset_images table
+    await db.execute(
+        delete(dataset_images).where(
+            (dataset_images.c.dataset_id == dataset_id) & (dataset_images.c.image_id == image_id)
+        )
+    )
+    # Remove image from dataset.images relationship (if loaded)
+    dataset_result = await db.execute(select(Dataset).options(selectinload(Dataset.images)).where(Dataset.id == dataset_id))
+    dataset = dataset_result.scalar_one_or_none()
+    if dataset:
+        dataset.images = [img for img in dataset.images if img.id != image_id]
+        dataset.image_count = len(dataset.images)
+        dataset.updated_at = datetime.utcnow()
+        await db.commit()
+        await db.refresh(dataset)
+    # Delete the image itself
+    result = await db.execute(select(Image).where(Image.id == image_id))
+    db_image = result.scalar_one_or_none()
+    if db_image:
+        await db.delete(db_image)
+        await db.commit()
+        return True
+    return False 

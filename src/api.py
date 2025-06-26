@@ -1,14 +1,18 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, BackgroundTasks, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import asyncio
 import os
 import json
 import shutil
+import tempfile
 from pathlib import Path
+from datetime import datetime
+import logging
+import time
 
-from .database import get_db, init_db
+from .database import get_db, init_db, EvaluationRun as EvaluationRunDB, async_session
 from .schemas import (
     Image, ImageCreate, ImageUpdate, ImageWithEvaluations,
     Evaluation, EvaluationCreate, EvaluationUpdate, EvaluationWithDetails,
@@ -22,9 +26,9 @@ from .schemas import (
     Dataset, DatasetCreate, DatasetUpdate, DatasetWithImages,
     PromptFamily, PromptFamilyCreate, PromptFamilyWithVersions,
     PromptVersion, PromptVersionCreate, PromptVersionUpdate,
-    EvaluationRun, EvaluationRunCreate, EvaluationRunUpdate, EvaluationRunWithDetails,
+    EvaluationRun as EvaluationRunSchema, EvaluationRunCreate, EvaluationRunWithDetails,
     ComparisonResults, LiveProgressUpdate, PerformanceTrend,
-    APIKey, APIKeyCreate, APIUsageStats,
+    APIKey, APIKeyCreate, APIUsageStats, APILog,
     ProcessingStatus, DatasetStatus, PromptStatus
 )
 from . import crud
@@ -55,7 +59,13 @@ def get_ocr_orchestrator():
     """Get OCR orchestrator instance, creating it if needed"""
     global ocr_orchestrator
     if ocr_orchestrator is None:
-        ocr_orchestrator = OcrOrchestrator()
+        try:
+            logging.info("Initializing OCR orchestrator...")
+            ocr_orchestrator = OcrOrchestrator()
+            logging.info("OCR orchestrator initialized successfully")
+        except Exception as e:
+            logging.error(f"Failed to initialize OCR orchestrator: {str(e)}")
+            raise
     return ocr_orchestrator
 
 # Startup and shutdown events
@@ -168,14 +178,47 @@ async def import_images_csv(
     if not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="File must be a CSV")
     
-    # Save uploaded file temporarily
-    temp_path = f"/tmp/{file.filename}"
-    with open(temp_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # Create a temporary file with proper extension
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        # Save uploaded file temporarily
+        shutil.copyfileobj(file.file, temp_file)
+        temp_path = temp_file.name
     
     try:
         # Import data
         result = await crud.import_csv_data(db, temp_path, overwrite_existing)
+        return CSVImportResponse(**result)
+    finally:
+        # Clean up temp file
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+@app.post("/api/images/{dataset_id}/import-csv", response_model=CSVImportResponse)
+async def import_images_csv_to_dataset(
+    dataset_id: int,
+    file: UploadFile = File(...),
+    overwrite_existing: bool = Query(False),
+    db: AsyncSession = Depends(get_db)
+):
+    """Import images from CSV file and associate them with a dataset"""
+    # logging.info(f"Hit /api/images/{dataset_id}/import-csv with dataset_id={dataset_id}")
+    # First check if dataset exists
+    dataset = await crud.get_dataset(db, dataset_id)
+    if not dataset:
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="File must be a CSV")
+    
+    # Create a temporary file with proper extension
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        # Save uploaded file temporarily
+        shutil.copyfileobj(file.file, temp_file)
+        temp_path = temp_file.name
+    
+    try:
+        # Import data
+        result = await crud.import_csv_data_into_dataset(db, temp_path, dataset_id, overwrite_existing)
         return CSVImportResponse(**result)
     finally:
         # Clean up temp file
@@ -486,10 +529,11 @@ async def import_csv_file(
     if not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="File must be a CSV")
     
-    # Save uploaded file temporarily
-    temp_path = f"/tmp/{file.filename}"
-    with open(temp_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # Create a temporary file with proper extension
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        # Save uploaded file temporarily
+        shutil.copyfileobj(file.file, temp_file)
+        temp_path = temp_file.name
     
     try:
         # Import data
@@ -588,11 +632,14 @@ async def process_evaluation_background(evaluation_id: int):
                 )
             )
             
+            start_time = time.time()
             result = await orchestrator.process_single_evaluation(
                 evaluation.image.url,
-                evaluation.image.reference_text,
+                evaluation.image.human_evaluation_text,
                 evaluation.image.number
             )
+            end_time = time.time()
+            latency_ms = int((end_time - start_time) * 1000)
             
             # Update progress: analyzing results
             await crud.update_evaluation(
@@ -630,6 +677,23 @@ async def process_evaluation_background(evaluation_id: int):
                 )
                 
                 await crud.update_evaluation(db, evaluation_id, update_data)
+
+                # Add API log entry
+                try:
+                    if evaluation.image:
+                        log_entry = crud.APILogCreate(
+                            image_url=evaluation.image.url,
+                            ocr_output=evaluation_data.get('full_text', ''),
+                            prompt_version=evaluation.prompt_version,
+                            user_id=evaluation.image.user_id,
+                            log_metadata={
+                                "tokens_used": result.get('tokens_used', 0),  # Placeholder, orchestrator needs to return this
+                                "latency_ms": latency_ms
+                            }
+                        )
+                        await crud.create_api_log(db, log_entry)
+                except Exception as e:
+                    logging.error(f"Failed to create API log for evaluation {evaluation_id}: {str(e)}")
             else:
                 # Update with error
                 await crud.update_evaluation(
@@ -656,11 +720,216 @@ async def process_evaluation_background(evaluation_id: int):
                 )
             )
 
+async def process_evaluation_run_background(run_id: int):
+    """Background task to process an evaluation run (A/B test)"""
+    from .database import async_session
+    from sqlalchemy import update
+    
+    async with async_session() as db:
+        try:
+            # Get the evaluation run
+            evaluation_run = await crud.get_evaluation_run(db, run_id)
+            if not evaluation_run:
+                return
+            
+            # Update run status to processing
+            await db.execute(
+                update(EvaluationRunDB)
+                .where(EvaluationRunDB.id == run_id)
+                .values(
+                    status="processing",
+                    progress_percentage=0,
+                    current_step="Initializing evaluation run"
+                )
+            )
+            await db.commit()
+            
+            # Get all images from all datasets in this run
+            all_images = []
+            for dataset in evaluation_run.datasets:
+                # Access images through the relationship
+                all_images.extend(dataset.images)
+            
+            total_images = len(all_images)
+            if total_images == 0:
+                # No images to process
+                await db.execute(
+                    update(EvaluationRunDB)
+                    .where(EvaluationRunDB.id == run_id)
+                    .values(
+                        status="failed",
+                        current_step="No images found in datasets"
+                    )
+                )
+                await db.commit()
+                return
+            
+            # Get prompt configurations for this run
+            prompt_configs = evaluation_run.prompt_configurations
+            if not prompt_configs:
+                await db.execute(
+                    update(EvaluationRunDB)
+                    .where(EvaluationRunDB.id == run_id)
+                    .values(
+                        status="failed",
+                        current_step="No prompt configurations found"
+                    )
+                )
+                await db.commit()
+                return
+            
+            # Process each image with each prompt configuration
+            processed_count = 0
+            orchestrator = get_ocr_orchestrator()
+            
+            for image in all_images:
+                for prompt_config in prompt_configs:
+                    try:
+                        # Create evaluation for this image and prompt
+                        evaluation_create = crud.EvaluationCreate(
+                            image_id=image.id,
+                            evaluation_run_id=run_id,
+                            prompt_version=prompt_config.prompt_version.version,
+                            force_reprocess=True
+                        )
+                        
+                        # Create the evaluation record
+                        db_evaluation = await crud.create_evaluation(db, evaluation_create)
+                        
+                        # Update progress
+                        processed_count += 1
+                        progress_percentage = int((processed_count / (total_images * len(prompt_configs))) * 100)
+                        
+                        await db.execute(
+                            update(EvaluationRunDB)
+                            .where(EvaluationRunDB.id == run_id)
+                            .values(
+                                progress_percentage=progress_percentage,
+                                current_step=f"Processing image {image.number} with {prompt_config.label}"
+                            )
+                        )
+                        await db.commit()
+                        
+                        # Process the evaluation
+                        start_time = time.time()
+                        result = await orchestrator.process_single_evaluation(
+                            image.url,
+                            image.human_evaluation_text,
+                            image.number
+                        )
+                        end_time = time.time()
+                        latency_ms = int((end_time - start_time) * 1000)
+                        
+                        if result.get('success'):
+                            # Update evaluation with results
+                            word_evaluations = []
+                            evaluation_data = result.get('evaluation', {})
+                            
+                            for word_eval in evaluation_data.get('word_evaluations', []):
+                                word_evaluations.append(crud.WordEvaluationCreate(
+                                    reference_word=word_eval.get('reference_word', ''),
+                                    transcribed_word=word_eval.get('transcribed_word'),
+                                    match=word_eval.get('match', False),
+                                    reason_diff=word_eval.get('reason_diff', ''),
+                                    word_position=word_eval.get('word_position', 0)
+                                ))
+                            
+                            update_data = crud.EvaluationUpdate(
+                                ocr_output=evaluation_data.get('full_text', ''),
+                                accuracy=evaluation_data.get('accuracy', 0),
+                                correct_words=evaluation_data.get('correct_words', 0),
+                                total_words=evaluation_data.get('total_words', 0),
+                                processing_status="success",
+                                progress_percentage=100,
+                                current_step="Completed",
+                                word_evaluations=word_evaluations
+                            )
+                            
+                            await crud.update_evaluation(db, db_evaluation.id, update_data)
+
+                            # Add API log entry
+                            try:
+                                log_entry = crud.APILogCreate(
+                                    image_url=image.url,
+                                    ocr_output=evaluation_data.get('full_text', ''),
+                                    prompt_version=prompt_config.prompt_version.version,
+                                    user_id=evaluation_run.user_id,
+                                    log_metadata={
+                                        "tokens_used": result.get('tokens_used', 0),  # Placeholder, orchestrator needs to return this
+                                        "latency_ms": latency_ms
+                                    }
+                                )
+                                await crud.create_api_log(db, log_entry)
+                            except Exception as e:
+                                logging.error(f"Failed to create API log for evaluation {db_evaluation.id} in run {run_id}: {str(e)}")
+                        else:
+                            # Update with error
+                            error_msg = result.get('error', 'Unknown error')
+                            logging.error(f"OCR processing failed for image {image.number}: {error_msg}")
+                            await crud.update_evaluation(
+                                db,
+                                db_evaluation.id,
+                                crud.EvaluationUpdate(
+                                    processing_status="failed",
+                                    progress_percentage=0,
+                                    current_step="Failed",
+                                    error_message=error_msg
+                                )
+                            )
+                    
+                    except Exception as e:
+                        # Log error but continue with other evaluations
+                        error_msg = f"Error processing image {image.id} with prompt {prompt_config.label}: {str(e)}"
+                        logging.error(error_msg)
+                        print(error_msg)
+                        
+                        # Update evaluation with error if it was created
+                        if 'db_evaluation' in locals():
+                            await crud.update_evaluation(
+                                db,
+                                db_evaluation.id,
+                                crud.EvaluationUpdate(
+                                    processing_status="failed",
+                                    progress_percentage=0,
+                                    current_step="Failed",
+                                    error_message=str(e)
+                                )
+                            )
+                        continue
+            
+            # Mark run as completed
+            await db.execute(
+                update(EvaluationRunDB)
+                .where(EvaluationRunDB.id == run_id)
+                .values(
+                    status="success",
+                    progress_percentage=100,
+                    current_step="Evaluation run completed",
+                    completed_at=datetime.utcnow()
+                )
+            )
+            await db.commit()
+            
+        except Exception as e:
+            # Update run with error
+            await db.execute(
+                update(EvaluationRunDB)
+                .where(EvaluationRunDB.id == run_id)
+                .values(
+                    status="failed",
+                    current_step=f"Failed: {str(e)}"
+                )
+            )
+            await db.commit()
+
 # Dataset endpoints
 @app.get("/api/datasets", response_model=List[Dataset])
-async def get_datasets(db: AsyncSession = Depends(get_db)):
-    """Get all evaluation datasets"""
-    return await crud.get_datasets(db)
+async def get_datasets(
+    user_id: str,
+    db: AsyncSession = Depends(get_db)
+    ):
+    """Get all evaluation datasets for a user"""
+    return await crud.get_datasets(db, user_id=user_id)
 
 @app.get("/api/datasets/{dataset_id}", response_model=DatasetWithImages)
 async def get_dataset(dataset_id: int, db: AsyncSession = Depends(get_db)):
@@ -709,11 +978,37 @@ async def upload_dataset_files(
     result = await crud.process_dataset_upload(db, dataset_id, images_zip, reference_csv)
     return result
 
+@app.delete("/api/datasets/{dataset_id}/images/{image_id}")
+async def delete_image_from_dataset(dataset_id: int, image_id: int, db: AsyncSession = Depends(get_db)):
+    """Delete an image from a dataset, including the association and the image itself."""
+    success = await crud.delete_image_from_dataset(db, dataset_id, image_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Image or dataset not found")
+    return {"message": "Image deleted from dataset and removed from database"}
+
+@app.put("/api/datasets/{dataset_id}/images/{image_id}", response_model=Image)
+async def update_image_in_dataset(
+    dataset_id: int,
+    image_id: int,
+    image_update: ImageUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update reference_text and/or human_evaluation_text for an image in a dataset"""
+    # Check association
+    is_associated = await crud.is_image_in_dataset(db, image_id, dataset_id)
+    if not is_associated:
+        raise HTTPException(status_code=404, detail="Image not found in dataset")
+    # Update image
+    image = await crud.update_image(db, image_id, image_update)
+    if not image:
+        raise HTTPException(status_code=404, detail="Image not found")
+    return image
+
 # Prompt Family endpoints
 @app.get("/api/prompt-families", response_model=List[PromptFamily])
-async def get_prompt_families(db: AsyncSession = Depends(get_db)):
-    """Get all prompt families"""
-    return await crud.get_prompt_families(db)
+async def get_prompt_families(user_id: str, db: AsyncSession = Depends(get_db)):
+    """Get all prompt families for a user"""
+    return await crud.get_prompt_families(db, user_id=user_id)
 
 @app.get("/api/prompt-families/{family_id}", response_model=PromptFamilyWithVersions)
 async def get_prompt_family(family_id: int, db: AsyncSession = Depends(get_db)):
@@ -723,6 +1018,22 @@ async def get_prompt_family(family_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Prompt family not found")
     return family
 
+@app.put("/api/prompt-families/{family_id}", response_model=PromptFamily)
+async def update_prompt_family(
+    family_id: int,
+    family_update: PromptFamilyCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    """Update a prompt family"""
+    # First check if the family exists
+    existing_family = await crud.get_prompt_family(db, family_id)
+    if not existing_family:
+        raise HTTPException(status_code=404, detail="Prompt family not found")
+    
+    # Update the family
+    updated_family = await crud.update_prompt_family(db, family_id, family_update)
+    return updated_family
+
 @app.post("/api/prompt-families", response_model=PromptFamily)
 async def create_prompt_family(family: PromptFamilyCreate, db: AsyncSession = Depends(get_db)):
     """Create a new prompt family"""
@@ -730,9 +1041,26 @@ async def create_prompt_family(family: PromptFamilyCreate, db: AsyncSession = De
 
 # Prompt Version endpoints
 @app.get("/api/prompt-families/{family_id}/versions", response_model=List[PromptVersion])
-async def get_prompt_versions(family_id: int, db: AsyncSession = Depends(get_db)):
+async def get_prompt_versions(family_id: int, user_id: str, db: AsyncSession = Depends(get_db)):
     """Get all versions for a prompt family"""
-    return await crud.get_prompt_versions(db, family_id)
+    versions = await crud.get_prompt_versions(db, family_id, user_id)
+    result = []
+    for v in versions:
+        # Parse issues
+        if isinstance(v.issues, str):
+            try:
+                issues = json.loads(v.issues)
+            except Exception:
+                issues = []
+        elif isinstance(v.issues, list):
+            issues = v.issues
+        else:
+            issues = []
+        # Convert ORM to Pydantic, overriding issues
+        pv = PromptVersion.from_orm(v)
+        pv.issues = issues
+        result.append(pv)
+    return result
 
 @app.post("/api/prompt-families/{family_id}/versions", response_model=PromptVersion)
 async def create_prompt_version(
@@ -748,8 +1076,11 @@ async def create_prompt_version(
     
     # Generate version number based on type
     next_version = await crud.generate_next_version(db, family_id, version.version_type)
+    
+    # Set the generated version number
     version.version = next_version
     
+    # Create the version
     return await crud.create_prompt_version(db, version)
 
 @app.put("/api/prompt-versions/{version_id}", response_model=PromptVersion)
@@ -759,10 +1090,17 @@ async def update_prompt_version(
     db: AsyncSession = Depends(get_db)
 ):
     """Update a prompt version"""
-    version = await crud.update_prompt_version(db, version_id, version_update)
-    if not version:
+    # First check if the version exists
+    existing_version = await crud.get_prompt_version(db, version_id)
+    if not existing_version:
         raise HTTPException(status_code=404, detail="Prompt version not found")
-    return version
+    
+    # Update the version
+    updated_version = await crud.update_prompt_version(db, version_id, version_update)
+    if not updated_version:
+        raise HTTPException(status_code=500, detail="Failed to update prompt version")
+    
+    return updated_version
 
 @app.post("/api/prompt-versions/{version_id}/promote")
 async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get_db)):
@@ -772,11 +1110,27 @@ async def promote_prompt_version(version_id: int, db: AsyncSession = Depends(get
         raise HTTPException(status_code=404, detail="Prompt version not found")
     return {"message": "Prompt version promoted to production"}
 
+@app.patch("/api/prompt-versions/{version_id}/issues", response_model=PromptVersion)
+async def patch_prompt_version_issues(
+    version_id: int,
+    issues: List[Dict[str, Any]],
+    db: AsyncSession = Depends(get_db)
+):
+    """Update only the issues field of a prompt version"""
+    existing_version = await crud.get_prompt_version(db, version_id)
+    if not existing_version:
+        raise HTTPException(status_code=404, detail="Prompt version not found")
+    version_update = PromptVersionUpdate(issues=issues)
+    updated_version = await crud.update_prompt_version(db, version_id, version_update)
+    if not updated_version:
+        raise HTTPException(status_code=500, detail="Failed to update prompt version issues")
+    return updated_version
+
 # Evaluation Run endpoints
-@app.get("/api/evaluation-runs", response_model=List[EvaluationRun])
-async def get_evaluation_runs(db: AsyncSession = Depends(get_db)):
-    """Get all evaluation runs"""
-    return await crud.get_evaluation_runs(db)
+@app.get("/api/evaluation-runs", response_model=List[EvaluationRunSchema])
+async def get_evaluation_runs(user_id: str, db: AsyncSession = Depends(get_db)):
+    """Get all evaluation runs for a user"""
+    return await crud.get_evaluation_runs(db, user_id=user_id)
 
 @app.get("/api/evaluation-runs/{run_id}", response_model=EvaluationRunWithDetails)
 async def get_evaluation_run(run_id: int, db: AsyncSession = Depends(get_db)):
@@ -786,28 +1140,54 @@ async def get_evaluation_run(run_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Evaluation run not found")
     return run
 
-@app.post("/api/evaluation-runs", response_model=EvaluationRun)
+@app.post("/api/evaluation-runs", response_model=EvaluationRunSchema)
 async def create_evaluation_run(
     run: EvaluationRunCreate,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db)
 ):
     """Create and start a new evaluation run (A/B test)"""
-    # Validate datasets exist
-    for dataset_id in run.dataset_ids:
-        dataset = await crud.get_dataset(db, dataset_id)
-        if not dataset:
-            raise HTTPException(status_code=404, detail=f"Dataset {dataset_id} not found")
-        if dataset.status != DatasetStatus.VALIDATED:
-            raise HTTPException(status_code=400, detail=f"Dataset {dataset.name} is not validated")
-    
-    # Create the evaluation run
-    db_run = await crud.create_evaluation_run(db, run)
-    
-    # Queue background processing
-    background_tasks.add_task(process_evaluation_run_background, db_run.id)
-    
-    return db_run
+    logging.info("[API] Entered create_evaluation_run endpoint")
+    try:
+        # Validate datasets exist
+        for dataset_id in run.dataset_ids:
+            logging.info(f"[API] Validating dataset_id: {dataset_id}")
+            dataset = await crud.get_dataset(db, dataset_id)
+            if not dataset:
+                logging.error(f"[API] Dataset {dataset_id} not found")
+                raise HTTPException(status_code=404, detail=f"Dataset {dataset_id} not found")
+            if dataset.status != DatasetStatus.VALIDATED:
+                logging.error(f"[API] Dataset {dataset.name} is not validated (status: {dataset.status})")
+                raise HTTPException(status_code=400, detail=f"Dataset {dataset.name} is not validated")
+        
+        # Create the evaluation run
+        logging.info("[API] Creating evaluation run in DB")
+        db_run = await crud.create_evaluation_run(db, run)
+        logging.info(f"[API] Evaluation run created with id: {db_run.id}")
+        
+        # Queue background processing
+        logging.info(f"[API] Adding background task for run id: {db_run.id}")
+        background_tasks.add_task(process_evaluation_run_background, db_run.id)
+        
+        logging.info(f"[API] Returning evaluation run with id: {db_run.id}")
+        # return db_run
+        return EvaluationRunSchema(
+            id = db_run.id,
+            name = db_run.name,
+            description = db_run.description,
+            hypothesis = db_run.hypothesis,
+            status = db_run.status,
+            progress_percentage = db_run.progress_percentage,
+            current_step = db_run.current_step,
+            created_at = db_run.created_at,
+            updated_at = db_run.updated_at,
+            completed_at = db_run.completed_at,
+            dataset_ids=[d.id for d in db_run.datasets],
+            user_id=db_run.user_id
+        )
+    except Exception as e:
+        logging.exception(f"[API] Exception in create_evaluation_run: {str(e)}")
+        raise
 
 @app.get("/api/evaluation-runs/{run_id}/comparison", response_model=ComparisonResults)
 async def get_evaluation_comparison(run_id: int, db: AsyncSession = Depends(get_db)):
@@ -825,14 +1205,15 @@ async def websocket_evaluation_progress(websocket: WebSocket, run_id: int):
     
     try:
         while True:
-            # Get current progress
+            # Get current progress using database module directly
+            from .database import async_session
             async with async_session() as db:
                 progress = await crud.get_evaluation_run_progress(db, run_id)
                 if progress:
-                    await websocket.send_json(progress.dict())
+                    await websocket.send_json(progress)
                 
                 # If completed, send final update and close
-                if progress and progress.status in [ProcessingStatus.SUCCESS, ProcessingStatus.FAILED]:
+                if progress and progress.get('status') in ['success', 'failed']:
                     break
             
             # Wait before next update
@@ -856,6 +1237,17 @@ async def get_performance_trends(
 async def get_regression_alerts(db: AsyncSession = Depends(get_db)):
     """Get active regression alerts"""
     return await crud.get_regression_alerts(db)
+
+# API Log endpoint
+@app.get("/api/api-logs", response_model=List[APILog])
+async def get_api_logs(
+    user_id: str,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    db: AsyncSession = Depends(get_db)
+):
+    """Get API logs for the current user"""
+    return await crud.get_api_logs_for_user(db, user_id=user_id, skip=skip, limit=limit)
 
 # API Key Management endpoints
 @app.get("/api/api-keys", response_model=List[APIKey])
